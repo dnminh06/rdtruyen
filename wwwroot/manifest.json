@@ -1,0 +1,10 @@
+{
+  "name": "Truyện của toi Mobile",
+  "short_name": "Truyện Mobile",
+  "description": "Đọc truyện tranh qua mạng LAN tối ưu cho điện thoại di động",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111827",
+  "theme_color": "#111827"
+}
