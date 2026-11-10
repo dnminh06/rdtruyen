@@ -1,12 +1,11 @@
-# Truyện của toi (rdtruyen)
+# Truyện của toi (RDTruyen)
 
-Ứng dụng đọc truyện tranh / manga & xem media trên Windows (WinForms + WebView2), tích hợp máy chủ LAN nội bộ để đọc trực tiếp trên điện thoại qua Wi-Fi và hỗ trợ dịch trang truyện bằng Gemini AI.
+Ứng dụng đọc truyện trên Windows, tích hợp máy chủ LAN nội bộ để đọc trực tiếp trên điện thoại qua Wi-Fi và hỗ trợ dịch trang truyện bằng AI qua API.
 
 ## Tính năng chính
-- **Quản lý & đọc truyện trên PC**: Hỗ trợ thư mục ảnh, file nén (`.zip`, `.cbz`), video (`.mp4`, `.webm`), tự động tạo ảnh thu nhỏ (`.thumbs`), đánh dấu yêu thích, lịch sử đọc và gắn thẻ (tags).
-- **Đọc trên điện thoại qua mạng LAN (Wi-Fi)**: Tích hợp máy chủ HTTP nội bộ với giao diện tối ưu riêng cho Mobile (`index-mobile.html`), hỗ trợ bảo vệ bằng mật khẩu (PBKDF2) và quét mã QR để kết nối nhanh.
-- **Dịch truyện bằng AI (Gemini)**: Khoanh vùng hoặc dịch trực tiếp trang truyện sang Tiếng Việt (hoặc ngôn ngữ tùy chọn) thông qua Gemini API.
-- **Khay hệ thống (System Tray) & Phím tắt ẩn nhanh**: Hỗ trợ thu nhỏ xuống khay hệ thống bằng phím tắt toàn cục (mặc định `Alt+X`, có thể tùy chỉnh).
+- **Quản lý & đọc truyện trên PC**: Hỗ trợ thư mục ảnh, file nén, video, đánh dấu yêu thích, lịch sử đọc và gắn thẻ (tags).
+- **Đọc trên điện thoại qua mạng LAN**: Tích hợp máy chủ HTTP nội bộ với giao diện riêng cho Mobile, hỗ trợ mật khẩu (PBKDF2) và quét mã QR để kết nối nhanh.
+- **Dịch truyện bằng AI**: Khoanh vùng hoặc dịch trực tiếp trang truyện sang Tiếng Việt hoặc ngôn ngữ tùy chọn thông qua Gemini API.
 
 ## Yêu cầu hệ thống
 - Hệ điều hành: Windows 10/11 (64-bit)
@@ -20,7 +19,7 @@
 dotnet run
 ```
 
-### 2. Xuất bản (Publish) ra file chạy `.exe`
+### 2. Xuất bản ra file chạy `.exe`
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained false -o publish
 ```
