@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#111827">
+    <meta name="theme-color" content="#090d16">
     <link rel="manifest" href="manifest.json">
     <title>Truyện của toi — Mobile</title>
     <script src="tailwind.js"></script>
@@ -15,6 +15,14 @@
         :root {
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --bg-obsidian: #090d16;
+            --bg-glass: rgba(15, 23, 42, 0.85);
+            --bg-glass-strong: rgba(15, 23, 42, 0.94);
+            --bg-glass-soft: rgba(30, 41, 59, 0.65);
+            --border-glass: rgba(255, 255, 255, 0.09);
+            --border-glass-accent: rgba(129, 140, 248, 0.35);
+            --accent-indigo: #6366f1;
+            --accent-violet: #8b5cf6;
         }
 
         * {
@@ -23,11 +31,65 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-obsidian);
             overflow-x: hidden;
             transition: background-image 0.3s ease-in-out;
-            padding-top: var(--safe-top);
-            padding-bottom: calc(3.75rem + var(--safe-bottom));
+            padding-top: calc(0.5rem + var(--safe-top));
+            padding-bottom: calc(4.25rem + var(--safe-bottom));
             overscroll-behavior-y: none;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 18% 0%, rgba(99, 102, 241, 0.14), transparent 52%),
+                radial-gradient(ellipse at 85% 12%, rgba(139, 92, 246, 0.10), transparent 48%),
+                linear-gradient(180deg, rgba(9, 13, 22, 0.62) 0%, rgba(9, 13, 22, 0.84) 100%);
+        }
+
+        body.fullscreen-reading::before {
+            display: none;
+        }
+
+        #mainContent {
+            position: relative;
+            z-index: 1;
+        }
+
+        body.view-reader:not(.fullscreen-reading) {
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        body.view-reader:not(.fullscreen-reading) #mainContent {
+            flex: 1 1 0%;
+            min-height: 0;
+            height: 100%;
+        }
+
+        body.view-reader:not(.fullscreen-reading) #imageContainer {
+            flex: 1 1 0%;
+            min-height: 0;
+            height: auto;
+        }
+
+        body.view-reader:not(.fullscreen-reading) #mainImage,
+        body.view-reader:not(.fullscreen-reading) #mainVideo {
+            max-height: 100%;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        button,
+        [role="button"] {
+            touch-action: manipulation;
         }
 
         ::-webkit-scrollbar {
@@ -36,12 +98,12 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #1f2937;
+            background: rgba(15, 23, 42, 0.6);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #4b5563;
-            border-radius: 3px;
+            background: rgba(148, 163, 184, 0.35);
+            border-radius: 999px;
         }
 
         #mainImage {
@@ -49,7 +111,7 @@
             width: 100%;
             max-width: 100%;
             height: 100%;
-            max-height: calc(100dvh - 180px);
+            max-height: 100%;
             user-select: none;
             -webkit-user-drag: none;
             transition: transform 0.08s linear;
@@ -63,7 +125,7 @@
             width: 100%;
             max-width: 100%;
             height: 100%;
-            max-height: calc(100dvh - 180px);
+            max-height: 100%;
             user-select: none;
             -webkit-user-drag: none;
             position: relative;
@@ -71,32 +133,34 @@
         }
 
         #imageContainer {
-            transition: height 0.2s ease-in-out;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
             touch-action: none;
         }
 
         #directoryTree ul {
-            padding-left: 1rem;
-            border-left: 1px solid #4a5568;
+            padding-left: 0.9rem;
+            border-left: 1px solid rgba(148, 163, 184, 0.22);
             margin-left: 0.45rem;
         }
 
         #directoryTree li {
             list-style: none;
-            margin-top: 0.35rem;
+            margin-top: 0.3rem;
         }
 
         .tree-node {
             cursor: pointer;
             display: flex;
             align-items: center;
-            padding: 6px 4px;
-            border-radius: 0.375rem;
+            min-height: 38px;
+            padding: 6px 6px;
+            border-radius: 0.625rem;
+            transition: background-color 0.15s ease;
         }
 
         .tree-node:active,
         .tree-node:hover {
-            background-color: #374151;
+            background-color: rgba(99, 102, 241, 0.14);
         }
 
         .tree-node .icon {
@@ -104,20 +168,20 @@
             text-align: center;
             margin-right: 0.25rem;
             font-family: monospace;
-            color: #90cdf4;
+            color: #a5b4fc;
         }
 
         .tree-node .story-icon {
-            color: #9ae6b4;
+            color: #a7f3d0;
         }
 
         .story-node {
-            color: #9ae6b4;
+            color: #e2e8f0;
         }
 
         .folder-node {
             font-weight: 600;
-            color: #90cdf4;
+            color: #c7d2fe;
         }
 
         .hidden-subtree {
@@ -167,9 +231,9 @@
         body.fullscreen-minimal-hud #fullscreenExitBtn,
         body.fullscreen-minimal-hud #fullscreenToggleNameBtn,
         body.fullscreen-minimal-hud #fullscreenTranslateBtn {
-            background-color: rgba(15, 23, 42, 0.14) !important;
-            color: rgba(255, 255, 255, 0.55) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            background-color: rgba(15, 23, 42, 0.18) !important;
+            color: rgba(255, 255, 255, 0.58) !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
             box-shadow: none !important;
             backdrop-filter: none !important;
         }
@@ -186,7 +250,7 @@
         body.fullscreen-minimal-hud #fullscreenExitBtn:active,
         body.fullscreen-minimal-hud #fullscreenToggleNameBtn:active,
         body.fullscreen-minimal-hud #fullscreenTranslateBtn:active {
-            background-color: rgba(15, 23, 42, 0.48) !important;
+            background-color: rgba(15, 23, 42, 0.55) !important;
             color: rgba(255, 255, 255, 0.95) !important;
         }
 
@@ -197,13 +261,13 @@
         }
 
         body.fullscreen-minimal-hud #fullscreenPageCount {
-            font-size: 0.65rem !important;
-            line-height: 0.9rem !important;
-            padding: 0.2rem 0.45rem !important;
-            border-radius: 0.45rem !important;
-            background-color: rgba(15, 23, 42, 0.14) !important;
-            color: rgba(255, 255, 255, 0.65) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            font-size: 0.6875rem !important;
+            line-height: 0.95rem !important;
+            padding: 0.25rem 0.55rem !important;
+            border-radius: 0.5rem !important;
+            background-color: rgba(15, 23, 42, 0.2) !important;
+            color: rgba(255, 255, 255, 0.7) !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
             box-shadow: none !important;
             backdrop-filter: none !important;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
@@ -211,7 +275,7 @@
 
         body.fullscreen-minimal-hud #fullscreenPageCount:hover,
         body.fullscreen-minimal-hud #fullscreenPageCount:active {
-            background-color: rgba(15, 23, 42, 0.48) !important;
+            background-color: rgba(15, 23, 42, 0.55) !important;
             color: rgba(255, 255, 255, 0.95) !important;
         }
 
@@ -221,16 +285,20 @@
         }
 
         .home-card {
-            border: 1px solid #374151;
-            background: rgba(31, 41, 55, 0.92);
-            border-radius: 0.75rem;
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 0.875rem;
             overflow: hidden;
-            transition: transform 0.12s ease, background 0.15s ease;
+            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
+            transition: transform 0.12s ease, border-color 0.15s ease, background-color 0.15s ease;
         }
 
         .home-card:active {
             transform: scale(0.98);
-            background: #334155;
+            border-color: var(--border-glass-accent);
+            background: rgba(30, 41, 59, 0.9);
         }
 
         .home-thumb {
@@ -238,7 +306,7 @@
             aspect-ratio: 3/4;
             object-fit: cover;
             display: block;
-            background: #000;
+            background: #05070d;
         }
 
         .home-video-thumb {
@@ -247,8 +315,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #000;
-            color: #e5e7eb;
+            background: #05070d;
+            color: #cbd5e1;
             font-weight: 700;
             letter-spacing: .08em;
         }
@@ -258,17 +326,21 @@
             top: 6px;
             right: 6px;
             font-size: 11px;
-            padding: 3px 7px;
+            font-variant-numeric: tabular-nums;
+            padding: 3px 8px;
             border-radius: 999px;
-            background: rgba(0, 0, 0, .68);
-            border: 1px solid rgba(255, 255, 255, .18);
-            backdrop-filter: blur(2px);
+            color: #e2e8f0;
+            background: rgba(9, 13, 22, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .home-title {
             font-weight: 600;
             font-size: 13px;
-            line-height: 1.25;
+            line-height: 1.3;
+            color: #f8fafc;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -277,7 +349,7 @@
 
         .home-sub {
             font-size: 11px;
-            color: #9ca3af;
+            color: #94a3b8;
             margin-top: 3px;
             white-space: nowrap;
             overflow: hidden;
@@ -286,29 +358,30 @@
 
         .home-tag {
             font-size: 10px;
-            line-height: 1.2;
-            padding: 2px 6px;
+            line-height: 1.25;
+            padding: 2px 7px;
             border-radius: 999px;
-            background: rgba(55, 65, 81, 0.85);
-            color: #d1d5db;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(99, 102, 241, 0.14);
+            color: #c7d2fe;
+            border: 1px solid rgba(129, 140, 248, 0.24);
             display: inline-block;
         }
 
         .author-card {
             position: relative;
             aspect-ratio: 1/1;
-            border-radius: 0.75rem;
+            border-radius: 0.875rem;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.15s, border-color 0.15s;
-            border: 2px solid #374151;
-            background: #1f2937;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
         }
 
         .author-card:active {
             transform: scale(0.97);
-            border-color: #3b82f6;
+            border-color: #818cf8;
         }
 
         .author-thumb {
@@ -323,13 +396,13 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.45), transparent);
-            padding: 1.5rem 0.5rem 0.45rem 0.5rem;
+            background: linear-gradient(to top, rgba(9, 13, 22, 0.96) 15%, rgba(9, 13, 22, 0.55) 60%, transparent);
+            padding: 1.5rem 0.55rem 0.5rem 0.55rem;
             font-weight: 700;
-            color: white;
+            color: #f8fafc;
             text-align: left;
             font-size: 0.85rem;
-            text-shadow: 1px 1px 3px black;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
             pointer-events: none;
         }
 
@@ -337,15 +410,16 @@
             position: absolute;
             top: 6px;
             right: 6px;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(9, 13, 22, 0.78);
             color: #fbbf24;
             padding: 5px;
-            border-radius: 50%;
+            border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
             pointer-events: none;
         }
 
@@ -353,27 +427,28 @@
             position: absolute;
             top: 6px;
             left: 6px;
-            background: rgba(0, 0, 0, 0.68);
-            color: #f43f5e;
+            background: rgba(9, 13, 22, 0.78);
+            color: #fb7185;
             padding: 5px;
-            border-radius: 50%;
+            border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(251, 113, 133, 0.3);
             pointer-events: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
         }
 
         .story-rating-note {
             font-size: 11px;
             line-height: 1.35;
             color: #fde68a;
-            background: rgba(17, 24, 39, 0.65);
+            background: rgba(9, 13, 22, 0.7);
             border-left: 2px solid #f59e0b;
             padding: 3px 6px;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 6px 6px 0;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -410,39 +485,43 @@
             align-items: center;
             justify-content: center;
             gap: 2px;
+            min-height: 44px;
             font-size: 11px;
             font-weight: 600;
-            color: #9ca3af;
-            padding: 6px 4px;
-            border-radius: 0.5rem;
-            transition: color 0.15s, background-color 0.15s;
+            color: #94a3b8;
+            padding: 5px 4px;
+            border-radius: 0.75rem;
+            border: 1px solid transparent;
+            transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
         }
 
         .bottom-nav-item.active {
-            color: #60a5fa;
+            color: #c7d2fe;
+            background-color: rgba(99, 102, 241, 0.18);
+            border-color: rgba(129, 140, 248, 0.3);
         }
 
         .bottom-nav-item:active {
-            background-color: rgba(55, 65, 81, 0.6);
+            background-color: rgba(99, 102, 241, 0.25);
         }
     </style>
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center px-2 pt-2 selection:bg-blue-500 selection:text-white">
+<body class="bg-[#090d16] text-slate-100 min-h-screen view-reader flex flex-col items-center px-2 pt-2 selection:bg-indigo-500 selection:text-white">
 
     <!-- Backdrop cho Sidebar Drawer trên Mobile -->
-    <div id="sidebarBackdrop" class="hidden fixed inset-0 bg-black/70 backdrop-blur-xs z-[114] transition-opacity"></div>
+    <div id="sidebarBackdrop" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-[114] transition-opacity"></div>
 
     <!-- Slide-over Sidebar Drawer -->
     <aside id="sidebar"
-        class="fixed top-0 left-0 h-full w-[86vw] max-w-sm bg-gray-800 shadow-2xl z-[115] p-3.5 transform -translate-x-full transition-transform duration-250 ease-out flex flex-col">
-        <div class="flex items-center justify-between mb-3 border-b border-gray-700 pb-2.5">
-            <h2 class="text-lg font-bold flex items-center gap-2">
+        class="fixed top-0 left-0 h-full w-[86vw] max-w-sm bg-slate-900/95 backdrop-blur-xl border-r border-white/10 shadow-2xl z-[115] px-3.5 pt-[calc(0.875rem+var(--safe-top))] pb-[calc(0.875rem+var(--safe-bottom))] transform -translate-x-full transition-transform duration-250 ease-out flex flex-col">
+        <div class="flex items-center justify-between mb-3 border-b border-white/10 pb-2.5 flex-shrink-0">
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 text-slate-100">
                 <span>📚 Danh sách truyện</span>
             </h2>
             <div class="flex items-center gap-1.5">
                 <button id="filterToggleBtn"
-                    class="px-2 py-1 rounded bg-gray-700 hover:bg-gray-600 text-xs font-semibold flex items-center gap-1"
+                    class="min-h-[38px] px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-1"
                     title="Ẩn/hiện bộ lọc">
                     <span>Bộ lọc</span>
                     <svg id="filterToggleIcon" xmlns="http://www.w3.org/2000/svg"
@@ -453,7 +532,7 @@
                     </svg>
                 </button>
                 <button id="sidebarCloseBtn"
-                    class="p-1.5 rounded-lg bg-gray-700 hover:bg-red-600 text-gray-200 hover:text-white"
+                    class="min-w-[38px] min-h-[38px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-rose-500/80 border border-white/10 text-slate-200 hover:text-white transition-colors"
                     title="Đóng danh sách">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -464,37 +543,37 @@
             </div>
         </div>
 
-        <div id="filtersWrapper" class="overflow-y-auto max-h-[46vh] pr-1 mb-2 border-b border-gray-700 pb-2">
+        <div id="filtersWrapper" class="overflow-y-auto max-h-[46vh] pr-1 mb-2 border-b border-white/10 pb-2.5 flex-shrink-0">
             <div class="mb-3">
-                <label class="block text-xs text-gray-300 mb-1">Tìm theo tên (truyện / tác giả)</label>
+                <label class="block text-xs text-slate-300 mb-1">Tìm theo tên (truyện / tác giả)</label>
                 <div class="flex gap-1.5">
                     <input id="nameFilterInput" type="text"
-                        class="flex-1 p-2 text-sm rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-400"
+                        class="flex-1 min-h-[38px] px-2.5 py-2 text-sm rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-slate-100 placeholder-slate-400"
                         placeholder="Nhập tên cần tìm...">
-                    <button id="clearNameFilterBtn" class="px-3 py-1.5 bg-gray-700 rounded-lg text-xs font-semibold"
+                    <button id="clearNameFilterBtn" class="min-h-[38px] px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold text-slate-200"
                         title="Xóa lọc tên">Xóa</button>
                 </div>
             </div>
 
-            <div class="mb-2">
+            <div class="mb-1">
                 <div class="flex items-center justify-between">
-                    <label class="block text-xs text-gray-300">Lọc theo tag</label>
-                    <div class="flex items-center gap-2 text-xs text-gray-300">
-                        <label class="inline-flex items-center gap-1">
-                            <input id="filterModeAnd" name="filterMode" type="radio" value="AND" class="accent-blue-500"
+                    <label class="block text-xs text-slate-300">Lọc theo tag</label>
+                    <div class="flex items-center gap-2.5 text-xs text-slate-300">
+                        <label class="inline-flex items-center gap-1 min-h-[30px]">
+                            <input id="filterModeAnd" name="filterMode" type="radio" value="AND" class="accent-indigo-500"
                                 checked>
                             <span>AND</span>
                         </label>
-                        <label class="inline-flex items-center gap-1">
-                            <input id="filterModeOr" name="filterMode" type="radio" value="OR" class="accent-blue-500">
+                        <label class="inline-flex items-center gap-1 min-h-[30px]">
+                            <input id="filterModeOr" name="filterMode" type="radio" value="OR" class="accent-indigo-500">
                             <span>OR</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="mt-1.5">
-                    <label class="inline-flex items-center gap-2 text-xs">
-                        <input id="noTagOnly" type="checkbox" class="accent-blue-500">
+                <div class="mt-1">
+                    <label class="inline-flex items-center gap-2 text-xs text-slate-200 min-h-[32px]">
+                        <input id="noTagOnly" type="checkbox" class="accent-indigo-500">
                         <span>Chỉ hiện truyện chưa có tag</span>
                     </label>
                     <div id="noTagOnlyHint" class="hidden text-[11px] text-amber-300 mt-0.5">
@@ -504,25 +583,25 @@
 
                 <div id="filterControls" class="mt-2">
                     <div id="selectedFilterTags" class="flex flex-wrap gap-1.5 mb-2"></div>
-                    <div class="relative">
+                    <div>
                         <input id="filterTagInput" type="text"
-                            class="w-full p-2 text-sm rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-400"
+                            class="w-full min-h-[38px] px-2.5 py-2 text-sm rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-slate-100 placeholder-slate-400"
                             placeholder="Nhập tag và nhấn Enter">
                         <div id="filterSuggestPanel"
-                            class="absolute left-0 right-0 top-[100%] z-50 bg-gray-800 border border-gray-700 rounded-lg shadow-xl hidden max-h-48 overflow-auto">
+                            class="mt-1.5 z-50 bg-slate-950/95 border border-white/15 rounded-xl shadow-xl hidden max-h-44 overflow-auto">
                         </div>
                     </div>
                     <div class="mt-2 flex items-center justify-between">
-                        <span class="text-[11px] text-gray-400">Tag gợi ý:</span>
-                        <button id="clearFilterBtn" class="px-2.5 py-1 bg-gray-700 rounded text-xs">Xóa lọc tag</button>
+                        <span class="text-[11px] text-slate-400">Tag gợi ý:</span>
+                        <button id="clearFilterBtn" class="min-h-[32px] px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-slate-200">Xóa lọc tag</button>
                     </div>
                     <div id="allTagsCloud" class="mt-1.5 flex flex-wrap gap-1.5 max-h-28 overflow-y-auto"></div>
                 </div>
             </div>
         </div>
 
-        <div id="directoryTreeContainer" class="flex-1 overflow-y-auto pr-1">
-            <p id="treePlaceholder" class="text-sm text-gray-400">Vui lòng chọn thư mục gốc để hiển thị cây thư mục.</p>
+        <div id="directoryTreeContainer" class="flex-1 min-h-0 overflow-y-auto pr-1">
+            <p id="treePlaceholder" class="text-sm text-slate-400">Vui lòng chọn thư mục gốc để hiển thị cây thư mục.</p>
             <ul id="directoryTree" class="p-0 m-0 text-sm"></ul>
         </div>
     </aside>
@@ -530,10 +609,10 @@
     <!-- Main Content Container -->
     <div id="mainContent" class="w-full max-w-4xl mx-auto flex-1 flex flex-col">
         <!-- Compact Mobile Top Header -->
-        <header class="w-full flex items-center justify-between gap-2 mb-2 bg-gray-800/90 backdrop-blur px-2.5 py-2 rounded-xl border border-gray-700/80 shadow">
+        <header class="w-full flex items-center justify-between gap-2 mb-2 bg-slate-900/80 backdrop-blur-xl px-2.5 py-2 rounded-2xl border border-white/10 shadow-lg flex-shrink-0">
             <div class="flex items-center gap-2 min-w-0">
                 <button id="sidebarToggleBtn"
-                    class="p-2 bg-gray-700 text-white rounded-lg active:bg-gray-600 flex-shrink-0"
+                    class="min-w-[40px] min-h-[40px] flex items-center justify-center bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 text-slate-100 rounded-xl flex-shrink-0 transition-colors"
                     title="Danh sách & Bộ lọc">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -543,15 +622,15 @@
                 </button>
                 <div class="truncate">
                     <div class="flex items-center gap-1.5">
-                        <h1 class="text-base sm:text-lg font-bold truncate">Truyện của toi</h1>
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-600/30 text-blue-300 border border-blue-500/40">MOBILE</span>
+                        <h1 class="text-base sm:text-lg font-bold truncate text-slate-100">Truyện của toi</h1>
+                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-200 border border-indigo-400/35 tracking-wide">MOBILE</span>
                     </div>
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5 flex-shrink-0">
                 <button id="historyBtn"
-                    class="p-2 bg-indigo-600 text-white rounded-lg shadow disabled:opacity-40"
+                    class="min-w-[40px] min-h-[40px] flex items-center justify-center bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 text-slate-200 rounded-xl shadow-sm disabled:opacity-40 transition-colors"
                     title="Lịch sử đọc" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -561,7 +640,7 @@
                 </button>
 
                 <button id="bookmarkBtn"
-                    class="p-2 bg-pink-600 text-white rounded-lg shadow disabled:opacity-40"
+                    class="min-w-[40px] min-h-[40px] flex items-center justify-center bg-white/5 hover:bg-white/10 active:bg-white/15 border border-white/10 text-slate-200 rounded-xl shadow-sm disabled:opacity-40 transition-colors"
                     title="Danh sách đã đánh dấu" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -571,7 +650,7 @@
                 </button>
 
                 <button id="appSettingsBtn"
-                    class="px-2.5 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg shadow text-xs font-semibold flex items-center gap-1"
+                    class="min-w-[40px] min-h-[40px] px-2.5 flex items-center justify-center bg-indigo-500/20 hover:bg-indigo-500/30 active:bg-indigo-500/40 border border-indigo-400/35 text-indigo-100 rounded-xl shadow-sm text-xs font-semibold gap-1.5 transition-colors"
                     title="Cài đặt (Folder, Tải lại, Blacklist, Hình nền)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -588,9 +667,9 @@
         </header>
 
         <!-- Compact Status & Active Story Toolbar -->
-        <div id="statusArea" class="w-full text-center mb-2">
-            <div class="bg-gray-900/75 backdrop-blur rounded-xl px-3 py-1.5 border border-gray-800 shadow-sm">
-                <p id="statusText" class="text-xs sm:text-sm text-gray-200 leading-snug">Đang kết nối máy chủ truyện...</p>
+        <div id="statusArea" class="w-full text-center mb-2 flex-shrink-0">
+            <div class="bg-slate-900/80 backdrop-blur-xl rounded-2xl px-3 py-2 border border-white/10 shadow-md">
+                <p id="statusText" class="text-xs sm:text-sm text-slate-200 leading-snug">Đang kết nối máy chủ truyện...</p>
                 <div id="currentStoryRatingInline" class="hidden mt-1 flex items-center justify-center"></div>
                 <div id="currentStoryTagsInline" class="mt-1 flex flex-wrap gap-1 justify-center"></div>
             </div>
@@ -600,20 +679,20 @@
         <!-- HOME VIEW -->
         <section id="homeView" class="hidden w-full mb-4">
             <div id="tempFilterBanner"
-                class="hidden mb-2.5 p-2.5 bg-blue-900/85 backdrop-blur border border-blue-500/50 rounded-xl flex justify-between items-center shadow">
-                <span id="tempFilterText" class="text-blue-100 font-medium text-xs sm:text-sm"></span>
+                class="hidden mb-2.5 p-2.5 bg-indigo-950/80 backdrop-blur-xl border border-indigo-400/35 rounded-2xl flex justify-between items-center shadow-lg">
+                <span id="tempFilterText" class="text-indigo-100 font-medium text-xs sm:text-sm"></span>
                 <button id="clearTempFilterBtn"
-                    class="px-2.5 py-1 bg-red-600 text-white rounded-lg text-xs font-semibold">
+                    class="min-h-[34px] px-3 py-1 bg-rose-500/80 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold border border-rose-400/30">
                     Đóng
                 </button>
             </div>
 
-            <div class="flex items-center justify-between gap-2 mb-2.5 bg-gray-800/80 px-3 py-2 rounded-xl backdrop-blur border border-gray-700/60">
+            <div class="flex items-center justify-between gap-2 mb-2.5 bg-slate-900/80 px-3 py-2 rounded-2xl backdrop-blur-xl border border-white/10 shadow-lg">
                 <div class="flex items-center gap-1.5">
                     <button id="homeShuffleBtn"
-                        class="px-3 py-1.5 bg-green-600 rounded-lg font-semibold text-xs flex items-center gap-1 disabled:opacity-40"
+                        class="min-h-[38px] px-3 py-1.5 bg-indigo-600/90 hover:bg-indigo-500 text-white rounded-xl font-semibold text-xs flex items-center gap-1.5 border border-indigo-400/40 shadow-sm disabled:opacity-40 transition-colors"
                         disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="23 4 23 10 17 10"></polyline>
                             <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
@@ -621,14 +700,14 @@
                         <span>Đổi mới</span>
                     </button>
                     <button id="homeToReaderBtn"
-                        class="px-3 py-1.5 bg-blue-600 rounded-lg font-semibold text-xs disabled:opacity-40"
+                        class="min-h-[38px] px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-100 rounded-xl font-semibold text-xs disabled:opacity-40 transition-colors"
                         disabled>
                         Đọc tiếp
                     </button>
                 </div>
-                <div class="flex items-center gap-2.5 text-xs">
-                    <div class="text-gray-400">Tổng: <span id="homeTotalStories" class="text-white font-bold">0</span></div>
-                    <div class="text-gray-400">Hiện: <span id="homeShownStories" class="text-white font-bold">0</span></div>
+                <div class="flex items-center gap-2.5 text-xs tabular-nums">
+                    <div class="text-slate-400">Tổng: <span id="homeTotalStories" class="text-white font-bold">0</span></div>
+                    <div class="text-slate-400">Hiện: <span id="homeShownStories" class="text-indigo-300 font-bold">0</span></div>
                 </div>
             </div>
 
@@ -637,9 +716,9 @@
 
         <!-- AUTHOR LIST VIEW -->
         <section id="authorListView" class="hidden w-full mb-4">
-            <div class="flex items-center justify-between gap-2 mb-3 bg-gray-800/85 p-2.5 rounded-xl backdrop-blur border border-gray-700/60">
-                <div class="text-gray-100 font-bold text-base flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none"
+            <div class="flex items-center justify-between gap-2 mb-3 bg-slate-900/80 p-2.5 rounded-2xl backdrop-blur-xl border border-white/10 shadow-lg">
+                <div class="text-slate-100 font-bold text-base flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -647,7 +726,7 @@
                     <span>Danh sách Tác giả</span>
                 </div>
                 <button id="authorListBackBtn"
-                    class="px-3 py-1.5 bg-blue-600 rounded-lg text-xs font-semibold shadow">
+                    class="min-h-[38px] px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-100 rounded-xl text-xs font-semibold shadow-sm">
                     Quay lại
                 </button>
             </div>
@@ -656,25 +735,25 @@
 
         <!-- AUTHOR DETAIL VIEW -->
         <section id="authorDetailView" class="hidden w-full mb-4">
-            <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3 bg-gray-800/85 p-3 rounded-xl backdrop-blur border border-gray-700/60">
+            <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3 bg-slate-900/80 p-3 rounded-2xl backdrop-blur-xl border border-white/10 shadow-lg">
                 <div class="flex items-center gap-3 min-w-0">
                     <img id="authorDetailAvatar" src="" alt="Avatar"
-                        class="w-14 h-14 rounded-full object-cover border-2 border-blue-500 bg-gray-900 flex-shrink-0">
+                        class="w-14 h-14 rounded-full object-cover border-2 border-indigo-400/70 bg-slate-950 flex-shrink-0 shadow">
                     <div class="min-w-0">
                         <h2 id="authorDetailName" class="text-base sm:text-lg font-bold text-white truncate">Tên Tác Giả</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Số truyện: <span id="authorDetailCount"
-                                class="text-blue-400 font-bold">0</span></p>
+                        <p class="text-slate-400 text-xs mt-0.5 tabular-nums">Số truyện: <span id="authorDetailCount"
+                                class="text-indigo-300 font-bold">0</span></p>
                         <div id="authorDetailRatingBox" class="mt-1"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5 flex-shrink-0">
                     <button id="rateAuthorBtn"
-                        class="px-2.5 py-1.5 bg-amber-600 hover:bg-amber-500 rounded-lg text-xs font-semibold text-white flex items-center gap-1 shadow">
+                        class="min-h-[38px] px-2.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/35 rounded-xl text-xs font-semibold text-amber-200 flex items-center gap-1 shadow-sm">
                         <span>★</span>
                         <span id="rateAuthorBtnLabel">Đánh giá</span>
                     </button>
                     <button id="authorDetailBackBtn"
-                        class="px-3 py-1.5 bg-blue-600 rounded-lg text-xs font-semibold text-white">
+                        class="min-h-[38px] px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold text-slate-100">
                         Quay lại
                     </button>
                 </div>
@@ -683,36 +762,41 @@
         </section>
 
         <!-- READER QUICK TOOLBAR (Visible when in READER view) -->
-        <div id="readerToolbar" class="w-full flex items-center justify-between gap-1.5 mb-2 bg-gray-800/90 px-2.5 py-1.5 rounded-xl border border-gray-700/70">
+        <div id="readerToolbar" class="w-full flex items-center justify-between gap-1.5 mb-2 bg-slate-900/80 backdrop-blur-xl px-2 py-1.5 rounded-2xl border border-white/10 shadow-lg flex-shrink-0">
             <div class="flex items-center gap-1.5">
                 <button id="normalScrollModeBtn"
-                    class="px-2 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1 disabled:opacity-40"
+                    class="min-w-[42px] min-h-[42px] px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 transition-colors"
                     title="Chuyển đổi Lật trang / Cuộn dọc Webtoon" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v18M12 3l4 4M12 3L8 7M12 21l4-4M12 21l-4-4" />
                     </svg>
-                    <span id="normalScrollModeLabel" class="hidden xs:inline">Cuộn dọc</span>
+                    <span id="normalScrollModeLabel" class="hidden sm:inline">Cuộn dọc</span>
                 </button>
 
                 <button id="normalTranslateBtn"
-                    class="px-2 py-1.5 bg-amber-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1 disabled:opacity-40"
+                    class="min-w-[42px] min-h-[42px] px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 transition-colors"
                     title="Khoanh vùng dịch ô thoại bằng ngón tay" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                     </svg>
-                    <span class="hidden xs:inline">Dịch AI</span>
+                    <span class="hidden sm:inline">Dịch AI</span>
                 </button>
 
                 <button id="normalTranslateSettingsBtn"
-                    class="p-1.5 bg-slate-700 text-gray-200 rounded-lg text-xs"
+                    class="min-w-[40px] min-h-[42px] flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 rounded-xl text-xs transition-colors"
                     title="Cài đặt Gemini API">
-                    ⚙️
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
                 </button>
             </div>
 
             <div class="flex items-center gap-1">
                 <button id="likeStoryBtn"
-                    class="p-1.5 bg-gray-700 text-pink-300 rounded-lg disabled:opacity-40 transition-colors"
+                    class="min-w-[40px] min-h-[42px] flex items-center justify-center bg-white/5 border border-white/10 text-rose-300 rounded-xl disabled:opacity-40 transition-colors"
                     title="Thả tim truyện đang xem (hiển thị ở Home & Tác giả)" disabled>
                     <svg id="likeStoryOutlineIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -723,7 +807,7 @@
                 </button>
 
                 <button id="rateStoryBtn"
-                    class="p-1.5 bg-gray-700 text-amber-300 rounded-lg disabled:opacity-40 transition-colors"
+                    class="min-w-[40px] min-h-[42px] flex items-center justify-center bg-white/5 border border-white/10 text-amber-300 rounded-xl disabled:opacity-40 transition-colors"
                     title="Đánh giá & ghi chú cho truyện đang xem" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -731,7 +815,7 @@
                 </button>
 
                 <button id="bookmarkAddBtn"
-                    class="p-1.5 bg-teal-600 text-white rounded-lg disabled:opacity-40"
+                    class="min-w-[40px] min-h-[42px] flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl disabled:opacity-40 transition-colors"
                     title="Đánh dấu trang đang đọc" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -743,7 +827,7 @@
                 </button>
 
                 <button id="manageTagsBtn"
-                    class="p-1.5 bg-amber-600 text-white rounded-lg disabled:opacity-40"
+                    class="min-w-[40px] min-h-[42px] flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl disabled:opacity-40 transition-colors"
                     title="Quản lý tag truyện" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -753,27 +837,26 @@
                 </button>
 
                 <button id="readerModeBtn"
-                    class="px-2.5 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1"
+                    class="min-h-[42px] px-3 py-1.5 bg-indigo-500/25 hover:bg-indigo-500/35 border border-indigo-400/35 text-indigo-100 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
                     title="Chế độ đọc toàn màn hình">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                     </svg>
-                    <span>Full</span>
                 </button>
             </div>
         </div>
 
         <!-- SINGLE PAGE READER CONTAINER -->
         <main id="imageContainer"
-            class="w-full h-[calc(100dvh-215px)] flex-grow flex justify-center items-center bg-gray-950/90 rounded-xl shadow-inner overflow-hidden relative border border-gray-800">
-            <p id="imagePlaceholder" class="text-gray-500 text-sm sm:text-base font-medium px-4 text-center">Chạm "Home" hoặc "RD" bên dưới để bắt đầu đọc truyện</p>
+            class="w-full flex-1 min-h-0 flex justify-center items-center bg-slate-950/95 rounded-2xl shadow-xl overflow-hidden relative border border-white/10">
+            <p id="imagePlaceholder" class="text-slate-400 text-sm sm:text-base font-medium px-4 text-center">Chạm "Home" hoặc "RD" bên dưới để bắt đầu đọc truyện</p>
             <img id="mainImage" src="" alt="Ảnh truyện" class="hidden" />
             <video id="mainVideo" class="hidden" playsinline></video>
 
             <button id="videoPrevBtn"
-                class="video-nav-btn hidden absolute left-3 top-1/2 -translate-y-1/2 p-3 bg-black/60 rounded-full backdrop-blur text-white shadow-lg"
+                class="video-nav-btn hidden absolute left-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/75 rounded-full backdrop-blur-md border border-white/15 text-white shadow-lg"
                 title="Trang trước">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor">
@@ -781,7 +864,7 @@
                 </svg>
             </button>
             <button id="videoNextBtn"
-                class="video-nav-btn hidden absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-black/60 rounded-full backdrop-blur text-white shadow-lg"
+                class="video-nav-btn hidden absolute right-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/75 rounded-full backdrop-blur-md border border-white/15 text-white shadow-lg"
                 title="Trang sau">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor">
@@ -799,21 +882,21 @@
     <!-- VERTICAL SCROLL READER CONTAINER (Works in both Normal and Fullscreen modes) -->
     <div id="scrollReadContainer"
         class="hidden fixed inset-0 z-[55] bg-black overflow-y-auto overscroll-contain">
-        <div id="scrollReadList" class="flex flex-col items-center mx-auto w-full pb-20"></div>
+        <div id="scrollReadList" class="flex flex-col items-center mx-auto w-full pt-[var(--safe-top)] pb-[calc(5.5rem+var(--safe-bottom))]"></div>
     </div>
 
     <!-- FULLSCREEN / SCROLL FLOATING HUD CONTROLS -->
-    <div id="fullscreenTopHud" class="hidden fixed top-0 left-0 right-0 z-[110] p-2.5 bg-gradient-to-b from-black/85 via-black/50 to-transparent flex items-center justify-between gap-2 pointer-events-none">
+    <div id="fullscreenTopHud" class="hidden fixed top-0 left-0 right-0 z-[110] pt-[calc(0.625rem+var(--safe-top))] pb-3 px-3 bg-gradient-to-b from-black/85 via-black/45 to-transparent flex items-center justify-between gap-2 pointer-events-none">
         <div class="flex items-center gap-1.5 pointer-events-auto">
             <button id="fullscreenExitBtn"
-                class="p-2.5 bg-red-600/90 text-white rounded-full shadow-lg transition-all duration-200"
+                class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/80 backdrop-blur-md border border-white/15 text-rose-300 rounded-full shadow-lg transition-all duration-200"
                 title="Thoát chế độ toàn màn hình">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             <button id="fullscreenToggleNameBtn"
-                class="p-2.5 bg-blue-600/90 text-white rounded-full shadow-lg transition-all duration-200"
+                class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/80 backdrop-blur-md border border-white/15 text-slate-100 rounded-full shadow-lg transition-all duration-200"
                 title="Ẩn/Hiện thông tin truyện và các nút điều khiển">
                 <svg id="fullscreenEyeOpenIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -827,7 +910,7 @@
                 </svg>
             </button>
             <button id="fullscreenScrollModeBtn"
-                class="p-2.5 bg-emerald-600/90 text-white rounded-full shadow-lg transition-all duration-200"
+                class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/80 backdrop-blur-md border border-white/15 text-indigo-200 rounded-full shadow-lg transition-all duration-200"
                 title="Chuyển đổi Cuộn dọc / Lật trang">
                 <svg id="fullscreenScrollModeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
@@ -836,7 +919,7 @@
                 </svg>
             </button>
             <button id="fullscreenTranslateBtn"
-                class="p-2.5 bg-amber-600/90 text-white rounded-full shadow-lg transition-all duration-200"
+                class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/80 backdrop-blur-md border border-white/15 text-amber-300 rounded-full shadow-lg transition-all duration-200"
                 title="Khoanh vùng dịch ô thoại bằng ngón tay">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -844,7 +927,7 @@
                 </svg>
             </button>
             <button id="fullscreenTranslateSettingsBtn"
-                class="p-2.5 bg-slate-700/90 text-white rounded-full shadow-lg"
+                class="min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/80 backdrop-blur-md border border-white/15 text-slate-200 rounded-full shadow-lg"
                 title="Cài đặt dịch AI (Gemini API)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -856,69 +939,77 @@
         </div>
 
         <button id="fullscreenRandomBtn"
-            class="pointer-events-auto px-3.5 py-2 bg-green-600/95 text-white text-xs font-bold rounded-full shadow-lg disabled:opacity-40"
+            class="pointer-events-auto min-h-[44px] px-4 py-2 bg-indigo-600/90 hover:bg-indigo-500 backdrop-blur-md border border-indigo-400/40 text-white text-xs font-bold rounded-full shadow-lg disabled:opacity-40"
             title="Chọn truyện ngẫu nhiên">RD</button>
     </div>
 
-    <!-- Scroll Mode Zoom Buttons -->
-    <button id="scrollZoomInBtn"
-        class="hidden fixed bottom-20 left-3 z-[110] p-2.5 bg-gray-800/75 text-white rounded-full shadow-lg border border-gray-600/50 disabled:opacity-40"
-        title="Phóng to ảnh cuộn">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" />
-        </svg>
-    </button>
-    <button id="scrollZoomOutBtn"
-        class="hidden fixed bottom-7 left-3 z-[110] p-2.5 bg-gray-800/75 text-white rounded-full shadow-lg border border-gray-600/50 disabled:opacity-40"
-        title="Thu nhỏ ảnh cuộn">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM8 11h6" />
-        </svg>
-    </button>
-
-    <!-- Fullscreen Bottom Story Info & Page Counter -->
-    <div id="fullscreenStoryName"
-        class="hidden fixed left-3 bottom-14 z-[108] max-w-[70vw] text-white text-xs sm:text-sm font-semibold bg-gray-900/80 backdrop-blur px-3 py-1.5 rounded-xl border border-gray-700/60 truncate">
+    <!-- Fullscreen Bottom HUD (Non-overlapping flexbox container with safe-bottom inset) -->
+    <div id="fullscreenBottomHud"
+        class="hidden fixed left-0 right-0 bottom-0 z-[108] px-3 pt-2 pb-[calc(0.75rem+var(--safe-bottom))] flex items-end justify-between gap-2.5 pointer-events-none">
+        <div class="flex flex-col items-start gap-1.5 min-w-0 flex-1 pointer-events-none">
+            <div id="fullscreenStoryName"
+                class="hidden pointer-events-auto max-w-full text-slate-100 text-xs sm:text-sm font-semibold bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 truncate shadow-lg">
+            </div>
+            <div id="fullscreenStoryTags"
+                class="hidden pointer-events-auto max-w-full bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-xl border border-white/10 flex flex-wrap gap-1 max-h-16 overflow-y-auto shadow-lg">
+            </div>
+        </div>
+        <div class="flex flex-col items-end gap-2 flex-shrink-0 pointer-events-none">
+            <!-- Scroll Mode Zoom Buttons (Stacked cleanly above Page Counter on right edge) -->
+            <div class="flex flex-col gap-1.5 pointer-events-auto">
+                <button id="scrollZoomInBtn"
+                    class="hidden min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/85 backdrop-blur-md text-slate-100 rounded-full shadow-lg border border-white/15 disabled:opacity-40"
+                    title="Phóng to ảnh cuộn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" />
+                    </svg>
+                </button>
+                <button id="scrollZoomOutBtn"
+                    class="hidden min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-900/85 backdrop-blur-md text-slate-100 rounded-full shadow-lg border border-white/15 disabled:opacity-40"
+                    title="Thu nhỏ ảnh cuộn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM8 11h6" />
+                    </svg>
+                </button>
+            </div>
+            <div id="fullscreenPageCount"
+                class="hidden pointer-events-auto min-h-[40px] flex items-center text-slate-100 text-xs sm:text-sm font-bold bg-slate-900/85 backdrop-blur-md px-3 py-2 rounded-xl border border-white/15 cursor-pointer shadow-lg tabular-nums"
+                title="Chạm để nhập số trang"></div>
+        </div>
     </div>
-    <div id="fullscreenStoryTags"
-        class="hidden fixed left-3 bottom-3 z-[108] max-w-[65vw] bg-gray-900/75 backdrop-blur px-2.5 py-1 rounded-xl flex flex-wrap gap-1 overflow-x-auto">
-    </div>
-    <div id="fullscreenPageCount"
-        class="hidden fixed bottom-3 right-3 z-[108] text-white text-xs sm:text-sm font-bold bg-gray-900/85 backdrop-blur px-3 py-2 rounded-xl border border-gray-700/70 cursor-pointer shadow-lg"
-        title="Chạm để nhập số trang"></div>
 
     <!-- Page Jump Popups -->
     <div id="fullscreenPageJump"
-        class="hidden fixed bottom-16 right-3 z-[112] bg-gray-900/95 border border-gray-700 p-2 rounded-xl shadow-2xl">
+        class="hidden fixed bottom-[calc(4.5rem+var(--safe-bottom))] right-3 z-[112] bg-slate-900/95 backdrop-blur-xl border border-white/15 p-2 rounded-2xl shadow-2xl">
         <div class="flex items-center gap-1.5">
             <input id="fullscreenPageJumpInput" type="number" min="1"
-                class="w-20 p-1.5 text-sm rounded-lg bg-gray-800 border border-gray-700 text-white" placeholder="1">
-            <button id="fullscreenPageJumpGoBtn" class="px-3 py-1.5 text-xs font-bold bg-blue-600 rounded-lg">Đi</button>
+                class="w-20 min-h-[38px] p-1.5 text-sm rounded-xl bg-slate-950/90 border border-white/10 text-white tabular-nums" placeholder="1">
+            <button id="fullscreenPageJumpGoBtn" class="min-h-[38px] px-3 py-1.5 text-xs font-bold bg-indigo-600 rounded-xl text-white">Đi</button>
         </div>
     </div>
 
     <div id="normalPageJump"
-        class="hidden fixed bottom-20 right-4 z-[112] bg-gray-900/95 border border-gray-700 p-2 rounded-xl shadow-2xl">
+        class="hidden fixed bottom-[calc(4.75rem+var(--safe-bottom))] right-3 z-[112] bg-slate-900/95 backdrop-blur-xl border border-white/15 p-2 rounded-2xl shadow-2xl">
         <div class="flex items-center gap-1.5">
             <input id="normalPageJumpInput" type="number" min="1"
-                class="w-20 p-1.5 text-sm rounded-lg bg-gray-800 border border-gray-700 text-white" placeholder="1">
-            <button id="normalPageJumpGoBtn" class="px-3 py-1.5 text-xs font-bold bg-blue-600 rounded-lg">Đi</button>
+                class="w-20 min-h-[38px] p-1.5 text-sm rounded-xl bg-slate-950/90 border border-white/10 text-white tabular-nums" placeholder="1">
+            <button id="normalPageJumpGoBtn" class="min-h-[38px] px-3 py-1.5 text-xs font-bold bg-indigo-600 rounded-xl text-white">Đi</button>
         </div>
     </div>
 
     <!-- AI Translate Selection Overlay & Result Popup -->
     <div id="translateModeBanner"
-        class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-[111] w-[90vw] max-w-md px-3.5 py-2 bg-amber-600/95 backdrop-blur text-white text-xs font-semibold rounded-xl shadow-xl border border-amber-300/40 flex items-center justify-between gap-2">
+        class="hidden fixed top-[calc(3.75rem+var(--safe-top))] left-1/2 -translate-x-1/2 z-[111] w-[90vw] max-w-md px-3.5 py-2 bg-slate-900/95 backdrop-blur-xl text-amber-100 text-xs font-semibold rounded-2xl shadow-xl border border-amber-400/40 flex items-center justify-between gap-2">
         <span>👆 Kéo ngón tay khoanh vùng ô thoại để dịch</span>
-        <button id="exitTranslateModeBannerBtn" class="px-2 py-0.5 bg-black/30 rounded text-[11px] font-bold">Tắt</button>
+        <button id="exitTranslateModeBannerBtn" class="min-h-[30px] px-2.5 py-1 bg-amber-500/25 border border-amber-400/40 rounded-lg text-[11px] font-bold text-amber-200">Tắt</button>
     </div>
 
     <div id="translateSelectionOverlay" class="hidden fixed inset-0 z-[105] cursor-crosshair select-none" style="touch-action: none;">
         <div id="translateSelectionBox"
             class="hidden fixed border-2 border-amber-400 bg-amber-400/15 pointer-events-none rounded-sm"
-            style="box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.32);"></div>
+            style="box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);"></div>
     </div>
 
     <div id="translateLastCropHighlight"
@@ -926,43 +1017,43 @@
     </div>
 
     <div id="translateResultPopup"
-        class="hidden fixed z-[118] w-[92vw] max-w-sm bg-gray-900/95 backdrop-blur-md border border-amber-500/60 rounded-2xl shadow-2xl text-white flex flex-col overflow-hidden">
+        class="hidden fixed z-[118] w-[92vw] max-w-sm bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-2xl shadow-2xl text-slate-100 flex flex-col overflow-hidden">
         <div id="translatePopupHeader"
-            class="cursor-move select-none bg-gray-800/95 px-3 py-2.5 border-b border-gray-700 flex items-center justify-between gap-2"
+            class="cursor-move select-none bg-slate-950/75 px-3 py-2.5 border-b border-white/10 flex items-center justify-between gap-2"
             style="touch-action: none;">
             <div class="flex items-center gap-2 min-w-0">
-                <span class="text-amber-400 font-bold text-xs sm:text-sm flex items-center gap-1">
+                <span class="text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1">
                     <span>✨ Dịch AI</span>
                 </span>
                 <span id="translatePopupModelBadge"
-                    class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 truncate">gemini-3.5-flash-lite</span>
+                    class="text-[10px] px-1.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-200 border border-indigo-400/30 truncate">gemini-3.5-flash-lite</span>
             </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
+            <div class="flex items-center gap-1 flex-shrink-0">
                 <button id="translatePopupRetryBtn"
-                    class="p-1.5 rounded-lg bg-gray-700/80 text-gray-200 text-xs"
+                    class="min-w-[34px] min-h-[34px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs"
                     title="Dịch lại">↻</button>
                 <button id="translatePopupCopyBtn"
-                    class="p-1.5 rounded-lg bg-gray-700/80 text-gray-200 text-xs"
+                    class="min-w-[34px] min-h-[34px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs"
                     title="Sao chép">📋</button>
                 <button id="translatePopupSettingsBtn"
-                    class="p-1.5 rounded-lg bg-gray-700/80 text-gray-200 text-xs"
+                    class="min-w-[34px] min-h-[34px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs"
                     title="Cài đặt API">⚙️</button>
                 <button id="translatePopupCloseBtn"
-                    class="p-1.5 rounded-lg bg-red-600/80 text-white text-xs"
+                    class="min-w-[34px] min-h-[34px] flex items-center justify-center rounded-xl bg-rose-500/80 hover:bg-rose-500 text-white text-xs"
                     title="Đóng">✕</button>
             </div>
         </div>
         <div class="p-3 space-y-2.5 max-h-[55dvh] overflow-y-auto">
             <div id="translatePopupPreviewWrap"
-                class="flex items-center gap-2.5 bg-gray-950/70 p-1.5 rounded-xl border border-gray-800">
+                class="flex items-center gap-2.5 bg-slate-950/75 p-1.5 rounded-xl border border-white/10">
                 <img id="translatePopupCropImg" src="" alt="Cropped bubble"
-                    class="max-h-14 max-w-[100px] object-contain rounded border border-gray-700 bg-black" />
-                <div id="translatePopupStatusText" class="text-xs text-gray-400 flex-1 leading-snug">
+                    class="max-h-14 max-w-[100px] object-contain rounded-lg border border-white/10 bg-black" />
+                <div id="translatePopupStatusText" class="text-xs text-slate-400 flex-1 leading-snug">
                     Đang xử lý ảnh vùng chọn...
                 </div>
             </div>
-            <div id="translatePopupLoading" class="flex items-center gap-2.5 py-2 text-xs sm:text-sm text-amber-300">
-                <svg class="animate-spin h-5 w-5 text-amber-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg"
+            <div id="translatePopupLoading" class="flex items-center gap-2.5 py-2 text-xs sm:text-sm text-indigo-300">
+                <svg class="animate-spin h-5 w-5 text-indigo-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor"
@@ -972,21 +1063,21 @@
                 <span>Đang nhận diện chữ & dịch qua Gemini...</span>
             </div>
             <div id="translatePopupErrorWrap"
-                class="hidden bg-red-950/80 border border-red-600/70 rounded-xl p-2.5 text-xs text-red-200 space-y-2">
+                class="hidden bg-rose-950/80 border border-rose-500/50 rounded-xl p-2.5 text-xs text-rose-200 space-y-2">
                 <div id="translatePopupErrorText" class="whitespace-pre-wrap break-words"></div>
                 <button id="translatePopupOpenSettingsFromErrBtn"
-                    class="px-3 py-1.5 bg-amber-600 text-white rounded-lg text-xs font-semibold">
+                    class="min-h-[36px] px-3 py-1.5 bg-indigo-600 text-white rounded-xl text-xs font-semibold">
                     Mở Cài đặt API
                 </button>
             </div>
             <div id="translatePopupContentWrap" class="hidden space-y-2">
                 <div id="translatePopupTranslated"
-                    class="text-sm font-medium text-amber-50 leading-relaxed whitespace-pre-wrap bg-gray-800/90 p-2.5 rounded-xl border border-gray-700 select-text">
+                    class="text-sm font-medium text-slate-50 leading-relaxed whitespace-pre-wrap bg-slate-800/80 p-2.5 rounded-xl border border-white/10 select-text">
                 </div>
                 <div id="translatePopupOriginalWrap"
-                    class="text-xs text-gray-400 bg-gray-950/60 p-2 rounded-xl border border-gray-800">
-                    <div class="font-semibold text-gray-400 mb-0.5">Chữ gốc:</div>
-                    <div id="translatePopupOriginal" class="text-gray-300 whitespace-pre-wrap select-text"></div>
+                    class="text-xs text-slate-400 bg-slate-950/70 p-2 rounded-xl border border-white/10">
+                    <div class="font-semibold text-slate-400 mb-0.5">Chữ gốc:</div>
+                    <div id="translatePopupOriginal" class="text-slate-300 whitespace-pre-wrap select-text"></div>
                 </div>
             </div>
         </div>
@@ -994,7 +1085,7 @@
 
     <!-- FIXED MOBILE BOTTOM NAVIGATION BAR -->
     <nav id="mobileBottomNav"
-        class="fixed bottom-0 left-0 right-0 z-[95] bg-gray-900/95 backdrop-blur-md border-t border-gray-800 px-2 pt-1 pb-[calc(0.25rem+var(--safe-bottom))] grid grid-cols-5 gap-1 shadow-2xl">
+        class="fixed bottom-0 left-0 right-0 z-[95] bg-slate-950/90 backdrop-blur-xl border-t border-white/10 px-2 pt-1.5 pb-[calc(0.35rem+var(--safe-bottom))] grid grid-cols-5 gap-1 shadow-2xl">
         <button id="bottomSidebarBtn" class="bottom-nav-item">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
@@ -1009,8 +1100,8 @@
             <span>Home</span>
         </button>
 
-        <button id="randomStoryBtn" class="bottom-nav-item text-emerald-400" disabled>
-            <div class="px-3 py-0.5 rounded-full bg-emerald-600 text-white font-extrabold text-xs shadow">RD</div>
+        <button id="randomStoryBtn" class="bottom-nav-item text-indigo-300" disabled>
+            <div class="px-3 py-0.5 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 text-white font-extrabold text-xs shadow-md">RD</div>
             <span>Ngẫu nhiên</span>
         </button>
 
@@ -1031,237 +1122,237 @@
 
     <!-- MODALS: TAG, HISTORY, BOOKMARK, BLACKLIST, TRANSLATE SETTINGS, LAN/QR CONNECT -->
     <div id="tagModal" class="hidden fixed inset-0 z-[120] items-center justify-center p-3">
-        <div id="tagModalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 border border-gray-700">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
-                <h3 class="text-base font-bold">🏷️ Tag của truyện đang xem</h3>
-                <button id="tagModalClose" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+        <div id="tagModalBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 border border-white/10 text-slate-100 flex flex-col max-h-[85dvh]">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3 flex-shrink-0">
+                <h3 class="text-base font-bold text-slate-100">🏷️ Tag của truyện đang xem</h3>
+                <button id="tagModalClose" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
-            <div class="space-y-3">
+            <div class="space-y-3 overflow-y-auto flex-1 pr-0.5">
                 <div>
-                    <label class="block text-xs text-gray-300 mb-1">Danh sách tag</label>
+                    <label class="block text-xs text-slate-300 mb-1">Danh sách tag</label>
                     <div id="currentStoryTags" class="flex flex-wrap gap-1.5"></div>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-300 mb-1">Thêm tag mới</label>
-                    <div class="relative flex gap-1.5">
+                    <label class="block text-xs text-slate-300 mb-1">Thêm tag mới</label>
+                    <div class="flex gap-1.5">
                         <input id="tagInput" type="text"
-                            class="flex-1 p-2 text-sm rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-400"
+                            class="flex-1 min-h-[38px] px-2.5 py-2 text-sm rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-white placeholder-slate-400"
                             placeholder="Nhập tag (cách nhau dấu phẩy)...">
-                        <button id="addTagSubmitBtn" type="button" class="px-3 py-2 bg-blue-600 rounded-lg text-xs font-bold">Thêm</button>
-                        <div id="tagSuggestPanel"
-                            class="absolute left-0 right-0 top-[100%] z-50 bg-gray-800 border border-gray-700 rounded-lg shadow-xl hidden max-h-48 overflow-auto">
-                        </div>
+                        <button id="addTagSubmitBtn" type="button" class="min-h-[38px] px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-bold text-white">Thêm</button>
+                    </div>
+                    <div id="tagSuggestPanel"
+                        class="mt-1.5 z-50 bg-slate-950/95 border border-white/15 rounded-xl shadow-xl hidden max-h-44 overflow-auto">
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex justify-between gap-2">
-                <button id="removeAllTagsBtn" class="px-3 py-2 bg-red-600 rounded-lg text-xs font-semibold">Xóa hết tag</button>
-                <button id="tagModalClose2" class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Đóng</button>
+            <div class="mt-4 pt-2.5 border-t border-white/10 flex justify-between gap-2 flex-shrink-0">
+                <button id="removeAllTagsBtn" class="min-h-[38px] px-3 py-2 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-400/35 text-rose-200 rounded-xl text-xs font-semibold">Xóa hết tag</button>
+                <button id="tagModalClose2" class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
     <div id="historyModal" class="hidden fixed inset-0 z-[130] items-center justify-center p-3">
-        <div id="historyModalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 flex flex-col max-h-[85dvh] border border-gray-700">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
+        <div id="historyModalBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 flex flex-col max-h-[85dvh] border border-white/10 text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3 flex-shrink-0">
                 <h3 class="text-base font-bold">🕒 Lịch sử đọc (tối đa 1000)</h3>
-                <button id="historyModalClose" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+                <button id="historyModalClose" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
             <div id="historyList" class="flex-1 overflow-y-auto pr-1 space-y-2"></div>
-            <div class="mt-3 flex justify-between gap-2">
-                <button id="historyClearBtn" class="px-3 py-2 bg-red-600 rounded-lg text-xs font-semibold">Xóa tất cả</button>
-                <button id="historyModalClose2" class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Đóng</button>
+            <div class="mt-3 pt-2.5 border-t border-white/10 flex justify-between gap-2 flex-shrink-0">
+                <button id="historyClearBtn" class="min-h-[38px] px-3 py-2 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-400/35 text-rose-200 rounded-xl text-xs font-semibold">Xóa tất cả</button>
+                <button id="historyModalClose2" class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
     <div id="bookmarkModal" class="hidden fixed inset-0 z-[135] items-center justify-center p-3">
-        <div id="bookmarkModalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 flex flex-col max-h-[85dvh] border border-gray-700">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
+        <div id="bookmarkModalBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 flex flex-col max-h-[85dvh] border border-white/10 text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3 flex-shrink-0">
                 <h3 class="text-base font-bold">🔖 Đánh dấu đã lưu</h3>
-                <button id="bookmarkModalClose" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+                <button id="bookmarkModalClose" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
             <div id="bookmarkList" class="flex-1 overflow-y-auto pr-1 space-y-2"></div>
-            <div class="mt-3 flex justify-between gap-2">
-                <button id="bookmarkClearBtn" class="px-3 py-2 bg-red-600 rounded-lg text-xs font-semibold">Xóa tất cả</button>
-                <button id="bookmarkModalClose2" class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Đóng</button>
+            <div class="mt-3 pt-2.5 border-t border-white/10 flex justify-between gap-2 flex-shrink-0">
+                <button id="bookmarkClearBtn" class="min-h-[38px] px-3 py-2 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-400/35 text-rose-200 rounded-xl text-xs font-semibold">Xóa tất cả</button>
+                <button id="bookmarkModalClose2" class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
     <div id="appSettingsModal" class="hidden fixed inset-0 z-[142] items-center justify-center p-3">
-        <div id="appSettingsBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 border border-gray-700 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 text-white flex flex-col max-h-[88dvh]">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
-                <h3 class="text-base font-bold text-gray-100 flex items-center gap-2">
+        <div id="appSettingsBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 text-slate-100 flex flex-col max-h-[88dvh]">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3 flex-shrink-0">
+                <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
                     <span>⚙️ Cài đặt chung</span>
                 </h3>
-                <button id="appSettingsCloseBtn" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+                <button id="appSettingsCloseBtn" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
             <div class="space-y-3 text-xs sm:text-sm overflow-y-auto pr-1">
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-xl p-3 space-y-2">
-                    <div class="font-semibold text-blue-300 flex items-center gap-1.5">📂 Thư mục truyện gốc</div>
-                    <div id="settingsCurrentFolderText" class="text-xs text-gray-300 bg-gray-800/90 border border-gray-700 rounded-lg px-2.5 py-1.5 break-all">
+                <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3 space-y-2">
+                    <div class="font-semibold text-indigo-300 flex items-center gap-1.5">📂 Thư mục truyện gốc</div>
+                    <div id="settingsCurrentFolderText" class="text-xs text-slate-300 bg-slate-900/90 border border-white/10 rounded-xl px-2.5 py-2 break-all">
                         Chưa chọn thư mục gốc
                     </div>
                     <div class="flex flex-wrap items-center gap-2">
                         <button id="selectFolderBtn" type="button"
-                            class="px-3 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg shadow flex items-center gap-1.5">
+                            class="min-h-[38px] px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow flex items-center gap-1.5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                             </svg>
                             <span>Chọn Folder</span>
                         </button>
                         <button id="reloadFolderBtn" type="button"
-                            class="hidden px-3 py-2 bg-cyan-600 text-white text-xs font-semibold rounded-lg shadow flex items-center gap-1.5"
+                            class="hidden min-h-[38px] px-3 py-2 bg-white/10 hover:bg-white/15 border border-white/15 text-slate-100 text-xs font-semibold rounded-xl shadow flex items-center gap-1.5"
                             title="Tải lại thư mục">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
                             <span>Tải lại thư mục</span>
                         </button>
                     </div>
-                    <div class="pt-1.5 border-t border-gray-800 flex items-center justify-between gap-2 text-[11px] text-gray-400">
-                        <span>Cache <code class="text-gray-300">.thumbs</code>: <b id="thumbCacheSummaryText" class="text-sky-300">0 ảnh (0 MB)</b></span>
+                    <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-slate-400">
+                        <span>Cache <code class="text-slate-300">.thumbs</code>: <b id="thumbCacheSummaryText" class="text-indigo-300 tabular-nums">0 ảnh (0 MB)</b></span>
                         <button id="clearThumbCacheBtn" type="button"
-                            class="px-2.5 py-1 bg-slate-700 text-gray-200 rounded-lg text-[11px] font-semibold shrink-0">Dọn cache</button>
+                            class="min-h-[32px] px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-lg text-[11px] font-semibold shrink-0">Dọn cache</button>
                     </div>
                 </div>
 
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-xl p-3 space-y-2">
-                    <div class="font-semibold text-teal-300 flex items-center gap-1.5">🖼️ Hình nền giao diện</div>
+                <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3 space-y-2">
+                    <div class="font-semibold text-indigo-300 flex items-center gap-1.5">🖼️ Hình nền giao diện</div>
                     <div class="flex flex-wrap items-center gap-2">
                         <select id="bgSelectDropdown" disabled
-                            class="flex-1 min-w-[160px] p-2 rounded-lg bg-gray-800 border border-gray-700 text-white text-xs focus:outline-none focus:border-teal-500 disabled:opacity-50">
+                            class="flex-1 min-w-[160px] min-h-[38px] p-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-indigo-400 disabled:opacity-50">
                             <option value="__NONE__">Mặc định (Không dùng hình nền)</option>
                         </select>
                         <button id="bgChangeBtn" type="button" disabled
-                            class="px-3 py-2 bg-sky-600 text-white rounded-lg shadow text-xs font-semibold disabled:opacity-40"
+                            class="min-h-[38px] px-3 py-2 bg-indigo-600/80 hover:bg-indigo-500 text-white rounded-xl shadow text-xs font-semibold disabled:opacity-40"
                             title="Đổi sang hình nền tiếp theo">Đổi tiếp</button>
                     </div>
-                    <div class="text-[11px] text-gray-400">
-                        Đặt ảnh <code class="text-gray-300">background_1</code>, <code class="text-gray-300">background_2</code>... vào <code class="text-gray-300">App data/BG</code>. Hình nền đang dùng được lưu tự động.
+                    <div id="bgHostHint" class="text-[11px] text-slate-400">
+                        Đặt ảnh <code class="text-slate-300">background_1</code>, <code class="text-slate-300">background_2</code>... vào <code class="text-slate-300">App data/BG</code>. Hình nền đang dùng được lưu tự động.
                     </div>
                 </div>
 
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-xl p-3 flex items-center justify-between gap-2">
+                <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div>
-                        <div class="font-semibold text-red-300">🚫 Blacklist (Folder ẩn)</div>
-                        <div class="text-[11px] text-gray-400 mt-0.5">Đang ẩn <span id="settingsBlacklistCount" class="font-bold text-gray-200">0</span> thư mục khi quét.</div>
+                        <div class="font-semibold text-rose-300">🚫 Blacklist (Folder ẩn)</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Đang ẩn <span id="settingsBlacklistCount" class="font-bold text-slate-200 tabular-nums">0</span> thư mục khi quét.</div>
                     </div>
                     <button id="blacklistBtn" type="button" disabled
-                        class="px-3 py-2 bg-red-800 text-white rounded-lg shadow text-xs font-semibold disabled:opacity-40 shrink-0"
+                        class="min-h-[38px] px-3 py-2 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-400/35 text-rose-200 rounded-xl shadow text-xs font-semibold disabled:opacity-40 shrink-0"
                         title="Quản lý Blacklist">Quản lý</button>
                 </div>
 
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-xl p-3 flex items-center justify-between gap-2">
+                <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div>
                         <div class="font-semibold text-amber-300">🤖 Dịch AI (Gemini)</div>
-                        <div class="text-[11px] text-gray-400 mt-0.5">API Key, Model & ngôn ngữ dịch.</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">API Key, Model & ngôn ngữ dịch.</div>
                     </div>
                     <button id="openTranslateSettingsFromAppBtn" type="button"
-                        class="px-3 py-2 bg-amber-600 text-white rounded-lg shadow text-xs font-semibold shrink-0">Cài đặt AI</button>
+                        class="min-h-[38px] px-3 py-2 bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/35 text-amber-200 rounded-xl shadow text-xs font-semibold shrink-0">Cài đặt AI</button>
                 </div>
 
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-xl p-3 flex items-center justify-between gap-2">
+                <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div>
-                        <div class="font-semibold text-purple-300">📱 Kết nối Wi-Fi / LAN</div>
-                        <div class="text-[11px] text-gray-400 mt-0.5">Mã QR, địa chỉ IP và mật khẩu kết nối.</div>
+                        <div class="font-semibold text-violet-300">📱 Kết nối Wi-Fi / LAN</div>
+                        <div id="lanSettingsItemSub" class="text-[11px] text-slate-400 mt-0.5">Mã QR, địa chỉ IP và mật khẩu kết nối.</div>
                     </div>
                     <button id="openLanModalFromSettingsBtn" type="button"
-                        class="px-3 py-2 bg-purple-600 text-white rounded-lg shadow text-xs font-semibold shrink-0">Mở QR / LAN</button>
+                        class="min-h-[38px] px-3 py-2 bg-violet-500/25 hover:bg-violet-500/35 border border-violet-400/35 text-violet-100 rounded-xl shadow text-xs font-semibold shrink-0">Mở QR / LAN</button>
                 </div>
             </div>
-            <div class="mt-3 pt-2.5 border-t border-gray-700 flex justify-end">
+            <div class="mt-3 pt-2.5 border-t border-white/10 flex justify-end flex-shrink-0">
                 <button id="appSettingsCloseBtn2" type="button"
-                    class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Đóng</button>
+                    class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
     <div id="blacklistModal" class="hidden fixed inset-0 z-[146] items-center justify-center p-3">
-        <div id="blacklistModalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 flex flex-col max-h-[85dvh] border border-gray-700">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
+        <div id="blacklistModalBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-4 flex flex-col max-h-[85dvh] border border-white/10 text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3 flex-shrink-0">
                 <h3 class="text-base font-bold">🚫 Quản lý Blacklist (Folder ẩn)</h3>
-                <button id="blacklistModalClose" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+                <button id="blacklistModalClose" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
-            <div class="text-xs text-gray-400 mb-2">Các thư mục trong danh sách này sẽ bị bỏ qua khi quét truyện.</div>
+            <div class="text-xs text-slate-400 mb-2">Các thư mục trong danh sách này sẽ bị bỏ qua khi quét truyện.</div>
             <div id="blacklistList" class="flex-1 overflow-y-auto pr-1 space-y-2"></div>
-            <div class="mt-3 flex justify-between gap-2">
-                <button id="blacklistClearBtn" class="px-3 py-2 bg-red-600 rounded-lg text-xs font-semibold">Xóa toàn bộ</button>
-                <button id="blacklistModalClose2" class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Đóng</button>
+            <div class="mt-3 pt-2.5 border-t border-white/10 flex justify-between gap-2 flex-shrink-0">
+                <button id="blacklistClearBtn" class="min-h-[38px] px-3 py-2 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-400/35 text-rose-200 rounded-xl text-xs font-semibold">Xóa toàn bộ</button>
+                <button id="blacklistModalClose2" class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
     <div id="ratingModal" class="hidden fixed inset-0 z-[148] items-center justify-center p-3">
-        <div id="ratingModalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 border border-gray-700 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 text-white">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
-                <h3 id="ratingModalTitle" class="text-base font-bold text-amber-400">★ Đánh giá & Chú thích</h3>
-                <button id="ratingModalClose" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+        <div id="ratingModalBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 text-slate-100 max-h-[88dvh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
+                <h3 id="ratingModalTitle" class="text-base font-bold text-amber-300">★ Đánh giá & Chú thích</h3>
+                <button id="ratingModalClose" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
-            <div id="ratingTargetName" class="text-xs sm:text-sm font-semibold text-gray-200 mb-3 break-words"></div>
+            <div id="ratingTargetName" class="text-xs sm:text-sm font-semibold text-slate-200 mb-3 break-words"></div>
             <div class="space-y-3.5">
                 <div>
-                    <div class="text-xs text-gray-400 mb-1.5">Số sao đánh giá (1 - 5 sao):</div>
+                    <div class="text-xs text-slate-400 mb-1.5">Số sao đánh giá (1 - 5 sao):</div>
                     <div class="flex items-center gap-2">
-                        <div id="ratingStarsRow" class="flex items-center gap-1">
-                            <button type="button" data-star="1" class="text-3xl leading-none text-gray-500 active:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="2" class="text-3xl leading-none text-gray-500 active:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="3" class="text-3xl leading-none text-gray-500 active:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="4" class="text-3xl leading-none text-gray-500 active:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="5" class="text-3xl leading-none text-gray-500 active:scale-110 transition-transform focus:outline-none">★</button>
+                        <div id="ratingStarsRow" class="flex items-center gap-1.5">
+                            <button type="button" data-star="1" class="min-w-[40px] min-h-[40px] flex items-center justify-center text-3xl leading-none text-slate-500 active:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="2" class="min-w-[40px] min-h-[40px] flex items-center justify-center text-3xl leading-none text-slate-500 active:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="3" class="min-w-[40px] min-h-[40px] flex items-center justify-center text-3xl leading-none text-slate-500 active:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="4" class="min-w-[40px] min-h-[40px] flex items-center justify-center text-3xl leading-none text-slate-500 active:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="5" class="min-w-[40px] min-h-[40px] flex items-center justify-center text-3xl leading-none text-slate-500 active:scale-110 transition-transform focus:outline-none">★</button>
                         </div>
                         <span id="ratingStarsLabel" class="text-xs text-amber-300 font-semibold ml-1.5">Chưa chọn sao</span>
                     </div>
                 </div>
                 <div>
-                    <label for="ratingNoteInput" class="block text-xs text-gray-300 font-medium mb-1">Chú thích / Ghi chú (tùy chọn):</label>
+                    <label for="ratingNoteInput" class="block text-xs text-slate-300 font-medium mb-1">Chú thích / Ghi chú (tùy chọn):</label>
                     <textarea id="ratingNoteInput" rows="3" maxlength="500"
-                        class="w-full p-2.5 rounded-lg bg-gray-900 border border-gray-700 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                        class="w-full p-2.5 rounded-xl bg-slate-950/80 border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
                         placeholder="Nhập cảm nhận, ghi chú ngắn về truyện hoặc tác giả..."></textarea>
                 </div>
             </div>
-            <div class="mt-4 flex items-center justify-between gap-2">
+            <div class="mt-4 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
                 <button id="ratingClearBtn" type="button"
-                    class="px-3 py-2 bg-red-700 rounded-lg text-xs font-semibold">Xóa đánh giá</button>
+                    class="min-h-[38px] px-3 py-2 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-400/35 text-rose-200 rounded-xl text-xs font-semibold">Xóa đánh giá</button>
                 <div class="flex items-center gap-2 ml-auto">
                     <button id="ratingCancelBtn" type="button"
-                        class="px-3.5 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Hủy</button>
+                        class="min-h-[38px] px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Hủy</button>
                     <button id="ratingSaveBtn" type="button"
-                        class="px-4 py-2 bg-amber-600 rounded-lg text-xs font-bold shadow">Lưu</button>
+                        class="min-h-[38px] px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="translateSettingsModal" class="hidden fixed inset-0 z-[150] items-center justify-center p-3">
-        <div id="translateSettingsBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 border border-gray-700 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 text-white max-h-[90dvh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
-                <h3 class="text-base font-bold text-amber-400">⚙️ Cài đặt Dịch AI (Gemini)</h3>
-                <button id="translateSettingsCloseBtn" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+        <div id="translateSettingsBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 text-slate-100 max-h-[90dvh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
+                <h3 class="text-base font-bold text-amber-300">⚙️ Cài đặt Dịch AI (Gemini)</h3>
+                <button id="translateSettingsCloseBtn" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
             <div class="space-y-3 text-xs sm:text-sm">
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Gemini API Key <span class="text-red-400">*</span></label>
+                    <label class="block text-slate-200 font-medium mb-1">Gemini API Key <span class="text-rose-400">*</span></label>
                     <div class="flex gap-1.5">
                         <input id="translateApiKeyInput" type="password"
-                            class="flex-1 p-2 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500"
+                            class="flex-1 min-h-[38px] px-2.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-white placeholder-slate-500"
                             placeholder="AIzaSy...">
                         <button id="toggleShowApiKeyBtn" type="button"
-                            class="px-3 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Hiện</button>
+                            class="min-h-[38px] px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold text-slate-200">Hiện</button>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Model Gemini</label>
+                    <label class="block text-slate-200 font-medium mb-1">Model Gemini</label>
                     <select id="translateModelSelect"
-                        class="w-full p-2 rounded-lg bg-gray-900 border border-gray-700 text-white">
+                        class="w-full min-h-[38px] p-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-white">
                         <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (Ưu tiên)</option>
                         <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Ưu tiên)</option>
                         <option value="gemini-3.8-flash">gemini-3.8-flash</option>
@@ -1270,91 +1361,91 @@
                         <option value="custom">Tùy chỉnh (Nhập mã model khác...)</option>
                     </select>
                     <input id="translateCustomModelInput" type="text"
-                        class="hidden mt-2 w-full p-2 rounded-lg bg-gray-900 border border-gray-700 text-white"
+                        class="hidden mt-2 w-full min-h-[38px] px-2.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-white"
                         placeholder="VD: gemini-3.5-flash-lite">
                 </div>
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Ngôn ngữ dịch sang</label>
+                    <label class="block text-slate-200 font-medium mb-1">Ngôn ngữ dịch sang</label>
                     <input id="translateTargetLangInput" type="text"
-                        class="w-full p-2 rounded-lg bg-gray-900 border border-gray-700 text-white"
+                        class="w-full min-h-[38px] px-2.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-white"
                         placeholder="Tiếng Việt" value="Tiếng Việt">
                 </div>
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Ghi chú / Phong cách dịch</label>
+                    <label class="block text-slate-200 font-medium mb-1">Ghi chú / Phong cách dịch</label>
                     <textarea id="translateCustomPromptInput" rows="2"
-                        class="w-full p-2 rounded-lg bg-gray-900 border border-gray-700 text-white"
+                        class="w-full px-2.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 focus:border-indigo-400 focus:outline-none text-white"
                         placeholder="VD: Dịch tự nhiên theo phong cách manga/manhwa..."></textarea>
                 </div>
             </div>
-            <div class="mt-4 flex justify-end gap-2">
+            <div class="mt-4 pt-2.5 border-t border-white/10 flex justify-end gap-2">
                 <button id="translateSettingsCloseBtn2" type="button"
-                    class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Hủy</button>
+                    class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs font-semibold">Hủy</button>
                 <button id="translateSettingsSaveBtn" type="button"
-                    class="px-4 py-2 bg-amber-600 rounded-lg text-xs font-bold shadow">Lưu cài đặt</button>
+                    class="min-h-[38px] px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow">Lưu cài đặt</button>
             </div>
         </div>
     </div>
 
     <!-- LAN / QR CONNECTION MODAL -->
     <div id="lanConnectModal" class="hidden fixed inset-0 z-[155] items-center justify-center p-3">
-        <div id="lanConnectBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-xs"></div>
-        <div class="relative bg-gray-800 border border-gray-700 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 text-white max-h-[90dvh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
-                <h3 class="text-base font-bold text-purple-300 flex items-center gap-2">
+        <div id="lanConnectBackdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-4 text-slate-100 max-h-[90dvh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
+                <h3 class="text-base font-bold text-indigo-300 flex items-center gap-2">
                     <span>📱 Kết nối Điện thoại (Wi-Fi / LAN)</span>
                 </h3>
-                <button id="lanConnectCloseBtn" class="p-1.5 rounded-lg bg-gray-700">✕</button>
+                <button id="lanConnectCloseBtn" class="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300">✕</button>
             </div>
             <div class="space-y-3 text-xs sm:text-sm">
-                <div class="text-gray-300 leading-relaxed">
+                <div id="lanConnectIntroText" class="text-slate-300 leading-relaxed">
                     Đảm bảo điện thoại và máy tính đang kết nối <b>cùng mạng Wi-Fi / LAN</b>, sau đó quét mã QR hoặc nhập địa chỉ dưới đây vào trình duyệt trên điện thoại:
                 </div>
 
-                <div class="flex flex-col items-center justify-center bg-white p-3 rounded-xl mx-auto w-fit shadow-inner">
+                <div class="flex flex-col items-center justify-center bg-white p-3 rounded-2xl mx-auto w-fit shadow-inner">
                     <canvas id="lanQrCanvas" width="200" height="200" class="block"></canvas>
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Địa chỉ truy cập trên Điện thoại:</label>
+                    <label class="block text-xs text-slate-400 mb-1">Địa chỉ truy cập trên Điện thoại:</label>
                     <div class="flex gap-1.5">
-                        <select id="lanUrlSelect" class="flex-1 p-2 rounded-lg bg-gray-900 border border-gray-700 text-emerald-300 font-mono text-xs sm:text-sm"></select>
-                        <button id="lanCopyUrlBtn" class="px-3 py-2 bg-blue-600 rounded-lg text-xs font-bold">Copy</button>
+                        <select id="lanUrlSelect" class="flex-1 min-h-[38px] p-2 rounded-xl bg-slate-950/80 border border-white/10 text-indigo-300 font-mono text-xs sm:text-sm"></select>
+                        <button id="lanCopyUrlBtn" class="min-h-[38px] px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold">Copy</button>
                     </div>
                 </div>
 
-                <div id="lanHostFolderSection" class="border-t border-gray-700 pt-3">
-                    <label class="block text-xs text-gray-400 mb-1">Thư mục truyện trên máy chủ PC:</label>
+                <div id="lanHostFolderSection" class="border-t border-white/10 pt-3">
+                    <label class="block text-xs text-slate-400 mb-1">Thư mục truyện trên máy chủ PC:</label>
                     <div class="flex gap-1.5">
                         <input id="lanRootFolderInput" type="text"
-                            class="flex-1 p-2 rounded-lg bg-gray-900 border border-gray-700 text-white text-xs"
+                            class="flex-1 min-h-[38px] px-2.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-white text-xs"
                             placeholder="VD: D:\TruyenTranh">
-                        <button id="lanSetFolderBtn" class="px-3 py-2 bg-emerald-600 rounded-lg text-xs font-bold">Đặt</button>
+                        <button id="lanSetFolderBtn" class="min-h-[38px] px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold">Đặt</button>
                     </div>
                 </div>
 
                 <!-- Cài đặt mật khẩu trên máy chủ PC -->
-                <div id="lanHostPasswordSection" class="hidden border-t border-gray-700 pt-3 space-y-2">
+                <div id="lanHostPasswordSection" class="hidden border-t border-white/10 pt-3 space-y-2">
                     <div class="flex items-center justify-between gap-2">
-                        <label class="text-xs font-semibold text-gray-200 flex items-center gap-1.5">
+                        <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
                             <span>🔒 Mật khẩu kết nối Điện thoại</span>
                         </label>
                         <span id="lanHostPasswordBadge"
-                            class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gray-700 text-gray-300">Đang tắt</span>
+                            class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-slate-300">Đang tắt</span>
                     </div>
                     <div class="flex gap-1.5">
                         <input id="lanHostPasswordInput" type="password"
-                            class="flex-1 p-2 rounded-lg bg-gray-900 border border-gray-700 text-white text-xs placeholder-gray-500"
+                            class="flex-1 min-h-[38px] px-2.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-white text-xs placeholder-slate-500"
                             placeholder="Nhập mật khẩu mới...">
                         <button id="lanHostToggleShowPwdBtn" type="button"
-                            class="px-2.5 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs font-semibold">Hiện</button>
+                            class="min-h-[38px] px-2.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold">Hiện</button>
                     </div>
                     <div class="flex items-center gap-2">
                         <button id="lanHostSavePwdBtn" type="button"
-                            class="flex-1 px-3 py-2 bg-amber-600 hover:bg-amber-500 rounded-lg text-xs font-bold text-white shadow">
+                            class="flex-1 min-h-[38px] px-3 py-2 bg-amber-600 hover:bg-amber-500 rounded-xl text-xs font-bold text-white shadow">
                             Lưu & Bật khóa
                         </button>
                         <button id="lanHostDisablePwdBtn" type="button"
-                            class="hidden px-3 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-xs font-bold text-white shadow">
+                            class="hidden min-h-[38px] px-3 py-2 bg-rose-600 hover:bg-rose-500 rounded-xl text-xs font-bold text-white shadow">
                             Tắt khóa
                         </button>
                     </div>
@@ -1362,55 +1453,55 @@
                 </div>
 
                 <!-- Nút khóa phiên khi xem trên điện thoại từ xa -->
-                <div id="lanRemoteLogoutSection" class="hidden border-t border-gray-700 pt-3">
-                    <div class="flex items-center justify-between gap-2 bg-gray-900/70 border border-gray-700 rounded-xl px-3 py-2">
+                <div id="lanRemoteLogoutSection" class="hidden border-t border-white/10 pt-3">
+                    <div class="flex items-center justify-between gap-2 bg-slate-950/70 border border-white/10 rounded-xl px-3 py-2">
                         <span class="text-xs text-amber-300 font-medium">🔒 Đang kết nối bằng mật khẩu</span>
                         <button id="lanLogoutBtn" type="button"
-                            class="px-3 py-1.5 bg-red-600 hover:bg-red-500 rounded-lg text-xs font-bold text-white">
+                            class="min-h-[36px] px-3 py-1.5 bg-rose-600 hover:bg-rose-500 rounded-xl text-xs font-bold text-white">
                             Khóa lại
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex justify-end">
-                <button id="lanConnectCloseBtn2" class="px-4 py-2 bg-gray-700 rounded-lg text-xs font-semibold">Đóng</button>
+            <div class="mt-4 pt-2.5 border-t border-white/10 flex justify-end">
+                <button id="lanConnectCloseBtn2" class="min-h-[38px] px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold text-slate-200">Đóng</button>
             </div>
         </div>
     </div>
 
     <!-- MÀN HÌNH KHÓA NHẬP MẬT KHẨU TRÊN ĐIỆN THOẠI -->
-    <div id="lanAuthLockOverlay" class="hidden fixed inset-0 z-[200] bg-gray-950/95 backdrop-blur-md items-center justify-center p-4">
-        <div class="w-full max-w-sm bg-gray-900 border border-gray-700/90 rounded-2xl shadow-2xl p-5 text-white">
+    <div id="lanAuthLockOverlay" class="hidden fixed inset-0 z-[200] bg-[#090d16]/95 backdrop-blur-xl items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-5 text-slate-100">
             <div class="flex flex-col items-center text-center mb-4">
-                <div class="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-2xl mb-3 shadow-inner">
+                <div class="w-14 h-14 rounded-2xl bg-indigo-500/15 border border-indigo-400/35 flex items-center justify-center text-2xl mb-3 shadow-inner">
                     🔒
                 </div>
                 <h2 class="text-lg font-bold text-white">Truyện của toi — Mobile</h2>
-                <p id="lanAuthLockMessage" class="text-xs sm:text-sm text-gray-400 mt-1 leading-relaxed">
+                <p id="lanAuthLockMessage" class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
                     Máy chủ yêu cầu mật khẩu để kết nối và đọc truyện trên thiết bị này.
                 </p>
             </div>
 
             <form id="lanAuthLoginForm" class="space-y-3">
                 <div>
-                    <label for="lanAuthPasswordInput" class="block text-xs text-gray-300 font-medium mb-1">Mật khẩu kết nối</label>
+                    <label for="lanAuthPasswordInput" class="block text-xs text-slate-300 font-medium mb-1">Mật khẩu kết nối</label>
                     <div class="flex gap-1.5">
                         <input id="lanAuthPasswordInput" type="password" autocomplete="current-password"
-                            class="flex-1 p-2.5 rounded-xl bg-gray-950 border border-gray-700 focus:border-amber-500 focus:outline-none text-white text-sm placeholder-gray-500"
+                            class="flex-1 min-h-[42px] p-2.5 rounded-xl bg-slate-950/90 border border-white/10 focus:border-indigo-400 focus:outline-none text-white text-sm placeholder-slate-500"
                             placeholder="Nhập mật khẩu...">
                         <button id="lanAuthTogglePwdBtn" type="button"
-                            class="px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-xs font-semibold text-gray-200">
+                            class="min-h-[42px] px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold text-slate-200">
                             Hiện
                         </button>
                     </div>
                 </div>
 
                 <div id="lanAuthErrorText"
-                    class="hidden text-xs text-red-200 bg-red-950/80 border border-red-600/60 rounded-xl px-3 py-2 leading-snug">
+                    class="hidden text-xs text-rose-200 bg-rose-950/80 border border-rose-500/50 rounded-xl px-3 py-2 leading-snug">
                 </div>
 
                 <button id="lanAuthSubmitBtn" type="submit"
-                    class="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-500 active:bg-amber-700 rounded-xl font-bold text-sm text-white shadow-lg transition-colors">
+                    class="w-full min-h-[44px] py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 rounded-xl font-bold text-sm text-white shadow-lg transition-colors">
                     🔓 Mở khóa kết nối
                 </button>
             </form>
@@ -1580,6 +1671,7 @@
         let currentAuthorDetailTarget = null; // { id, name }
 
         const fullscreenTopHud = document.getElementById('fullscreenTopHud');
+        const fullscreenBottomHud = document.getElementById('fullscreenBottomHud');
         const fullscreenRandomBtn = document.getElementById('fullscreenRandomBtn');
         const fullscreenStoryName = document.getElementById('fullscreenStoryName');
         const fullscreenExitBtn = document.getElementById('fullscreenExitBtn');
@@ -1855,6 +1947,7 @@
             const isAuthorList = view === 'AUTHOR_LIST';
             const isAuthorDetail = view === 'AUTHOR_DETAIL';
             const isReader = view === 'READER';
+            document.body.classList.toggle('view-reader', isReader);
 
             if (!isReader && isReadingFullMode) setReadingFullMode(false);
             if (!isReader && isScrollMode) exitScrollMode();
@@ -2505,7 +2598,7 @@
                 const liked = hasStory && likedStoryIds.has(storyId);
                 likeStoryBtn.classList.toggle('bg-pink-600', liked);
                 likeStoryBtn.classList.toggle('text-white', liked);
-                likeStoryBtn.classList.toggle('bg-gray-700', !liked);
+                likeStoryBtn.classList.toggle('bg-white/5', !liked);
                 likeStoryBtn.classList.toggle('text-pink-300', !liked);
                 if (likeStoryOutlineIcon) likeStoryOutlineIcon.classList.toggle('hidden', liked);
                 if (likeStorySolidIcon) likeStorySolidIcon.classList.toggle('hidden', !liked);
@@ -2516,7 +2609,7 @@
                 const r = hasStory ? getStoryRating(storyId) : null;
                 rateStoryBtn.classList.toggle('bg-amber-600', !!r);
                 rateStoryBtn.classList.toggle('text-white', !!r);
-                rateStoryBtn.classList.toggle('bg-gray-700', !r);
+                rateStoryBtn.classList.toggle('bg-white/5', !r);
                 rateStoryBtn.classList.toggle('text-amber-300', !r);
             }
         }
@@ -3078,7 +3171,7 @@
                 const applyStarUI = () => {
                     const starred = starredFolderIds.has(folderId);
                     starBtn.textContent = starred ? '★' : '☆';
-                    starBtn.className = 'ml-2 px-1 text-sm flex-shrink-0 ' + (starred ? 'text-yellow-400' : 'text-gray-400');
+                    starBtn.className = 'ml-1.5 min-w-[34px] min-h-[34px] inline-flex items-center justify-center rounded-lg text-sm flex-shrink-0 active:bg-white/10 ' + (starred ? 'text-amber-400' : 'text-slate-400');
                 };
                 applyStarUI();
                 starBtn.addEventListener('click', (e) => {
@@ -3091,7 +3184,7 @@
 
                 const blacklistAddBtn = document.createElement('button');
                 blacklistAddBtn.textContent = '🚫';
-                blacklistAddBtn.className = 'ml-1 px-1 text-xs opacity-60 flex-shrink-0';
+                blacklistAddBtn.className = 'ml-0.5 min-w-[34px] min-h-[34px] inline-flex items-center justify-center rounded-lg text-xs opacity-70 hover:opacity-100 active:bg-white/10 flex-shrink-0';
                 blacklistAddBtn.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     if (confirm(`Ẩn thư mục "${folderId}" vào Blacklist?`)) {
@@ -3111,7 +3204,7 @@
                 const right = document.createElement('div');
                 right.className = 'ml-2 flex-shrink-0';
                 const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'w-4 h-4 rounded-full border flex-shrink-0';
+                toggleBtn.className = 'w-6 h-6 rounded-full border-2 flex-shrink-0 transition-colors';
                 updateFolderToggleButton(toggleBtn, folderId);
                 toggleBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -3556,6 +3649,7 @@
 
             if (!isReadingFullMode) {
                 fullscreenTopHud.classList.add('hidden');
+                if (fullscreenBottomHud) fullscreenBottomHud.classList.add('hidden');
                 fullscreenStoryName.classList.add('hidden');
                 fullscreenStoryTags.classList.add('hidden');
                 fullscreenPageCount.classList.add('hidden');
@@ -3573,6 +3667,9 @@
             const showFull = isFullscreenHudVisible && isFullscreenNameVisible;
             const showPageCount = isFullscreenHudVisible && currentStoryImages.length > 0;
             updateFullscreenPageCountText();
+            if (fullscreenBottomHud) {
+                fullscreenBottomHud.classList.toggle('hidden', !(isFullscreenHudVisible && (showFull || showPageCount)));
+            }
             fullscreenPageCount.classList.toggle('hidden', !showPageCount);
             if (!showPageCount) hideFullscreenPageJump();
             fullscreenStoryName.classList.toggle('hidden', !showFull);
@@ -3623,7 +3720,52 @@
             applyFullscreenHudVisibility();
         });
 
+        let pendingSingleTapTimer = null;
+        let lastTouchEndTime = 0;
+        function cancelPendingSingleTap() {
+            if (pendingSingleTapTimer) {
+                clearTimeout(pendingSingleTapTimer);
+                pendingSingleTapTimer = null;
+            }
+        }
+
+        // Scroll mode: tap anywhere (non-interactive, non-drag) to toggle HUD cleanly
+        let scrollTapStart = null;
+        let scrollTapMoved = false;
+        if (scrollReadContainer) {
+            scrollReadContainer.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    scrollTapMoved = false;
+                    scrollTapStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                } else {
+                    scrollTapMoved = true;
+                }
+            }, { passive: true });
+            scrollReadContainer.addEventListener('touchmove', (e) => {
+                if (!scrollTapStart || e.touches.length !== 1) {
+                    scrollTapMoved = true;
+                    return;
+                }
+                const dx = Math.abs(e.touches[0].clientX - scrollTapStart.x);
+                const dy = Math.abs(e.touches[0].clientY - scrollTapStart.y);
+                if (dx > 10 || dy > 10) scrollTapMoved = true;
+            }, { passive: true });
+            scrollReadContainer.addEventListener('click', (e) => {
+                if (isTranslateSelectMode || isSelectingCrop) return;
+                if (scrollTapMoved) {
+                    scrollTapMoved = false;
+                    return;
+                }
+                if (e.target.closest('button, input, textarea, select, a, video')) return;
+                if (isReadingFullMode) {
+                    isFullscreenHudVisible = !isFullscreenHudVisible;
+                    applyFullscreenHudVisibility();
+                }
+            });
+        }
+
         centerTapZone.addEventListener('click', (e) => {
+            if (Date.now() - lastTouchEndTime < 450) return;
             e.stopPropagation();
             if (isReadingFullMode) {
                 isFullscreenHudVisible = !isFullscreenHudVisible;
@@ -3634,11 +3776,50 @@
         });
 
         // ==== ZOOM, PAN & MOBILE TOUCH GESTURES (SWIPE / PINCH-TO-ZOOM / DOUBLE-TAP) ====
+        function clampPanPosition() {
+            if (zoomLevel <= MIN_ZOOM) {
+                zoomLevel = MIN_ZOOM;
+                panPosition = { x: 0, y: 0 };
+                return;
+            }
+            const cw = imageContainer.clientWidth;
+            const ch = imageContainer.clientHeight;
+            if (!cw || !ch) return;
+
+            const nw = mainImage.naturalWidth || cw;
+            const nh = mainImage.naturalHeight || ch;
+            const containScale = Math.min(cw / nw, ch / nh);
+            const renderW = nw * containScale;
+            const renderH = nh * containScale;
+            const imgOffsetX = (cw - renderW) / 2;
+            const imgOffsetY = (ch - renderH) / 2;
+            const scaledW = renderW * zoomLevel;
+            const scaledH = renderH * zoomLevel;
+
+            if (scaledW <= cw) {
+                panPosition.x = (cw - scaledW) / 2 - imgOffsetX * zoomLevel;
+            } else {
+                const maxX = -imgOffsetX * zoomLevel;
+                const minX = cw - (imgOffsetX + renderW) * zoomLevel;
+                panPosition.x = Math.min(maxX, Math.max(minX, panPosition.x));
+            }
+
+            if (scaledH <= ch) {
+                panPosition.y = (ch - scaledH) / 2 - imgOffsetY * zoomLevel;
+            } else {
+                const maxY = -imgOffsetY * zoomLevel;
+                const minY = ch - (imgOffsetY + renderH) * zoomLevel;
+                panPosition.y = Math.min(maxY, Math.max(minY, panPosition.y));
+            }
+        }
+
         function updateTransform() {
+            clampPanPosition();
             mainImage.style.transform = `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomLevel})`;
             if (typeof translateLastCropHighlight !== 'undefined') translateLastCropHighlight.classList.add('hidden');
         }
         function resetZoom() {
+            cancelPendingSingleTap();
             zoomLevel = 1;
             panPosition = { x: 0, y: 0 };
             updateTransform();
@@ -3648,13 +3829,13 @@
             if (!mainVideo.classList.contains('hidden')) return;
             e.preventDefault();
             const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
-            const rect = mainImage.getBoundingClientRect();
+            const rect = imageContainer.getBoundingClientRect();
             const mx = e.clientX - rect.left, my = e.clientY - rect.top;
             const old = zoomLevel;
             const nu = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel + delta));
             if (nu === old) return;
-            panPosition.x = (panPosition.x - mx) * (nu / old) + mx;
-            panPosition.y = (panPosition.y - my) * (nu / old) + my;
+            panPosition.x = mx - (mx - panPosition.x) * (nu / old);
+            panPosition.y = my - (my - panPosition.y) * (nu / old);
             zoomLevel = nu;
             if (zoomLevel === MIN_ZOOM) panPosition = { x: 0, y: 0 };
             updateTransform();
@@ -3699,6 +3880,7 @@
 
             if (e.touches.length === 2) {
                 e.preventDefault();
+                cancelPendingSingleTap();
                 touchState.isPinching = true;
                 touchState.moved = true;
                 touchState.initialPinchDist = getTouchDistance(e.touches[0], e.touches[1]);
@@ -3758,6 +3940,7 @@
                 const dy = t.clientY - touchState.startY;
                 if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
                     touchState.moved = true;
+                    cancelPendingSingleTap();
                 }
                 if (zoomLevel > MIN_ZOOM && isDragging) {
                     e.preventDefault();
@@ -3772,6 +3955,7 @@
             if (isTranslateSelectMode || isSelectingCrop) return;
             if (!mainVideo.classList.contains('hidden')) return;
 
+            lastTouchEndTime = Date.now();
             mainImage.style.transition = 'transform 0.08s linear';
 
             if (touchState.isPinching) {
@@ -3797,18 +3981,21 @@
             // 1. Check horizontal swipe when not zoomed in
             if (zoomLevel === MIN_ZOOM && elapsed < 500 && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.25) {
                 e.preventDefault();
+                cancelPendingSingleTap();
+                touchState.lastTapTime = 0;
                 if (dx < 0) showNextImage(); // Swipe Left -> Next page
                 else showPrevImage();        // Swipe Right -> Prev page
                 return;
             }
 
-            // 2. Check quick tap / double-tap
+            // 2. Check quick tap / double-tap with deferred single-tap action (prevents tap 1 from firing before tap 2)
             if (!touchState.moved && elapsed < 280) {
                 const now = Date.now();
                 const distFromLastTap = Math.hypot(changed.clientX - touchState.lastTapX, changed.clientY - touchState.lastTapY);
                 if (now - touchState.lastTapTime < 300 && distFromLastTap < 36) {
-                    // Double-tap -> Toggle Zoom 1x <-> 2.2x
+                    // Double-tap -> Cancel deferred single-tap & toggle Zoom 1x <-> 2.2x
                     e.preventDefault();
+                    cancelPendingSingleTap();
                     touchState.lastTapTime = 0;
                     if (zoomLevel > MIN_ZOOM) {
                         resetZoom();
@@ -3823,20 +4010,45 @@
                     }
                     return;
                 }
+
                 touchState.lastTapTime = now;
                 touchState.lastTapX = changed.clientX;
                 touchState.lastTapY = changed.clientY;
+
+                const zoneBtn = touchState.touchTarget?.closest?.('#prevBtn, #centerTapZone, #nextBtn');
+                const tapZoneId = zoneBtn ? zoneBtn.id : null;
+                if (tapZoneId) {
+                    cancelPendingSingleTap();
+                    pendingSingleTapTimer = setTimeout(() => {
+                        pendingSingleTapTimer = null;
+                        if (isTranslateSelectMode || isSelectingCrop || !mainVideo.classList.contains('hidden') || currentStoryImages.length === 0) return;
+                        if (tapZoneId === 'prevBtn') {
+                            if (zoomLevel <= MIN_ZOOM) showPrevImage();
+                        } else if (tapZoneId === 'nextBtn') {
+                            if (zoomLevel <= MIN_ZOOM) showNextImage();
+                        } else if (tapZoneId === 'centerTapZone') {
+                            if (isReadingFullMode) {
+                                isFullscreenHudVisible = !isFullscreenHudVisible;
+                                applyFullscreenHudVisibility();
+                            } else {
+                                setReadingFullMode(true);
+                            }
+                        }
+                    }, 230);
+                }
             }
         });
 
-        // Click / Tap on Left & Right zones
+        // Click / Tap on Left & Right zones (desktop / keyboard; touch clicks handled via deferred tap above)
         prevBtn.addEventListener('click', (e) => {
+            if (Date.now() - lastTouchEndTime < 450) return;
             if (isTranslateSelectMode || isSelectingCrop) return;
             if (zoomLevel > MIN_ZOOM) return;
             e.stopPropagation();
             showPrevImage();
         });
         nextBtn.addEventListener('click', (e) => {
+            if (Date.now() - lastTouchEndTime < 450) return;
             if (isTranslateSelectMode || isSelectingCrop) return;
             if (zoomLevel > MIN_ZOOM) return;
             e.stopPropagation();
@@ -4430,6 +4642,48 @@
             }
         });
 
+        // Dragging support for #translateResultPopup via #translatePopupHeader
+        if (translatePopupHeader && translateResultPopup) {
+            let popupDragState = null;
+            translatePopupHeader.addEventListener('pointerdown', (e) => {
+                if (e.button !== undefined && e.button !== 0 && e.pointerType === 'mouse') return;
+                if (e.target.closest('button, input, textarea, select, a')) return;
+                e.preventDefault();
+                e.stopPropagation();
+                const rect = translateResultPopup.getBoundingClientRect();
+                translateResultPopup.style.right = 'auto';
+                translateResultPopup.style.bottom = 'auto';
+                translateResultPopup.style.left = `${rect.left}px`;
+                translateResultPopup.style.top = `${rect.top}px`;
+                popupDragState = {
+                    pointerId: e.pointerId,
+                    offsetX: e.clientX - rect.left,
+                    offsetY: e.clientY - rect.top
+                };
+                try { translatePopupHeader.setPointerCapture(e.pointerId); } catch { }
+            });
+            translatePopupHeader.addEventListener('pointermove', (e) => {
+                if (!popupDragState || e.pointerId !== popupDragState.pointerId) return;
+                e.preventDefault();
+                const margin = 8;
+                const popupW = translateResultPopup.offsetWidth || 300;
+                const popupH = translateResultPopup.offsetHeight || 160;
+                const maxLeft = Math.max(margin, window.innerWidth - popupW - margin);
+                const maxTop = Math.max(margin, window.innerHeight - popupH - margin);
+                const nextLeft = Math.max(margin, Math.min(maxLeft, e.clientX - popupDragState.offsetX));
+                const nextTop = Math.max(margin, Math.min(maxTop, e.clientY - popupDragState.offsetY));
+                translateResultPopup.style.left = `${Math.round(nextLeft)}px`;
+                translateResultPopup.style.top = `${Math.round(nextTop)}px`;
+            });
+            const endPopupDrag = (e) => {
+                if (!popupDragState || e.pointerId !== popupDragState.pointerId) return;
+                try { translatePopupHeader.releasePointerCapture(e.pointerId); } catch { }
+                popupDragState = null;
+            };
+            translatePopupHeader.addEventListener('pointerup', endPopupDrag);
+            translatePopupHeader.addEventListener('pointercancel', endPopupDrag);
+        }
+
         function beginCropSelection(clientX, clientY) {
             isSelectingCrop = true;
             cropStartPos = { x: clientX, y: clientY };
@@ -4926,10 +5180,36 @@
         const lanAuthErrorText = document.getElementById('lanAuthErrorText');
         const lanAuthSubmitBtn = document.getElementById('lanAuthSubmitBtn');
 
+        const bgHostHint = document.getElementById('bgHostHint');
+        const lanSettingsItemSub = document.getElementById('lanSettingsItemSub');
+        const lanConnectIntroText = document.getElementById('lanConnectIntroText');
+
+        function applyRemoteClientHints(isHost) {
+            if (bgHostHint) {
+                if (isHost) {
+                    bgHostHint.innerHTML = 'Đặt ảnh <code class="text-slate-300">background_1</code>, <code class="text-slate-300">background_2</code>... vào <code class="text-slate-300">App data/BG</code>. Hình nền đang dùng được lưu tự động.';
+                } else {
+                    bgHostHint.textContent = 'Hình nền được quản lý từ thư mục App data/BG trên máy chủ Windows.';
+                }
+            }
+            if (lanSettingsItemSub) {
+                lanSettingsItemSub.textContent = isHost
+                    ? 'Mã QR, địa chỉ IP và mật khẩu kết nối.'
+                    : 'Xem mã QR, địa chỉ LAN hoặc khóa phiên trên điện thoại.';
+            }
+            if (lanConnectIntroText) {
+                lanConnectIntroText.innerHTML = isHost
+                    ? 'Đảm bảo điện thoại và máy tính đang kết nối <b>cùng mạng Wi-Fi / LAN</b>, sau đó quét mã QR hoặc nhập địa chỉ dưới đây vào trình duyệt trên điện thoại:'
+                    : 'Bạn đang truy cập từ <b>thiết bị điện thoại qua mạng LAN</b>. Chia sẻ mã QR / địa chỉ bên dưới hoặc khóa phiên khi cần.';
+            }
+        }
+
         function applyHostPasswordModalUI(info) {
             const isHost = !!info?.isLocalHost;
             const pwdEnabled = !!info?.passwordEnabled || !!info?.enabled;
             const hasSavedPwd = !!info?.hasSavedPassword;
+
+            applyRemoteClientHints(isHost);
 
             if (lanHostFolderSection) {
                 lanHostFolderSection.classList.toggle('hidden', !isHost);
@@ -5221,9 +5501,12 @@
             try {
                 const resp = await fetch('/api/auth/status', { credentials: 'same-origin' });
                 const auth = await resp.json();
-                if (auth && !auth.isLocalHost) {
-                    // Ẩn nút mở hộp thoại chọn Folder Windows khi đang dùng trên điện thoại từ xa
-                    if (selectFolderBtn) selectFolderBtn.classList.add('hidden');
+                if (auth) {
+                    applyRemoteClientHints(!!auth.isLocalHost);
+                    if (!auth.isLocalHost) {
+                        // Ẩn nút mở hộp thoại chọn Folder Windows khi đang dùng trên điện thoại từ xa
+                        if (selectFolderBtn) selectFolderBtn.classList.add('hidden');
+                    }
                 }
                 if (auth && auth.passwordEnabled && !auth.authenticated && !auth.isLocalHost) {
                     statusText.textContent = '🔒 Máy chủ yêu cầu mật khẩu kết nối.';

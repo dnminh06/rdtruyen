@@ -7,28 +7,48 @@
     <title>Truyện của toi</title>
     <script src="tailwind.js"></script>
     <style>
+        :root {
+            --glass-bg: #090d16;
+            --glass-surface: rgba(15, 23, 42, 0.78);
+            --glass-surface-strong: rgba(15, 23, 42, 0.94);
+            --glass-surface-hover: rgba(30, 41, 59, 0.86);
+            --glass-border: rgba(255, 255, 255, 0.09);
+            --glass-border-hover: rgba(129, 140, 248, 0.45);
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+        }
+
+        html {
+            background-color: var(--glass-bg);
+            color-scheme: dark;
+        }
+
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--glass-bg);
+            background-image: radial-gradient(ellipse 85% 50% at 50% -10%, rgba(99, 102, 241, 0.14), transparent 70%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             overflow-x: hidden;
             transition: background-image 0.3s ease-in-out;
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #2d3748;
+            background: rgba(9, 13, 22, 0.65);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #4a5568;
-            border-radius: 4px;
+            background: rgba(148, 163, 184, 0.25);
+            border-radius: 999px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #718096;
+            background: rgba(129, 140, 248, 0.52);
         }
 
         #mainImage {
@@ -64,25 +84,27 @@
         }
 
         #directoryTree ul {
-            padding-left: 1.25rem;
-            border-left: 1px solid #4a5568;
-            margin-left: 0.5rem;
+            padding-left: 1rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            margin-left: 0.45rem;
         }
 
         #directoryTree li {
             list-style: none;
-            margin-top: 0.25rem;
+            margin-top: 0.2rem;
         }
 
         .tree-node {
             cursor: pointer;
             display: flex;
             align-items: center;
-            padding: 2px 0;
+            padding: 4px 6px;
+            border-radius: 0.5rem;
+            transition: background-color 0.15s ease, color 0.15s ease;
         }
 
         .tree-node:hover {
-            background-color: #4a5568;
+            background-color: rgba(99, 102, 241, 0.16);
         }
 
         .tree-node .icon {
@@ -90,24 +112,24 @@
             text-align: center;
             margin-right: 0.25rem;
             font-family: monospace;
-            color: #90cdf4;
+            color: #a5b4fc;
         }
 
         .tree-node .story-icon {
-            color: #9ae6b4;
+            color: #6ee7b7;
         }
 
         .story-node {
-            color: #9ae6b4;
+            color: #e2e8f0;
         }
 
         .story-node:hover {
-            text-decoration: underline;
+            color: #ffffff;
         }
 
         .folder-node {
             font-weight: 600;
-            color: #90cdf4;
+            color: #c7d2fe;
         }
 
         .hidden-subtree {
@@ -124,20 +146,21 @@
         }
 
         .scrollbar-thin::-webkit-scrollbar-track {
-            background: #1f2937;
+            background: rgba(15, 23, 42, 0.55);
         }
 
         .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: #4b5563;
-            border-radius: 3px;
+            background: rgba(148, 163, 184, 0.28);
+            border-radius: 999px;
         }
 
         .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-            background: #6b7280;
+            background: rgba(129, 140, 248, 0.55);
         }
 
         body.fullscreen-reading {
             padding: 0 !important;
+            overflow: hidden;
         }
 
         body.fullscreen-reading #mainContent {
@@ -151,6 +174,7 @@
             height: 100vh;
             max-width: none;
             border-radius: 0;
+            border: none;
             z-index: 50;
         }
 
@@ -171,63 +195,73 @@
         body.fullscreen-minimal-hud #fullscreenExitBtn,
         body.fullscreen-minimal-hud #fullscreenToggleNameBtn,
         body.fullscreen-minimal-hud #fullscreenTranslateBtn {
-            background-color: rgba(15, 23, 42, 0.14) !important;
-            color: rgba(255, 255, 255, 0.55) !important;
+            background-color: rgba(9, 13, 22, 0.22) !important;
+            color: rgba(255, 255, 255, 0.58) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: none !important;
-            backdrop-filter: none !important;
+            backdrop-filter: blur(6px) !important;
         }
 
         body.fullscreen-minimal-hud #fullscreenExitBtn svg,
         body.fullscreen-minimal-hud #fullscreenToggleNameBtn svg,
         body.fullscreen-minimal-hud #fullscreenTranslateBtn svg {
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
         }
 
         body.fullscreen-minimal-hud #fullscreenExitBtn:hover,
         body.fullscreen-minimal-hud #fullscreenToggleNameBtn:hover,
         body.fullscreen-minimal-hud #fullscreenTranslateBtn:hover {
-            background-color: rgba(15, 23, 42, 0.48) !important;
-            color: rgba(255, 255, 255, 0.95) !important;
+            background-color: rgba(15, 23, 42, 0.65) !important;
+            color: rgba(255, 255, 255, 0.96) !important;
+            border-color: rgba(255, 255, 255, 0.28) !important;
         }
 
         body.fullscreen-minimal-hud #fullscreenTranslateBtn.bg-amber-800 {
-            background-color: rgba(217, 119, 6, 0.28) !important;
-            color: rgba(255, 255, 255, 0.92) !important;
-            border-color: rgba(251, 191, 36, 0.5) !important;
+            background-color: rgba(217, 119, 6, 0.34) !important;
+            color: rgba(255, 255, 255, 0.95) !important;
+            border-color: rgba(251, 191, 36, 0.55) !important;
         }
 
         body.fullscreen-minimal-hud #fullscreenPageCount {
             font-size: 0.75rem !important;
             line-height: 1rem !important;
-            padding: 0.25rem 0.5rem !important;
-            background-color: rgba(15, 23, 42, 0.14) !important;
-            color: rgba(255, 255, 255, 0.65) !important;
+            padding: 0.3rem 0.65rem !important;
+            background-color: rgba(9, 13, 22, 0.24) !important;
+            color: rgba(255, 255, 255, 0.7) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: none !important;
-            backdrop-filter: none !important;
+            backdrop-filter: blur(6px) !important;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
         }
 
         body.fullscreen-minimal-hud #fullscreenPageCount:hover {
-            background-color: rgba(15, 23, 42, 0.48) !important;
-            color: rgba(255, 255, 255, 0.95) !important;
+            background-color: rgba(15, 23, 42, 0.65) !important;
+            color: rgba(255, 255, 255, 0.96) !important;
+        }
+
+        #fullscreenStoryTags:empty {
+            display: none;
         }
 
         .video-nav-btn {
             z-index: 60;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.15s ease, background-color 0.15s ease;
         }
 
         .home-card {
-            border: 1px solid #374151;
-            background: #1f2937;
-            border-radius: 0.75rem;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-surface);
+            backdrop-filter: blur(14px);
+            border-radius: 0.875rem;
             overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .home-card:hover {
-            background: #334155;
+            transform: translateY(-3px);
+            background: var(--glass-surface-hover);
+            border-color: var(--glass-border-hover);
+            box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(99, 102, 241, 0.15);
         }
 
         .home-thumb {
@@ -235,7 +269,12 @@
             aspect-ratio: 3/4;
             object-fit: cover;
             display: block;
-            background: #000;
+            background: #020617;
+            transition: transform 0.3s ease;
+        }
+
+        .home-card:hover .home-thumb {
+            transform: scale(1.03);
         }
 
         .home-video-thumb {
@@ -244,10 +283,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #000;
-            color: #e5e7eb;
+            background: #020617;
+            color: #cbd5e1;
             font-weight: 700;
-            letter-spacing: .08em;
+            letter-spacing: 0.08em;
         }
 
         .home-badge {
@@ -255,49 +294,55 @@
             top: 8px;
             right: 8px;
             font-size: 11px;
-            padding: 4px 8px;
+            font-variant-numeric: tabular-nums;
+            padding: 3px 8px;
             border-radius: 999px;
-            background: rgba(0, 0, 0, .55);
-            border: 1px solid rgba(255, 255, 255, .15);
+            background: rgba(9, 13, 22, 0.72);
+            backdrop-filter: blur(8px);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.14);
         }
 
         .home-title {
             font-weight: 600;
             font-size: 14px;
-            line-height: 1.2;
+            line-height: 1.3;
+            color: #f1f5f9;
         }
 
         .home-sub {
             font-size: 12px;
-            color: #9ca3af;
+            color: #94a3b8;
             margin-top: 4px;
         }
 
         .home-tag {
             font-size: 10px;
             line-height: 1.2;
-            padding: 2px 6px;
+            padding: 2px 7px;
             border-radius: 999px;
-            background: rgba(55, 65, 81, 0.85);
-            color: #d1d5db;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(99, 102, 241, 0.15);
+            color: #c7d2fe;
+            border: 1px solid rgba(129, 140, 248, 0.25);
             display: inline-block;
         }
 
         .author-card {
             position: relative;
             aspect-ratio: 1/1;
-            border-radius: 0.75rem;
+            border-radius: 0.875rem;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s;
-            border: 2px solid #374151;
-            background: #1f2937;
+            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-surface);
+            backdrop-filter: blur(14px);
         }
 
         .author-card:hover {
-            transform: scale(1.05);
-            border-color: #3b82f6;
+            transform: translateY(-3px);
+            border-color: var(--glass-border-hover);
+            box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(99, 102, 241, 0.18);
             z-index: 10;
         }
 
@@ -306,6 +351,11 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .author-card:hover .author-thumb {
+            transform: scale(1.04);
         }
 
         .author-name-overlay {
@@ -313,13 +363,13 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.4), transparent);
-            padding: 2rem 0.5rem 0.5rem 0.5rem;
+            background: linear-gradient(to top, rgba(9, 13, 22, 0.96), rgba(9, 13, 22, 0.55), transparent);
+            padding: 2.25rem 0.65rem 0.6rem 0.65rem;
             font-weight: 700;
-            color: white;
+            color: #f8fafc;
             text-align: left;
             font-size: 0.95rem;
-            text-shadow: 1px 1px 3px black;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
             pointer-events: none;
         }
 
@@ -327,43 +377,45 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(9, 13, 22, 0.72);
             color: #fbbf24;
             padding: 6px;
-            border-radius: 50%;
+            border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(251, 191, 36, 0.35);
             pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
         }
 
         .story-heart-badge {
             position: absolute;
             top: 8px;
             left: 8px;
-            background: rgba(0, 0, 0, 0.65);
-            color: #f43f5e;
+            background: rgba(9, 13, 22, 0.72);
+            color: #fb7185;
             padding: 6px;
-            border-radius: 50%;
+            border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(251, 113, 133, 0.35);
             pointer-events: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
         }
 
         .story-rating-note {
             font-size: 11px;
             line-height: 1.35;
             color: #fde68a;
-            background: rgba(17, 24, 39, 0.65);
+            background: rgba(15, 23, 42, 0.72);
             border-left: 2px solid #f59e0b;
-            padding: 3px 6px;
-            border-radius: 0 4px 4px 0;
+            padding: 4px 7px;
+            margin-top: 4px;
+            border-radius: 0 6px 6px 0;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -383,6 +435,10 @@
             word-break: break-word;
         }
 
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
         #scrollReadList {
             --scroll-img-max-w: 56rem;
         }
@@ -395,18 +451,18 @@
 </head>
 
 <body
-    class="bg-gray-900 text-white min-h-screen flex flex-col items-center p-4 selection:bg-blue-500 selection:text-white">
+    class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-3 sm:p-4 selection:bg-indigo-500 selection:text-white">
 
     <aside id="sidebar"
-        class="fixed top-0 left-0 h-full w-80 bg-gray-800 shadow-lg z-50 p-4 transform -translate-x-full transition-transform duration-300 ease-in-out">
-        <div class="flex items-center justify-between mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl font-bold">Danh sách truyện</h2>
-            <div class="flex items-center gap-2">
+        class="fixed top-0 left-0 h-full w-80 max-w-[90vw] bg-slate-900/95 backdrop-blur-xl border-r border-white/10 shadow-2xl z-50 p-4 flex flex-col transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="shrink-0 flex items-center justify-between mb-3 border-b border-white/10 pb-3">
+            <h2 class="text-lg font-bold tracking-tight text-slate-100">Danh sách truyện</h2>
+            <div class="flex items-center gap-1.5">
                 <button id="filterToggleBtn"
-                    class="p-1 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors"
                     title="Ẩn/hiện bộ lọc">
                     <svg id="filterToggleIcon" xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor"
+                        class="h-4 w-4 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor"
                         aria-hidden="true">
                         <path fill-rule="evenodd"
                             d="M10 3a1 1 0 01.832.445l6 8a1 1 0 01-.832 1.555H4a1 1 0 01-.832-1.555l6-8A1 1 0 0110 3z"
@@ -414,9 +470,9 @@
                     </svg>
                 </button>
                 <button id="sidebarCloseBtn"
-                    class="p-1 rounded hover:bg-red-600 hover:text-white text-gray-400 focus:outline-none transition-colors"
+                    class="p-1.5 rounded-lg bg-white/5 hover:bg-red-600/85 hover:text-white border border-white/10 text-slate-400 focus:outline-none transition-colors"
                     title="Đóng danh sách">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
@@ -425,248 +481,284 @@
             </div>
         </div>
 
-        <div id="filtersWrapper">
-            <div class="mb-4">
-                <label class="block text-sm text-gray-300 mb-1">Lọc theo tên (truyện hoặc thư mục)</label>
-                <div class="flex gap-2">
+        <div id="filtersWrapper" class="shrink-0 max-h-[54vh] overflow-y-auto scrollbar-thin pr-1 pb-3 mb-2 border-b border-white/10 space-y-3">
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1.5">Lọc theo tên (truyện hoặc thư mục)</label>
+                <div class="flex gap-1.5">
                     <input id="nameFilterInput" type="text"
-                        class="flex-1 p-2 rounded bg-gray-700 text-white placeholder-gray-400"
+                        class="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg bg-slate-950/75 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/40"
                         placeholder="Nhập tên cần tìm...">
-                    <button id="clearNameFilterBtn" class="px-3 py-2 bg-gray-700 rounded hover:bg-gray-600"
+                    <button id="clearNameFilterBtn"
+                        class="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-colors"
                         title="Xóa lọc tên">Xóa</button>
                 </div>
-                <div class="text-xs text-gray-400 mt-1">Không phân biệt hoa/thường, hỗ trợ bỏ dấu tiếng Việt.</div>
+                <div class="text-[11px] text-slate-400 mt-1">Không phân biệt hoa/thường, hỗ trợ bỏ dấu tiếng Việt.</div>
             </div>
 
-            <div class="mb-4">
-                <div class="flex items-center justify-between">
-                    <label class="block text-sm text-gray-300">Lọc theo tag</label>
-                    <div class="flex items-center gap-2 text-xs text-gray-300">
-                        <span class="opacity-80">Chế độ:</span>
-                        <label class="inline-flex items-center gap-1">
-                            <input id="filterModeAnd" name="filterMode" type="radio" value="AND" class="accent-blue-500"
+            <div>
+                <div class="flex items-center justify-between gap-2">
+                    <label class="block text-xs font-medium text-slate-300">Lọc theo tag</label>
+                    <div class="inline-flex items-center p-0.5 rounded-lg bg-slate-950/80 border border-white/10 text-[11px] text-slate-300">
+                        <label class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md cursor-pointer hover:text-white">
+                            <input id="filterModeAnd" name="filterMode" type="radio" value="AND" class="accent-indigo-500"
                                 checked>
                             <span>AND</span>
                         </label>
-                        <label class="inline-flex items-center gap-1">
-                            <input id="filterModeOr" name="filterMode" type="radio" value="OR" class="accent-blue-500">
+                        <label class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md cursor-pointer hover:text-white">
+                            <input id="filterModeOr" name="filterMode" type="radio" value="OR" class="accent-indigo-500">
                             <span>OR</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="mt-2">
-                    <label class="inline-flex items-center gap-2 text-sm">
-                        <input id="noTagOnly" type="checkbox" class="accent-blue-500">
+                    <label class="inline-flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
+                        <input id="noTagOnly" type="checkbox" class="accent-indigo-500 rounded">
                         <span>Chỉ hiển thị truyện chưa có tag</span>
                     </label>
-                    <div id="noTagOnlyHint" class="hidden text-xs text-amber-300 mt-1">
+                    <div id="noTagOnlyHint" class="hidden text-[11px] text-amber-300 mt-1">
                         Đang bật “Chưa có tag”: Bộ lọc tag sẽ bị bỏ qua.
                     </div>
                 </div>
 
-                <div id="filterControls" class="mt-3">
-                    <div id="selectedFilterTags" class="flex flex-wrap gap-2 mb-2"></div>
+                <div id="filterControls" class="mt-2.5">
+                    <div id="selectedFilterTags" class="flex flex-wrap gap-1.5 mb-2"></div>
                     <div class="relative">
                         <input id="filterTagInput" type="text"
-                            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400"
+                            class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950/75 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/40"
                             placeholder="Nhập tag và nhấn Enter">
                         <div id="filterSuggestPanel"
-                            class="absolute left-0 right-0 top-[100%] z-50 bg-gray-800 border border-gray-700 rounded shadow hidden max-h-56 overflow-auto">
+                            class="absolute left-0 right-0 top-[100%] mt-1 z-50 bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-xl shadow-2xl hidden max-h-56 overflow-auto scrollbar-thin">
                         </div>
                     </div>
                     <div class="mt-2 flex gap-2">
-                        <button id="clearFilterBtn" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">Xóa lọc
+                        <button id="clearFilterBtn"
+                            class="px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-slate-300 hover:text-white transition-colors">Xóa lọc
                             tag</button>
                     </div>
-                    <div class="mt-3">
-                        <div class="text-xs text-gray-400 mb-1">Tag gợi ý</div>
-                        <div id="allTagsCloud" class="flex flex-wrap gap-2"></div>
+                    <div class="mt-2.5">
+                        <div class="text-[11px] text-slate-400 mb-1.5">Tag gợi ý</div>
+                        <div id="allTagsCloud" class="flex flex-wrap gap-1.5"></div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="shrink-0 flex items-center justify-between text-[11px] text-slate-400 bg-white/[0.03] border border-white/[0.06] rounded-lg px-2.5 py-1.5 mb-2"
+            title="Nhấp vòng tròn bên phải thư mục để chuyển: Mặc định → Ưu tiên Random (xanh) → Loại trừ (đỏ)">
+            <span>Chấm tròn: <span class="text-blue-400 font-medium">● Ưu tiên</span> · <span class="text-red-400 font-medium">● Loại</span></span>
+            <span>★ Lưu · 🚫 Ẩn</span>
+        </div>
+
         <div id="directoryTreeContainer"
-            class="h-[calc(100vh-340px)] overflow-y-auto transition-[height] duration-200 pr-3">
-            <p id="treePlaceholder" class="text-gray-400">Vui lòng chọn thư mục gốc để hiển thị cây thư mục.</p>
-            <ul id="directoryTree" class="p-0 m-0"></ul>
+            class="flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
+            <p id="treePlaceholder" class="text-sm text-slate-400">Vui lòng chọn thư mục gốc để hiển thị cây thư mục.</p>
+            <ul id="directoryTree" class="p-0 m-0 text-sm"></ul>
         </div>
     </aside>
 
     <div id="mainContent" class="w-full transition-all duration-300 ease-in-out">
         <header
-            class="w-full max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4 transition-all duration-200">
-            <div class="flex items-center space-x-4">
+            class="w-full max-w-6xl mx-auto mb-3 bg-slate-900/75 backdrop-blur-xl border border-white/10 rounded-2xl px-3 sm:px-4 py-2.5 shadow-xl flex flex-wrap justify-between items-center gap-2.5 transition-all duration-200">
+            <div class="flex items-center gap-2 min-w-0">
                 <button id="sidebarToggleBtn"
-                    class="p-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors"
                     title="Hiện/Ẩn danh sách truyện">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
                 <button id="homeBtn"
-                    class="p-2.5 bg-slate-600 text-white font-semibold rounded-lg shadow-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 transition duration-200 disabled:opacity-50"
+                    class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 text-indigo-300 hover:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
                     title="Trang Home" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                         <polyline points="9 22 9 12 15 12 15 22"></polyline>
                     </svg>
                 </button>
-                <h1 class="text-3xl font-bold text-center drop-shadow-md">Truyện của toi</h1>
+                <button id="authorsBtn"
+                    class="px-2.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-violet-300 hover:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5 text-xs sm:text-sm font-medium"
+                    title="Danh sách Tác giả" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="hidden sm:inline">Tác giả</span>
+                </button>
+                <div class="h-5 w-px bg-white/10 mx-0.5 hidden sm:block"></div>
+                <div class="flex items-center gap-2 min-w-0">
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-100 whitespace-nowrap truncate">Truyện của toi</h1>
+                    <span class="hidden md:inline-flex text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-400/25">Library</span>
+                </div>
             </div>
-            <div class="flex flex-wrap justify-center gap-2">
-                <button id="randomStoryBtn"
-                    class="p-2.5 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 disabled:opacity-50"
-                    title="Đọc truyện ngẫu nhiên" disabled>
-                    RD
-                </button>
 
-                <button id="fullscreenBtn"
-                    class="p-2.5 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200"
-                    title="Toàn màn hình (F11)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                    </svg>
-                </button>
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <div class="flex items-center gap-1 bg-white/[0.04] border border-white/10 rounded-xl p-1">
+                    <button id="likeStoryBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 text-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        title="Thả tim truyện này (Hiển thị trên Home & Tác giả)" disabled>
+                        <svg id="likeStoryOutlineIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        <svg id="likeStorySolidIcon" xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
 
-                <button id="likeStoryBtn"
-                    class="p-2.5 bg-gray-700 hover:bg-gray-600 text-pink-300 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-rose-400 transition duration-200 disabled:opacity-50"
-                    title="Thả tim truyện này (Hiển thị trên Home & Tác giả)" disabled>
-                    <svg id="likeStoryOutlineIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                    <svg id="likeStorySolidIcon" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </button>
+                    <button id="rateStoryBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 text-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        title="Đánh giá & ghi chú truyện đang xem" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </button>
 
-                <button id="rateStoryBtn"
-                    class="p-2.5 bg-gray-700 hover:bg-gray-600 text-amber-300 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200 disabled:opacity-50"
-                    title="Đánh giá & ghi chú truyện đang xem" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                </button>
+                    <button id="manageTagsBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 text-indigo-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        title="Quản lý tag truyện" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                    </button>
 
-                <button id="manageTagsBtn"
-                    class="p-2.5 bg-amber-600 text-white font-semibold rounded-lg shadow-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:opacity-50"
-                    title="Quản lý tag truyện" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                    </svg>
-                </button>
+                    <button id="bookmarkAddBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 text-teal-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        title="Đánh dấu trang này" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v3m0 0v3m0-3h3m-3 0H9" />
+                        </svg>
+                    </button>
+                </div>
 
-                <button id="historyBtn"
-                    class="p-2.5 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50"
-                    title="Xem lịch sử đọc" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </button>
+                <div class="h-5 w-px bg-white/10 mx-0.5 hidden sm:block"></div>
 
-                <button id="bookmarkAddBtn"
-                    class="p-2.5 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-50"
-                    title="Đánh dấu trang này" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 9v3m0 0v3m0-3h3m-3 0H9" />
-                    </svg>
-                </button>
+                <div class="flex items-center gap-1.5">
+                    <button id="randomStoryBtn"
+                        class="px-2.5 py-2 bg-indigo-500/20 hover:bg-indigo-500/35 border border-indigo-400/35 text-indigo-200 hover:text-white font-semibold text-xs sm:text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5"
+                        title="Đọc truyện ngẫu nhiên" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span>RD</span>
+                    </button>
 
-                <button id="bookmarkBtn"
-                    class="p-2.5 bg-pink-600 text-white font-semibold rounded-lg shadow-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
-                    title="Xem danh sách đánh dấu" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                </button>
+                    <button id="bookmarkBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 text-teal-300 hover:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        title="Xem danh sách đánh dấu" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </button>
 
-                <button id="appSettingsBtn"
-                    class="px-3.5 py-2 bg-slate-700 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 transition duration-200 flex items-center gap-1.5"
-                    title="Cài đặt (Chọn Folder, Tải lại, Hình nền, Blacklist)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span>Cài đặt</span>
-                </button>
+                    <button id="historyBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 text-sky-300 hover:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        title="Xem lịch sử đọc" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+
+                    <button id="fullscreenBtn"
+                        class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 text-violet-300 hover:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors"
+                        title="Toàn màn hình cửa sổ (F11)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+
+                    <button id="appSettingsBtn"
+                        class="px-2.5 sm:px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-colors flex items-center gap-1.5"
+                        title="Cài đặt (Chọn Folder, Tải lại, Hình nền, Blacklist)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-slate-300" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="hidden sm:inline">Cài đặt</span>
+                    </button>
+                </div>
             </div>
         </header>
 
-        <div id="statusArea" class="w-full max-w-6xl mx-auto text-center min-h-[50px] p-2 transition-all duration-200">
-            <p id="statusText"
-                class="text-lg text-gray-300 drop-shadow-md bg-gray-900/40 rounded inline-block px-4 py-1">Vui lòng mở <b>Cài đặt</b> để chọn
-                thư mục gốc chứa các truyện của bạn.</p>
-            <div id="currentStoryRatingInline" class="hidden mt-1 flex items-center justify-center"></div>
-            <div id="currentStoryTagsInline" class="mt-1 flex flex-wrap gap-1 justify-center"></div>
+        <div id="statusArea" class="w-full max-w-6xl mx-auto mb-3 transition-all duration-200">
+            <div class="bg-slate-900/65 backdrop-blur-md border border-white/10 rounded-xl px-3.5 py-2 shadow-md flex flex-col items-center gap-1">
+                <p id="statusText"
+                    class="text-sm sm:text-base text-slate-200 text-center leading-snug">Vui lòng mở <b>Cài đặt</b> để chọn
+                    thư mục gốc chứa các truyện của bạn.</p>
+                <div class="flex flex-wrap items-center justify-center gap-1.5 empty:hidden">
+                    <div id="currentStoryRatingInline" class="hidden flex items-center justify-center"></div>
+                    <div id="currentStoryTagsInline" class="flex flex-wrap gap-1 justify-center empty:hidden"></div>
+                </div>
+            </div>
             <div id="scanErrorsArea" class="mt-2"></div>
         </div>
 
         <section id="homeView" class="hidden w-full max-w-6xl mx-auto mb-4">
 
             <div id="tempFilterBanner"
-                class="hidden mb-3 p-3 bg-blue-900/80 backdrop-blur border border-blue-500/50 rounded flex justify-between items-center shadow-lg transition-all">
-                <span id="tempFilterText" class="text-blue-100 font-medium text-sm sm:text-base"></span>
+                class="hidden mb-3 px-4 py-2.5 bg-indigo-950/85 backdrop-blur-xl border border-indigo-400/35 rounded-xl flex justify-between items-center gap-3 shadow-lg transition-all">
+                <span id="tempFilterText" class="text-indigo-100 font-medium text-sm sm:text-base"></span>
                 <button id="clearTempFilterBtn"
-                    class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold transition-colors shadow">
+                    class="px-3 py-1 bg-red-600/85 hover:bg-red-500 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors shadow">
                     Đóng
                 </button>
             </div>
 
-            <div class="flex items-center justify-between gap-2 mb-3 bg-gray-900/60 p-2 rounded backdrop-blur">
-                <div class="flex gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3 bg-slate-900/75 border border-white/10 px-3.5 py-2.5 rounded-2xl backdrop-blur-xl shadow-lg">
+                <div class="flex items-center gap-2">
                     <button id="homeShuffleBtn"
-                        class="px-3 py-2 bg-green-600 rounded hover:bg-green-700 font-semibold disabled:opacity-50"
+                        class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 text-indigo-300 hover:text-white rounded-xl font-semibold transition-colors disabled:opacity-40"
+                        title="Xáo trộn danh sách truyện trên Home"
                         disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="23 4 23 10 17 10"></polyline>
                             <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                         </svg>
                     </button>
                     <button id="homeToReaderBtn"
-                        class="px-3 py-2 bg-blue-600 rounded hover:bg-blue-700 font-semibold disabled:opacity-50"
+                        class="px-3.5 py-2 bg-indigo-600/90 hover:bg-indigo-500 border border-indigo-400/30 text-white text-xs sm:text-sm rounded-xl font-semibold transition-colors disabled:opacity-40"
                         disabled>
                         Quay lại truyện
                     </button>
                 </div>
-                <div class="flex items-center gap-4 text-sm">
-                    <div class="text-gray-400">Tổng truyện: <span id="homeTotalStories"
-                            class="text-gray-200 font-semibold">0</span></div>
-                    <div class="text-gray-400">Đang hiển thị: <span id="homeShownStories"
-                            class="text-gray-200 font-semibold">0</span></div>
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div class="text-slate-400">Tổng truyện: <span id="homeTotalStories"
+                            class="text-slate-100 font-semibold tabular-nums">0</span></div>
+                    <div class="text-slate-400">Đang hiển thị: <span id="homeShownStories"
+                            class="text-indigo-300 font-semibold tabular-nums">0</span></div>
                 </div>
             </div>
 
-            <div id="homeGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+            <div id="homeGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
         </section>
         <section id="authorListView" class="hidden w-full max-w-6xl mx-auto mb-4">
-            <div class="flex items-center justify-between gap-2 mb-4 bg-gray-900/60 p-3 rounded-lg backdrop-blur">
-                <div class="text-gray-200 font-bold text-xl flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none"
+            <div class="flex items-center justify-between gap-2 mb-4 bg-slate-900/75 border border-white/10 px-4 py-3 rounded-2xl backdrop-blur-xl shadow-lg">
+                <div class="text-slate-100 font-bold text-lg sm:text-xl flex items-center gap-2.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -674,48 +766,48 @@
                     Danh sách Tác giả
                 </div>
                 <button id="authorListBackBtn"
-                    class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 font-semibold transition-colors shadow-md">
+                    class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white rounded-xl text-sm font-semibold transition-colors">
                     Quay lại
                 </button>
             </div>
             <div id="authorGrid"
-                class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-2"></div>
+                class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
         </section>
         <section id="authorDetailView" class="hidden w-full max-w-6xl mx-auto mb-4">
             <div
-                class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 bg-gray-900/60 p-4 rounded-lg backdrop-blur">
+                class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 bg-slate-900/75 border border-white/10 p-4 sm:p-5 rounded-2xl backdrop-blur-xl shadow-lg">
                 <div class="flex items-center gap-4 w-full sm:w-auto min-w-0">
                     <img id="authorDetailAvatar" src="" alt="Avatar"
-                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-blue-500 bg-gray-800 shadow-md flex-shrink-0">
+                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-indigo-400/60 bg-slate-800 shadow-lg flex-shrink-0">
                     <div class="min-w-0">
-                        <h2 id="authorDetailName" class="text-2xl font-bold text-white drop-shadow truncate">Tên Tác Giả</h2>
-                        <p class="text-gray-400 mt-1 text-sm sm:text-base">Số lượng truyện: <span id="authorDetailCount"
-                                class="text-blue-400 font-semibold text-lg">0</span></p>
+                        <h2 id="authorDetailName" class="text-xl sm:text-2xl font-bold text-white truncate">Tên Tác Giả</h2>
+                        <p class="text-slate-400 mt-1 text-sm sm:text-base">Số lượng truyện: <span id="authorDetailCount"
+                                class="text-indigo-300 font-semibold text-lg tabular-nums">0</span></p>
                         <div id="authorDetailRatingBox" class="hidden mt-1.5 space-y-1"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto justify-end flex-shrink-0">
                     <button id="rateAuthorBtn"
-                        class="px-4 py-2 bg-amber-600 rounded-lg hover:bg-amber-500 font-semibold transition-colors shadow-md text-white whitespace-nowrap flex items-center gap-1.5">
+                        class="px-3.5 py-2 bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/35 rounded-xl font-semibold transition-colors text-amber-200 hover:text-white text-sm whitespace-nowrap flex items-center gap-1.5">
                         <span>★</span>
                         <span id="rateAuthorBtnLabel">Đánh giá</span>
                     </button>
                     <button id="authorDetailBackBtn"
-                        class="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 font-semibold transition-colors shadow-md text-white whitespace-nowrap">
+                        class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-semibold transition-colors text-slate-200 hover:text-white text-sm whitespace-nowrap">
                         Quay lại
                     </button>
                 </div>
             </div>
-            <div id="authorDetailGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+            <div id="authorDetailGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
         </section>
         <main id="imageContainer"
-            class="w-full max-w-6xl mx-auto h-[calc(100vh-170px)] flex-grow flex justify-center items-center bg-gray-950/80 backdrop-blur-sm rounded-lg shadow-inner overflow-hidden relative border border-gray-800">
-            <p id="imagePlaceholder" class="text-gray-500 text-xl font-medium">Chưa có ảnh nào được tải</p>
+            class="w-full max-w-6xl mx-auto h-[calc(100vh-170px)] min-h-0 flex-grow flex justify-center items-center bg-slate-950/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden relative border border-white/10">
+            <p id="imagePlaceholder" class="text-slate-500 text-lg sm:text-xl font-medium">Chưa có ảnh nào được tải</p>
             <img id="mainImage" src="" alt="Ảnh truyện" class="hidden" />
             <video id="mainVideo" class="hidden" playsinline></video>
 
             <button id="videoPrevBtn"
-                class="video-nav-btn hidden absolute left-4 top-1/2 -translate-y-1/2 px-3 py-3 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur text-white shadow-lg"
+                class="video-nav-btn hidden absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-slate-900/70 hover:bg-indigo-600/80 border border-white/15 rounded-full backdrop-blur-md text-white shadow-lg"
                 title="Trang trước">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor">
@@ -723,7 +815,7 @@
                 </svg>
             </button>
             <button id="videoNextBtn"
-                class="video-nav-btn hidden absolute right-4 top-1/2 -translate-y-1/2 px-3 py-3 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur text-white shadow-lg"
+                class="video-nav-btn hidden absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-slate-900/70 hover:bg-indigo-600/80 border border-white/15 rounded-full backdrop-blur-md text-white shadow-lg"
                 title="Trang sau">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor">
@@ -732,9 +824,9 @@
             </button>
 
             <button id="readerModeBtn"
-                class="absolute top-3 right-3 z-40 p-2 bg-transparent hover:bg-white/10 text-white/75 hover:text-white rounded-lg transition-colors focus:outline-none"
-                title="Chuyển giao diện đọc truyện">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 drop-shadow" fill="none" viewBox="0 0 24 24"
+                class="absolute top-3 right-3 z-40 p-2 bg-slate-900/65 hover:bg-indigo-600/80 border border-white/10 text-slate-200 hover:text-white rounded-xl backdrop-blur-md transition-colors focus:outline-none shadow-lg"
+                title="Chuyển giao diện đọc truyện toàn màn hình">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -746,75 +838,84 @@
         </main>
     </div>
 
-    <button id="fullscreenRandomBtn"
-        class="hidden fixed top-4 right-4 z-[100] px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-opacity duration-200"
-        title="Chọn truyện ngẫu nhiên">RD</button>
-    <button id="fullscreenExitBtn"
-        class="hidden fixed top-4 left-4 z-[110] p-3 bg-red-600 text-white font-semibold rounded-full shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-opacity duration-200"
-        title="Thoát giao diện đọc truyện">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-    </button>
-    <button id="fullscreenToggleNameBtn"
-        class="hidden fixed top-4 left-20 z-[110] p-3 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
-        title="Ẩn/Hiện thông tin truyện và các nút điều khiển">
-        <svg id="fullscreenEyeOpenIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-        <svg id="fullscreenEyeOffIcon" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-        </svg>
-    </button>
-    <button id="fullscreenScrollModeBtn"
-        class="hidden fixed top-4 left-36 z-[110] p-3 bg-emerald-600 text-white font-semibold rounded-full shadow-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-opacity duration-200"
-        title="Chuyển sang chế độ đọc cuộn dọc">
-        <svg id="fullscreenScrollModeIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 3v18M12 3l4 4M12 3L8 7M12 21l4-4M12 21l-4-4" />
-        </svg>
-    </button>
-    <button id="fullscreenTranslateBtn"
-        class="hidden fixed top-4 left-52 z-[110] p-3 bg-amber-600 text-white font-semibold rounded-full shadow-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all duration-200"
-        title="Bật/Tắt chế độ khoanh vùng dịch ô thoại (Phím T hoặc giữ Alt + kéo chuột)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-        </svg>
-    </button>
-    <button id="fullscreenTranslateSettingsBtn" style="left: 17rem;"
-        class="hidden fixed top-4 z-[110] p-3 bg-slate-700 text-white font-semibold rounded-full shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-opacity duration-200"
-        title="Cài đặt dịch AI (Gemini API)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-    </button>
+    <div id="fullscreenTopHud"
+        class="hidden fixed top-3 left-3 right-3 z-[110] flex items-center justify-between gap-2 pointer-events-none">
+        <div class="flex items-center gap-2 pointer-events-auto">
+            <button id="fullscreenExitBtn"
+                class="hidden p-2.5 bg-slate-900/80 hover:bg-red-600/90 border border-white/15 backdrop-blur-xl text-slate-100 hover:text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-red-400/50 transition-all duration-200"
+                title="Thoát giao diện đọc truyện">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <button id="fullscreenToggleNameBtn"
+                class="hidden p-2.5 bg-slate-900/80 hover:bg-indigo-600/90 border border-white/15 backdrop-blur-xl text-slate-100 hover:text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-200"
+                title="Ẩn/Hiện thông tin truyện và các nút điều khiển">
+                <svg id="fullscreenEyeOpenIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <svg id="fullscreenEyeOffIcon" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                </svg>
+            </button>
+            <button id="fullscreenScrollModeBtn"
+                class="hidden p-2.5 bg-slate-900/80 hover:bg-emerald-600/90 border border-white/15 backdrop-blur-xl text-slate-100 hover:text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 transition-all duration-200"
+                title="Chuyển sang chế độ đọc cuộn dọc">
+                <svg id="fullscreenScrollModeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v18M12 3l4 4M12 3L8 7M12 21l4-4M12 21l-4-4" />
+                </svg>
+            </button>
+            <button id="fullscreenTranslateBtn"
+                class="hidden p-2.5 bg-amber-600/90 hover:bg-amber-500 border border-amber-300/35 backdrop-blur-xl text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-400/60 transition-all duration-200"
+                title="Bật/Tắt chế độ khoanh vùng dịch ô thoại (Phím T hoặc giữ Alt + kéo chuột)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+            </button>
+            <button id="fullscreenTranslateSettingsBtn"
+                class="hidden p-2.5 bg-slate-900/80 hover:bg-slate-700/90 border border-white/15 backdrop-blur-xl text-slate-100 hover:text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-200"
+                title="Cài đặt dịch AI (Gemini API)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="flex items-center gap-2 pointer-events-auto">
+            <button id="fullscreenRandomBtn"
+                class="hidden px-3.5 py-2 bg-slate-900/80 hover:bg-indigo-600/90 border border-white/15 backdrop-blur-xl text-slate-100 hover:text-white text-sm font-semibold rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-200"
+                title="Chọn truyện ngẫu nhiên">RD</button>
+        </div>
+    </div>
+
     <div id="translateModeBanner"
-        class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-[110] px-4 py-1.5 bg-amber-600/90 backdrop-blur text-white text-xs sm:text-sm font-semibold rounded-full shadow-lg border border-amber-300/40 pointer-events-none flex items-center gap-2">
+        class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-[110] px-4 py-1.5 bg-slate-900/90 backdrop-blur-xl text-amber-100 text-xs sm:text-sm font-semibold rounded-full shadow-xl border border-amber-400/40 pointer-events-none flex items-center gap-2 whitespace-nowrap">
         <span>Chế độ quét dịch: Kéo chuột khoanh vùng ô thoại để dịch (Nhấn T hoặc Esc để tắt)</span>
     </div>
     <div id="translateSelectionOverlay" class="hidden fixed inset-0 z-[105] cursor-crosshair select-none">
         <div id="translateSelectionBox"
             class="hidden fixed border-2 border-amber-400 bg-amber-400/15 pointer-events-none rounded-sm"
-            style="box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.28);"></div>
+            style="box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);"></div>
     </div>
     <div id="translateLastCropHighlight"
         class="hidden fixed z-[102] border-2 border-dashed border-amber-400/80 bg-amber-400/10 pointer-events-none rounded-sm">
     </div>
     <div id="translateResultPopup"
-        class="hidden fixed z-[115] w-80 sm:w-96 max-w-[92vw] bg-gray-900/95 backdrop-blur-md border border-amber-500/60 rounded-xl shadow-2xl text-white flex flex-col overflow-hidden">
+        class="hidden fixed z-[115] w-80 sm:w-96 max-w-[92vw] bg-slate-900/95 backdrop-blur-xl border border-amber-400/40 rounded-2xl shadow-2xl text-slate-100 flex flex-col overflow-hidden">
         <div id="translatePopupHeader"
-            class="cursor-move select-none bg-gray-800/95 px-3 py-2 border-b border-gray-700 flex items-center justify-between gap-2">
+            class="cursor-move select-none bg-slate-950/60 px-3.5 py-2.5 border-b border-white/10 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 min-w-0">
-                <span class="text-amber-400 font-bold text-sm flex items-center gap-1">
+                <span class="text-amber-400 font-bold text-sm flex items-center gap-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -823,29 +924,29 @@
                     <span>Dịch AI</span>
                 </span>
                 <span id="translatePopupModelBadge"
-                    class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 truncate">gemini-3.5-flash-lite</span>
+                    class="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-400/30 truncate">gemini-3.5-flash-lite</span>
             </div>
             <div class="flex items-center gap-1 flex-shrink-0">
                 <button id="translatePopupRetryBtn"
-                    class="p-1 rounded hover:bg-gray-700 text-gray-300 hover:text-white text-xs"
+                    class="p-1 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white text-xs transition-colors"
                     title="Dịch lại vùng này">↻</button>
                 <button id="translatePopupCopyBtn"
-                    class="p-1 rounded hover:bg-gray-700 text-gray-300 hover:text-white text-xs"
+                    class="p-1 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white text-xs transition-colors"
                     title="Sao chép bản dịch">📋</button>
                 <button id="translatePopupSettingsBtn"
-                    class="p-1 rounded hover:bg-gray-700 text-gray-300 hover:text-white text-xs"
+                    class="p-1 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white text-xs transition-colors"
                     title="Cài đặt Gemini API">⚙️</button>
                 <button id="translatePopupCloseBtn"
-                    class="p-1 rounded hover:bg-red-600 text-gray-300 hover:text-white text-xs"
+                    class="p-1 rounded-lg hover:bg-red-600/80 text-slate-300 hover:text-white text-xs transition-colors"
                     title="Đóng (Esc)">✕</button>
             </div>
         </div>
-        <div class="p-3 space-y-2.5 max-h-[65vh] overflow-y-auto scrollbar-thin">
+        <div class="p-3.5 space-y-2.5 max-h-[65vh] overflow-y-auto scrollbar-thin">
             <div id="translatePopupPreviewWrap"
-                class="flex items-center gap-2.5 bg-gray-950/70 p-1.5 rounded-lg border border-gray-800">
+                class="flex items-center gap-2.5 bg-slate-950/70 p-2 rounded-xl border border-white/10">
                 <img id="translatePopupCropImg" src="" alt="Cropped bubble"
-                    class="max-h-14 max-w-[110px] object-contain rounded border border-gray-700 bg-black" />
-                <div id="translatePopupStatusText" class="text-xs text-gray-400 flex-1 leading-snug">
+                    class="max-h-14 max-w-[110px] object-contain rounded-lg border border-white/10 bg-black" />
+                <div id="translatePopupStatusText" class="text-xs text-slate-400 flex-1 leading-snug">
                     Đang xử lý ảnh vùng chọn...
                 </div>
             </div>
@@ -860,382 +961,417 @@
                 <span>Đang nhận diện chữ & dịch qua Gemini...</span>
             </div>
             <div id="translatePopupErrorWrap"
-                class="hidden bg-red-950/80 border border-red-600/70 rounded-lg p-2.5 text-xs sm:text-sm text-red-200 space-y-2">
+                class="hidden bg-red-950/80 border border-red-500/40 rounded-xl p-2.5 text-xs sm:text-sm text-red-200 space-y-2">
                 <div id="translatePopupErrorText" class="whitespace-pre-wrap break-words"></div>
                 <div class="flex gap-2">
                     <button id="translatePopupOpenSettingsFromErrBtn"
-                        class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded text-xs font-semibold">
+                        class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-semibold transition-colors">
                         Mở Cài đặt API
                     </button>
                 </div>
             </div>
             <div id="translatePopupContentWrap" class="hidden space-y-2">
                 <div id="translatePopupTranslated"
-                    class="text-sm sm:text-base font-medium text-amber-50 leading-relaxed whitespace-pre-wrap bg-gray-800/80 p-2.5 rounded-lg border border-gray-700 select-text">
+                    class="text-sm sm:text-base font-medium text-amber-50 leading-relaxed whitespace-pre-wrap bg-slate-800/70 p-3 rounded-xl border border-white/10 select-text">
                 </div>
                 <div id="translatePopupOriginalWrap"
-                    class="text-xs text-gray-400 bg-gray-950/60 p-2 rounded border border-gray-800">
-                    <div class="font-semibold text-gray-400 mb-0.5">Chữ gốc nhận diện:</div>
-                    <div id="translatePopupOriginal" class="text-gray-300 whitespace-pre-wrap select-text"></div>
+                    class="text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-white/10">
+                    <div class="font-semibold text-slate-400 mb-0.5">Chữ gốc nhận diện:</div>
+                    <div id="translatePopupOriginal" class="text-slate-300 whitespace-pre-wrap select-text"></div>
                 </div>
             </div>
         </div>
     </div>
-    <button id="scrollZoomInBtn"
-        class="hidden fixed top-20 left-4 z-[110] p-3 bg-gray-700 bg-opacity-20 text-white font-semibold rounded-full shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-opacity duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-        title="Phóng to ảnh">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" />
-        </svg>
-    </button>
-    <button id="scrollZoomOutBtn"
-        class="hidden fixed top-36 left-4 z-[110] p-3 bg-gray-700 bg-opacity-20 text-white font-semibold rounded-full shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-opacity duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-        title="Thu nhỏ ảnh">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM8 11h6" />
-        </svg>
-    </button>
-    <div id="fullscreenStoryName"
-        class="hidden fixed left-4 bottom-4 z-[100] text-white text-lg font-semibold bg-gray-900 bg-opacity-75 p-3 rounded"
-        style="transform: rotate(-90deg); transform-origin: top left; max-width: calc(100vh - 8rem); overflow-wrap: break-word;">
+
+    <div id="scrollZoomControls"
+        class="hidden fixed left-3 top-1/2 -translate-y-1/2 z-[110] flex flex-col gap-2 pointer-events-none">
+        <button id="scrollZoomInBtn"
+            class="hidden pointer-events-auto p-2.5 bg-slate-900/80 hover:bg-indigo-600/90 border border-white/15 backdrop-blur-xl text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-200 disabled:opacity-35 disabled:cursor-not-allowed"
+            title="Phóng to ảnh">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" />
+            </svg>
+        </button>
+        <button id="scrollZoomOutBtn"
+            class="hidden pointer-events-auto p-2.5 bg-slate-900/80 hover:bg-indigo-600/90 border border-white/15 backdrop-blur-xl text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-200 disabled:opacity-35 disabled:cursor-not-allowed"
+            title="Thu nhỏ ảnh">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM8 11h6" />
+            </svg>
+        </button>
     </div>
-    <div id="fullscreenStoryTags"
-        class="hidden fixed left-20 bottom-4 z-[100] bg-gray-900 bg-opacity-70 p-2 rounded flex flex-wrap gap-1"
-        style="transform: rotate(-90deg); transform-origin: top left; max-width: calc(100vh - 8rem);"></div>
-    <div id="fullscreenPageCount"
-        class="hidden fixed bottom-4 right-4 z-[100] text-white text-lg font-semibold bg-gray-900 bg-opacity-75 p-3 rounded cursor-pointer"
-        title="Bấm để nhập số trang"></div>
+
+    <div id="fullscreenBottomHud"
+        class="hidden fixed bottom-3 left-3 right-3 z-[100] flex items-end justify-between gap-3 pointer-events-none">
+        <div class="flex-1 min-w-0 flex flex-col items-start gap-1.5 max-w-[72vw]">
+            <div id="fullscreenStoryName"
+                class="hidden pointer-events-auto text-slate-100 text-sm sm:text-base font-semibold bg-slate-900/80 backdrop-blur-xl border border-white/10 px-3.5 py-2 rounded-xl shadow-lg max-w-full break-words leading-snug">
+            </div>
+            <div id="fullscreenStoryTags"
+                class="hidden pointer-events-auto bg-slate-900/75 backdrop-blur-xl border border-white/10 px-2.5 py-1.5 rounded-xl shadow-lg flex flex-wrap gap-1.5 max-w-full">
+            </div>
+        </div>
+
+        <div class="flex-shrink-0 ml-auto flex flex-col items-end gap-2">
+            <div id="fullscreenPageCount"
+                class="hidden pointer-events-auto tabular-nums text-slate-100 text-sm sm:text-base font-semibold bg-slate-900/80 hover:bg-slate-800/90 backdrop-blur-xl border border-white/10 px-3.5 py-2 rounded-xl shadow-lg cursor-pointer transition-colors"
+                title="Bấm để nhập số trang"></div>
+        </div>
+    </div>
+
     <div id="fullscreenPageJump"
-        class="hidden fixed bottom-20 right-4 z-[101] bg-gray-900 bg-opacity-80 p-2 rounded shadow-md">
+        class="hidden fixed bottom-16 right-3 z-[101] bg-slate-900/95 backdrop-blur-xl border border-white/15 p-2.5 rounded-xl shadow-2xl">
         <div class="flex items-center gap-2">
             <input id="fullscreenPageJumpInput" type="number" min="1"
-                class="w-24 p-1 rounded bg-gray-800 border border-gray-700 text-white" placeholder="1">
-            <button id="fullscreenPageJumpGoBtn" class="px-2 py-1 text-sm bg-blue-600 rounded">Đi</button>
+                class="w-24 px-2.5 py-1.5 rounded-lg bg-slate-950/80 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-400" placeholder="1">
+            <button id="fullscreenPageJumpGoBtn" class="px-3 py-1.5 text-xs sm:text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors">Đi</button>
         </div>
     </div>
 
     <div id="scrollReadContainer"
-        class="hidden fixed inset-0 z-[45] bg-black bg-opacity-80 overflow-y-auto overscroll-contain">
+        class="hidden fixed inset-0 z-[45] bg-slate-950/95 overflow-y-auto overscroll-contain">
         <div id="scrollReadList" class="flex flex-col items-center mx-auto w-full"></div>
     </div>
 
     <div id="normalPageJump"
-        class="hidden fixed bottom-20 right-4 z-[60] bg-gray-900 bg-opacity-80 p-2 rounded shadow-md">
+        class="hidden fixed bottom-16 right-4 z-[60] bg-slate-900/95 backdrop-blur-xl border border-white/15 p-2.5 rounded-xl shadow-2xl">
         <div class="flex items-center gap-2">
             <input id="normalPageJumpInput" type="number" min="1"
-                class="w-24 p-1 rounded bg-gray-800 border border-gray-700 text-white" placeholder="1">
-            <button id="normalPageJumpGoBtn" class="px-2 py-1 text-sm bg-blue-600 rounded">Đi</button>
+                class="w-24 px-2.5 py-1.5 rounded-lg bg-slate-950/80 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-400" placeholder="1">
+            <button id="normalPageJumpGoBtn" class="px-3 py-1.5 text-xs sm:text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors">Đi</button>
         </div>
     </div>
 
-    <div id="tagModal" class="hidden fixed inset-0 z-[120] items-center justify-center">
-        <div id="tagModalBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="relative bg-gray-800 w-[95%] max-w-lg mx-auto rounded-lg shadow-xl p-4">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2 mb-3">
-                <h3 class="text-lg font-semibold">Tag của truyện đang xem</h3>
-                <button id="tagModalClose" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+    <div id="tagModal" class="hidden fixed inset-0 z-[120] items-center justify-center p-3">
+        <div id="tagModalBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-5 text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                <h3 class="text-lg font-bold text-slate-100">Tag của truyện đang xem</h3>
+                <button id="tagModalClose" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
-            <div class="space-y-3">
+            <div class="space-y-4">
                 <div>
-                    <label class="block text-sm text-gray-300 mb-1">Danh sách tag</label>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Danh sách tag</label>
                     <div id="currentStoryTags" class="flex flex-wrap gap-2"></div>
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-300 mb-1">Thêm tag</label>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Thêm tag</label>
                     <div class="relative">
                         <input id="tagInput" type="text"
-                            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400"
+                            class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/40"
                             placeholder="Nhập tag và nhấn Enter (cách nhau bằng dấu phẩy)">
                         <div id="tagSuggestPanel"
-                            class="absolute left-0 right-0 top-[100%] z-50 bg-gray-800 border border-gray-700 rounded shadow hidden max-h-56 overflow-auto">
+                            class="absolute left-0 right-0 top-[100%] mt-1 z-50 bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-xl shadow-2xl hidden max-h-56 overflow-auto scrollbar-thin">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex justify-end gap-2">
-                <button id="removeAllTagsBtn" class="px-3 py-2 bg-red-600 rounded hover:bg-red-700">Xóa hết tag</button>
-                <button id="tagModalClose2" class="px-3 py-2 bg-gray-700 rounded hover:bg-gray-600">Đóng</button>
+            <div class="mt-5 pt-3 border-t border-white/10 flex justify-end gap-2">
+                <button id="removeAllTagsBtn" class="px-3.5 py-2 bg-red-600/85 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-medium transition-colors">Xóa hết tag</button>
+                <button id="tagModalClose2" class="px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors">Đóng</button>
             </div>
         </div>
     </div>
 
-    <div id="historyModal" class="hidden fixed inset-0 z-[130] items-center justify-center">
-        <div id="historyModalBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="relative bg-gray-800 w-[95%] max-w-2xl mx-auto rounded-lg shadow-xl p-4 flex flex-col max-h-[90vh]">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2 mb-3">
-                <h3 class="text-lg font-semibold">Lịch sử đọc (tối đa 1000)</h3>
-                <button id="historyModalClose" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+    <div id="historyModal" class="hidden fixed inset-0 z-[130] items-center justify-center p-3">
+        <div id="historyModalBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-2xl mx-auto rounded-2xl shadow-2xl p-5 flex flex-col max-h-[88vh] text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                <h3 class="text-lg font-bold text-slate-100">Lịch sử đọc (tối đa 1000)</h3>
+                <button id="historyModalClose" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
-            <div id="historyList" class="flex-1 overflow-y-auto scrollbar-thin pr-2 space-y-2"></div>
-            <div class="mt-3 flex justify-end gap-2">
-                <button id="historyClearBtn" class="px-3 py-2 bg-red-600 rounded hover:bg-red-700 text-sm"
+            <div id="historyList" class="flex-1 overflow-y-auto scrollbar-thin pr-1.5 space-y-2"></div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-end gap-2">
+                <button id="historyClearBtn" class="px-3.5 py-2 bg-red-600/85 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-medium transition-colors"
                     title="Xóa toàn bộ lịch sử">Xóa tất cả</button>
                 <button id="historyModalClose2"
-                    class="px-3 py-2 bg-gray-700 rounded hover:bg-gray-600 text-sm">Đóng</button>
+                    class="px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors">Đóng</button>
             </div>
         </div>
     </div>
 
-    <div id="bookmarkModal" class="hidden fixed inset-0 z-[135] items-center justify-center">
-        <div id="bookmarkModalBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="relative bg-gray-800 w-[95%] max-w-2xl mx-auto rounded-lg shadow-xl p-4 flex flex-col max-h-[90vh]">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2 mb-3">
-                <h3 class="text-lg font-semibold">Đánh dấu đã lưu</h3>
-                <button id="bookmarkModalClose" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+    <div id="bookmarkModal" class="hidden fixed inset-0 z-[135] items-center justify-center p-3">
+        <div id="bookmarkModalBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-2xl mx-auto rounded-2xl shadow-2xl p-5 flex flex-col max-h-[88vh] text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                <h3 class="text-lg font-bold text-slate-100">Đánh dấu đã lưu</h3>
+                <button id="bookmarkModalClose" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
-            <div id="bookmarkList" class="flex-1 overflow-y-auto scrollbar-thin pr-2 space-y-2"></div>
-            <div class="mt-3 flex justify-end gap-2">
-                <button id="bookmarkClearBtn" class="px-3 py-2 bg-red-600 rounded hover:bg-red-700 text-sm"
+            <div id="bookmarkList" class="flex-1 overflow-y-auto scrollbar-thin pr-1.5 space-y-2"></div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-end gap-2">
+                <button id="bookmarkClearBtn" class="px-3.5 py-2 bg-red-600/85 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-medium transition-colors"
                     title="Xóa toàn bộ đánh dấu">Xóa tất cả</button>
                 <button id="bookmarkModalClose2"
-                    class="px-3 py-2 bg-gray-700 rounded hover:bg-gray-600 text-sm">Đóng</button>
+                    class="px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors">Đóng</button>
             </div>
         </div>
     </div>
 
-    <div id="appSettingsModal" class="hidden fixed inset-0 z-[142] items-center justify-center">
-        <div id="appSettingsBackdrop" class="absolute inset-0 bg-black/65 backdrop-blur-sm"></div>
-        <div class="relative bg-gray-800 border border-gray-700 w-[95%] max-w-2xl mx-auto rounded-xl shadow-2xl p-4 sm:p-5 text-white flex flex-col max-h-[92vh]">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2.5 mb-3">
-                <h3 class="text-lg font-bold text-gray-100 flex items-center gap-2">
+    <div id="appSettingsModal" class="hidden fixed inset-0 z-[142] items-center justify-center p-3">
+        <div id="appSettingsBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-2xl mx-auto rounded-2xl shadow-2xl p-4 sm:p-5 text-slate-100 flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                <h3 class="text-lg font-bold text-slate-100 flex items-center gap-2">
                     <span>⚙️ Cài đặt chung</span>
                 </h3>
-                <button id="appSettingsCloseBtn" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+                <button id="appSettingsCloseBtn" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
-            <div id="appSettingsScrollBody" class="space-y-3 text-sm overflow-y-auto scrollbar-thin pr-1">
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-lg p-3.5 space-y-2.5">
-                    <div class="font-semibold text-blue-300 flex items-center gap-1.5">📂 Thư mục truyện gốc</div>
-                    <div id="settingsCurrentFolderText" class="text-xs text-gray-300 bg-gray-800/90 border border-gray-700 rounded px-2.5 py-1.5 break-all">
-                        Chưa chọn thư mục gốc
+
+            <div class="flex flex-wrap items-center gap-1.5 mb-3 p-1 bg-slate-950/70 border border-white/10 rounded-xl">
+                <button type="button" data-settings-tab="library"
+                    class="app-settings-tab-btn flex-1 min-w-[140px] px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold border transition-colors bg-indigo-500/20 text-indigo-200 border-indigo-400/40">
+                    Thư viện &amp; Giao diện
+                </button>
+                <button type="button" data-settings-tab="lan"
+                    class="app-settings-tab-btn flex-1 min-w-[120px] px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold border transition-colors text-slate-400 hover:text-slate-200 hover:bg-white/5 border-transparent">
+                    Kết nối LAN
+                </button>
+                <button type="button" data-settings-tab="desktop"
+                    class="app-settings-tab-btn flex-1 min-w-[130px] px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold border transition-colors text-slate-400 hover:text-slate-200 hover:bg-white/5 border-transparent">
+                    Desktop &amp; Dịch AI
+                </button>
+            </div>
+
+            <div id="appSettingsScrollBody" class="space-y-3 text-sm overflow-y-auto scrollbar-thin pr-1 flex-1 min-h-0">
+                <div id="settingsTabLibrary" class="space-y-3">
+                    <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3.5 space-y-2.5">
+                        <div class="font-semibold text-indigo-300 flex items-center gap-1.5">📂 Thư mục truyện gốc</div>
+                        <div id="settingsCurrentFolderText" class="text-xs text-slate-300 bg-slate-900/90 border border-white/10 rounded-lg px-3 py-2 break-all">
+                            Chưa chọn thư mục gốc
+                        </div>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button id="selectFolderBtn" type="button"
+                                    class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition-colors text-xs sm:text-sm font-medium">Chọn Folder</button>
+                                <button id="reloadFolderBtn" type="button"
+                                    class="hidden px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl transition-colors text-xs sm:text-sm font-medium flex items-center gap-1.5"
+                                    title="Quét lại thư mục gốc hiện tại">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                        </path>
+                                    </svg>
+                                    <span>Tải lại thư mục</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-slate-400">
+                                <span>Cache <code class="text-slate-300">.thumbs</code>: <b id="thumbCacheSummaryText" class="text-sky-300 tabular-nums">0 ảnh (0 MB)</b></span>
+                                <button id="clearThumbCacheBtn" type="button"
+                                    class="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-lg transition-colors text-xs font-medium"
+                                    title="Xóa toàn bộ ảnh bìa thu nhỏ đã lưu trong App data/.thumbs">Dọn cache</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-between gap-2">
+
+                    <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3.5 space-y-2.5">
+                        <div class="font-semibold text-teal-300 flex items-center gap-1.5">🖼️ Hình nền giao diện</div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <button id="selectFolderBtn" type="button"
-                                class="px-3.5 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm font-medium">Chọn Folder</button>
-                            <button id="reloadFolderBtn" type="button"
-                                class="hidden px-3.5 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors text-xs sm:text-sm font-medium flex items-center gap-1.5"
-                                title="Quét lại thư mục gốc hiện tại">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                                    </path>
-                                </svg>
-                                <span>Tải lại thư mục</span>
-                            </button>
+                            <select id="bgSelectDropdown" disabled
+                                class="flex-1 min-w-[180px] p-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs sm:text-sm focus:outline-none focus:border-indigo-400 disabled:opacity-50">
+                                <option value="__NONE__">Mặc định (Không dùng hình nền)</option>
+                            </select>
+                            <button id="bgChangeBtn" type="button" disabled
+                                class="px-3.5 py-2 bg-teal-600/85 hover:bg-teal-500 text-white rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-medium"
+                                title="Chuyển sang hình nền tiếp theo trong thư mục App data/BG">Đổi tiếp</button>
                         </div>
-                        <div class="flex items-center gap-2 text-xs text-gray-400">
-                            <span>Cache <code class="text-gray-300">.thumbs</code>: <b id="thumbCacheSummaryText" class="text-sky-300">0 ảnh (0 MB)</b></span>
-                            <button id="clearThumbCacheBtn" type="button"
-                                class="px-2.5 py-1.5 bg-slate-700 hover:bg-slate-600 text-gray-200 rounded-lg transition-colors text-xs font-medium"
-                                title="Xóa toàn bộ ảnh bìa thu nhỏ đã lưu trong App data/.thumbs">Dọn cache</button>
+                        <div class="text-xs text-slate-400">
+                            Đặt ảnh tên <code class="text-slate-300">background_1</code>, <code class="text-slate-300">background_2</code>... vào <code class="text-slate-300">App data/BG</code>. Lựa chọn sẽ được tự động lưu lại cho lần mở sau.
                         </div>
                     </div>
-                </div>
 
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-lg p-3.5 space-y-2.5">
-                    <div class="font-semibold text-teal-300 flex items-center gap-1.5">🖼️ Hình nền giao diện</div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <select id="bgSelectDropdown" disabled
-                            class="flex-1 min-w-[180px] p-2 rounded-lg bg-gray-800 border border-gray-700 text-white text-xs sm:text-sm focus:outline-none focus:border-teal-500 disabled:opacity-50">
-                            <option value="__NONE__">Mặc định (Không dùng hình nền)</option>
-                        </select>
-                        <button id="bgChangeBtn" type="button" disabled
-                            class="px-3.5 py-2 bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm font-medium"
-                            title="Chuyển sang hình nền tiếp theo trong thư mục App data/BG">Đổi tiếp</button>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        Đặt ảnh tên <code class="text-gray-300">background_1</code>, <code class="text-gray-300">background_2</code>... vào <code class="text-gray-300">App data/BG</code>. Lựa chọn sẽ được tự động lưu lại cho lần mở sau.
-                    </div>
-                </div>
-
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-lg p-3.5 flex items-center justify-between gap-3">
-                    <div>
-                        <div class="font-semibold text-red-300">🚫 Blacklist (Folder bị ẩn)</div>
-                        <div class="text-xs text-gray-400 mt-0.5">Đang ẩn <span id="settingsBlacklistCount" class="font-bold text-gray-200">0</span> thư mục khi quét.</div>
-                    </div>
-                    <button id="blacklistBtn" type="button" disabled
-                        class="px-3.5 py-2 bg-red-800 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm font-medium shrink-0"
-                        title="Quản lý các thư mục bị ẩn (Blacklist)">Quản lý Blacklist</button>
-                </div>
-
-                <div class="bg-gray-900/60 border border-gray-700/80 rounded-lg p-3.5 flex items-center justify-between gap-3">
-                    <div>
-                        <div class="font-semibold text-amber-300">🤖 Dịch truyện bằng AI (Gemini)</div>
-                        <div class="text-xs text-gray-400 mt-0.5">Cấu hình API Key, Model và ngôn ngữ dịch vùng ảnh.</div>
-                    </div>
-                    <button id="openTranslateSettingsFromAppBtn" type="button"
-                        class="px-3.5 py-2 bg-amber-600 rounded-lg hover:bg-amber-500 transition-colors text-xs sm:text-sm font-medium shrink-0">Cài đặt Dịch AI</button>
-                </div>
-
-                <div id="lanSettingsSection" class="bg-gray-900/60 border border-gray-700/80 rounded-lg p-3.5 transition-all">
-                    <div class="flex items-center justify-between gap-3">
+                    <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
                         <div>
-                            <div class="font-semibold text-emerald-300 flex items-center gap-1.5">📱 Kết nối Điện thoại (Wi-Fi / LAN)</div>
-                            <div class="text-xs text-gray-400 mt-0.5">Trạng thái: <span id="lanEnableStatusBadge" class="font-bold text-gray-300">Đang tắt</span></div>
+                            <div class="font-semibold text-rose-300">🚫 Blacklist (Folder bị ẩn)</div>
+                            <div class="text-xs text-slate-400 mt-0.5">Đang ẩn <span id="settingsBlacklistCount" class="font-bold text-slate-200 tabular-nums">0</span> thư mục khi quét.</div>
                         </div>
-                        <button id="lanEnableToggleBtn" type="button"
-                            class="px-3.5 py-2 bg-emerald-600 rounded-lg hover:bg-emerald-500 transition-colors text-xs sm:text-sm font-medium shrink-0">Bật kết nối</button>
+                        <button id="blacklistBtn" type="button" disabled
+                            class="px-3.5 py-2 bg-red-600/80 hover:bg-red-500 text-white rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-medium shrink-0"
+                            title="Quản lý các thư mục bị ẩn (Blacklist)">Quản lý Blacklist</button>
                     </div>
+                </div>
 
-                    <div id="trayHotkeySection" class="mt-3 pt-3 border-t border-gray-700/80 space-y-1.5">
+                <div id="settingsTabLan" class="hidden space-y-3">
+                    <div id="lanSettingsSection" class="bg-slate-950/60 border border-white/10 rounded-xl p-3.5 transition-all">
+                        <div class="flex items-center justify-between gap-3">
+                            <div>
+                                <div class="font-semibold text-emerald-300 flex items-center gap-1.5">📱 Kết nối Điện thoại (Wi-Fi / LAN)</div>
+                                <div class="text-xs text-slate-400 mt-0.5">Trạng thái: <span id="lanEnableStatusBadge" class="font-bold text-slate-300">Đang tắt</span></div>
+                            </div>
+                            <button id="lanEnableToggleBtn" type="button"
+                                class="px-3.5 py-2 bg-emerald-600 rounded-xl hover:bg-emerald-500 transition-colors text-xs sm:text-sm font-medium shrink-0">Bật kết nối</button>
+                        </div>
+
+                        <div id="lanConnectionDetailsWrap" class="hidden mt-3 pt-3 border-t border-white/10">
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                                <div class="flex flex-col items-center shrink-0">
+                                    <div class="bg-white p-2 rounded-xl shadow-md">
+                                        <canvas id="lanQrCanvas" width="148" height="148" class="block"></canvas>
+                                    </div>
+                                    <div class="text-[11px] text-slate-400 text-center mt-1.5 max-w-[160px] leading-snug">
+                                        Quét QR bằng điện thoại cùng mạng Wi-Fi
+                                    </div>
+                                </div>
+                                <div class="flex-1 w-full min-w-0 space-y-3">
+                                    <div>
+                                        <label class="block text-xs text-slate-400 mb-1">Địa chỉ truy cập trên Điện thoại:</label>
+                                        <div class="flex gap-2">
+                                            <select id="lanUrlSelect" class="flex-1 min-w-0 bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs sm:text-sm text-emerald-300 font-mono focus:outline-none focus:border-emerald-500"></select>
+                                            <button id="lanCopyUrlBtn" type="button" class="px-3 py-1.5 bg-indigo-600 rounded-xl hover:bg-indigo-500 text-xs sm:text-sm font-medium shrink-0 transition-colors">Copy</button>
+                                        </div>
+                                    </div>
+                                    <div class="pt-2.5 border-t border-white/10">
+                                        <div class="flex items-center justify-between text-xs sm:text-sm mb-1.5">
+                                            <span class="font-semibold text-amber-300">🔒 Mật khẩu kết nối</span>
+                                            <span id="lanHostPasswordBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">🔓 Đang tắt</span>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <input id="lanHostPasswordInput" type="password" placeholder="Nhập mật khẩu bảo vệ..." class="flex-1 min-w-0 bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:border-amber-500" />
+                                            <button id="lanHostToggleShowPwdBtn" type="button" class="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold shrink-0 transition-colors">Hiện</button>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-2">
+                                            <button id="lanHostSavePwdBtn" type="button" class="px-3 py-1.5 bg-amber-600 rounded-xl hover:bg-amber-500 text-xs font-semibold transition-colors">Lưu &amp; Bật khóa</button>
+                                            <button id="lanHostDisablePwdBtn" type="button" class="px-3 py-1.5 bg-red-600/85 rounded-xl hover:bg-red-500 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-colors">Tắt mật khẩu</button>
+                                        </div>
+                                        <div id="lanHostPwdStatusMsg" class="hidden text-xs mt-1.5"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settingsTabDesktop" class="hidden space-y-3">
+                    <div id="trayHotkeySection" class="bg-slate-950/60 border border-white/10 rounded-xl p-3.5 space-y-2">
                         <div class="flex items-center justify-between gap-2">
                             <span class="font-semibold text-sky-300 text-xs sm:text-sm">⌨️ Phím tắt ẩn nhanh xuống System Tray (PC)</span>
                             <span id="trayHotkeyStatusBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">Alt + X</span>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
                             <input id="trayHotkeyInput" type="text" readonly value="Alt + X"
-                                class="flex-1 min-w-[170px] bg-gray-800 border border-gray-600 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm text-sky-200 font-mono cursor-pointer focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+                                class="flex-1 min-w-[170px] bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs sm:text-sm text-sky-200 font-mono cursor-pointer focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
                                 title="Nhấp vào ô này rồi bấm tổ hợp phím mới để gán" />
                             <button id="trayHotkeyClearBtn" type="button"
-                                class="px-2.5 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs font-medium text-gray-200 shrink-0"
+                                class="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-medium text-slate-200 shrink-0 transition-colors"
                                 title="Tắt phím tắt ẩn nhanh">Tắt phím</button>
                             <button id="trayHideNowBtn" type="button"
-                                class="px-3 py-1.5 bg-sky-700 hover:bg-sky-600 rounded-lg text-xs font-semibold text-white shrink-0"
+                                class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 rounded-xl text-xs font-semibold text-white shrink-0 transition-colors"
                                 title="Ẩn ngay cửa sổ xuống khay hệ thống (System Tray)">Ẩn ngay</button>
                         </div>
-                        <div id="trayHotkeyHintText" class="text-[11px] text-gray-400 leading-snug">
-                            Nhấp vào ô trên rồi nhấn tổ hợp phím (VD: <code class="text-gray-300">Alt+X</code>, <code class="text-gray-300">Ctrl+Shift+H</code>, <code class="text-gray-300">F9</code>). Chỉ dùng để ẩn xuống khay hệ thống; chuột phải icon dưới khay để <b>Mở App</b> / <b>Mở Cài Đặt Kết Nối</b> / <b>Dừng</b>.
+                        <div id="trayHotkeyHintText" class="text-[11px] text-slate-400 leading-snug">
+                            Nhấp vào ô trên rồi nhấn tổ hợp phím (VD: <code class="text-slate-300">Alt+X</code>, <code class="text-slate-300">Ctrl+Shift+H</code>, <code class="text-slate-300">F9</code>). Chỉ dùng để ẩn xuống khay hệ thống; chuột phải icon dưới khay để <b>Mở App</b> / <b>Mở Cài Đặt Kết Nối</b> / <b>Dừng</b>.
                         </div>
                     </div>
 
-                    <div id="lanConnectionDetailsWrap" class="hidden mt-3 pt-3 border-t border-gray-700/80">
-                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                            <div class="flex flex-col items-center shrink-0">
-                                <div class="bg-white p-2 rounded-xl shadow-md">
-                                    <canvas id="lanQrCanvas" width="148" height="148" class="block"></canvas>
-                                </div>
-                                <div class="text-[11px] text-gray-400 text-center mt-1.5 max-w-[160px] leading-snug">
-                                    Quét QR bằng điện thoại cùng mạng Wi-Fi
-                                </div>
-                            </div>
-                            <div class="flex-1 w-full min-w-0 space-y-3">
-                                <div>
-                                    <label class="block text-xs text-gray-400 mb-1">Địa chỉ truy cập trên Điện thoại:</label>
-                                    <div class="flex gap-2">
-                                        <select id="lanUrlSelect" class="flex-1 min-w-0 bg-gray-800 border border-gray-600 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm text-emerald-300 font-mono focus:outline-none focus:border-emerald-500"></select>
-                                        <button id="lanCopyUrlBtn" type="button" class="px-3 py-1.5 bg-blue-600 rounded-lg hover:bg-blue-500 text-xs sm:text-sm font-medium shrink-0">Copy</button>
-                                    </div>
-                                </div>
-                                <div class="pt-2.5 border-t border-gray-700/80">
-                                    <div class="flex items-center justify-between text-xs sm:text-sm mb-1.5">
-                                        <span class="font-semibold text-amber-300">🔒 Mật khẩu kết nối</span>
-                                        <span id="lanHostPasswordBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-gray-700 text-gray-300">🔓 Đang tắt</span>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <input id="lanHostPasswordInput" type="password" placeholder="Nhập mật khẩu bảo vệ..." class="flex-1 min-w-0 bg-gray-800 border border-gray-600 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:border-amber-500" />
-                                        <button id="lanHostToggleShowPwdBtn" type="button" class="px-2.5 py-1.5 bg-gray-700 rounded-lg hover:bg-gray-600 text-xs font-semibold shrink-0">Hiện</button>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 mt-2">
-                                        <button id="lanHostSavePwdBtn" type="button" class="px-3 py-1.5 bg-amber-600 rounded-lg hover:bg-amber-500 text-xs font-semibold">Lưu &amp; Bật khóa</button>
-                                        <button id="lanHostDisablePwdBtn" type="button" class="px-3 py-1.5 bg-red-700 rounded-lg hover:bg-red-600 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Tắt mật khẩu</button>
-                                    </div>
-                                    <div id="lanHostPwdStatusMsg" class="hidden text-xs mt-1.5"></div>
-                                </div>
-                            </div>
+                    <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
+                        <div>
+                            <div class="font-semibold text-amber-300">🤖 Dịch truyện bằng AI (Gemini)</div>
+                            <div class="text-xs text-slate-400 mt-0.5">Cấu hình API Key, Model và ngôn ngữ dịch vùng ảnh.</div>
                         </div>
+                        <button id="openTranslateSettingsFromAppBtn" type="button"
+                            class="px-3.5 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl transition-colors text-xs sm:text-sm font-medium shrink-0">Cài đặt Dịch AI</button>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 pt-3 border-t border-gray-700 flex justify-end">
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-end">
                 <button id="appSettingsCloseBtn2" type="button"
-                    class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-sm font-medium">Đóng</button>
+                    class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-sm font-medium transition-colors">Đóng</button>
             </div>
         </div>
     </div>
 
-    <div id="blacklistModal" class="hidden fixed inset-0 z-[146] items-center justify-center">
-        <div id="blacklistModalBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="relative bg-gray-800 w-[95%] max-w-2xl mx-auto rounded-lg shadow-xl p-4 flex flex-col max-h-[90vh]">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-2 mb-3">
-                <h3 class="text-lg font-semibold">Quản lý Blacklist (Folder bị ẩn)</h3>
-                <button id="blacklistModalClose" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+    <div id="blacklistModal" class="hidden fixed inset-0 z-[146] items-center justify-center p-3">
+        <div id="blacklistModalBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-2xl mx-auto rounded-2xl shadow-2xl p-5 flex flex-col max-h-[88vh] text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                <h3 class="text-lg font-bold text-slate-100">Quản lý Blacklist (Folder bị ẩn)</h3>
+                <button id="blacklistModalClose" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
-            <div class="text-sm text-gray-400 mb-2">Những thư mục trong danh sách này sẽ bị bỏ qua và không được tải
+            <div class="text-xs sm:text-sm text-slate-400 mb-3">Những thư mục trong danh sách này sẽ bị bỏ qua và không được tải
                 trong các lần quét.</div>
-            <div id="blacklistList" class="flex-1 overflow-y-auto scrollbar-thin pr-2 space-y-2"></div>
-            <div class="mt-3 flex justify-end gap-2">
-                <button id="blacklistClearBtn" class="px-3 py-2 bg-red-600 rounded hover:bg-red-700 text-sm"
+            <div id="blacklistList" class="flex-1 overflow-y-auto scrollbar-thin pr-1.5 space-y-2"></div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-end gap-2">
+                <button id="blacklistClearBtn" class="px-3.5 py-2 bg-red-600/85 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-medium transition-colors"
                     title="Xóa toàn bộ blacklist">Xóa tất cả Blacklist</button>
                 <button id="blacklistModalClose2"
-                    class="px-3 py-2 bg-gray-700 rounded hover:bg-gray-600 text-sm">Đóng</button>
+                    class="px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors">Đóng</button>
             </div>
         </div>
     </div>
 
-    <div id="ratingModal" class="hidden fixed inset-0 z-[148] items-center justify-center">
-        <div id="ratingModalBackdrop" class="absolute inset-0 bg-black/65 backdrop-blur-sm"></div>
-        <div class="relative bg-gray-800 border border-gray-700 w-[95%] max-w-md mx-auto rounded-xl shadow-2xl p-5 text-white">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-3 mb-3">
+    <div id="ratingModal" class="hidden fixed inset-0 z-[148] items-center justify-center p-3">
+        <div id="ratingModalBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
+        <div class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-md mx-auto rounded-2xl shadow-2xl p-5 text-slate-100">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
                 <h3 id="ratingModalTitle" class="text-lg font-bold text-amber-400">★ Đánh giá & Chú thích</h3>
-                <button id="ratingModalClose" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+                <button id="ratingModalClose" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
-            <div id="ratingTargetName" class="text-sm font-semibold text-gray-200 mb-3 break-words"></div>
+            <div id="ratingTargetName" class="text-sm font-semibold text-slate-200 mb-3 break-words"></div>
             <div class="space-y-4">
                 <div>
-                    <div class="text-xs text-gray-400 mb-1.5">Số sao đánh giá (1 - 5 sao):</div>
+                    <div class="text-xs text-slate-400 mb-1.5">Số sao đánh giá (1 - 5 sao):</div>
                     <div class="flex items-center gap-2">
                         <div id="ratingStarsRow" class="flex items-center gap-1">
-                            <button type="button" data-star="1" class="text-3xl leading-none text-gray-500 hover:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="2" class="text-3xl leading-none text-gray-500 hover:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="3" class="text-3xl leading-none text-gray-500 hover:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="4" class="text-3xl leading-none text-gray-500 hover:scale-110 transition-transform focus:outline-none">★</button>
-                            <button type="button" data-star="5" class="text-3xl leading-none text-gray-500 hover:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="1" class="text-3xl leading-none text-slate-500 hover:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="2" class="text-3xl leading-none text-slate-500 hover:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="3" class="text-3xl leading-none text-slate-500 hover:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="4" class="text-3xl leading-none text-slate-500 hover:scale-110 transition-transform focus:outline-none">★</button>
+                            <button type="button" data-star="5" class="text-3xl leading-none text-slate-500 hover:scale-110 transition-transform focus:outline-none">★</button>
                         </div>
                         <span id="ratingStarsLabel" class="text-xs text-amber-300 font-semibold ml-2">Chưa chọn sao</span>
                     </div>
                 </div>
                 <div>
-                    <label for="ratingNoteInput" class="block text-xs text-gray-300 font-medium mb-1">Chú thích / Ghi chú (tùy chọn):</label>
+                    <label for="ratingNoteInput" class="block text-xs text-slate-300 font-medium mb-1">Chú thích / Ghi chú (tùy chọn):</label>
                     <textarea id="ratingNoteInput" rows="3" maxlength="500"
-                        class="w-full p-2.5 rounded-lg bg-gray-900 border border-gray-700 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                        class="w-full p-2.5 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                         placeholder="Nhập cảm nhận, ghi chú ngắn về truyện hoặc tác giả..."></textarea>
                 </div>
             </div>
-            <div class="mt-5 flex items-center justify-between gap-2">
+            <div class="mt-5 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
                 <button id="ratingClearBtn" type="button"
-                    class="px-3 py-2 bg-red-700/90 hover:bg-red-600 rounded-lg text-xs sm:text-sm font-medium">Xóa đánh giá</button>
+                    class="px-3 py-2 bg-red-600/85 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-medium transition-colors">Xóa đánh giá</button>
                 <div class="flex items-center gap-2 ml-auto">
                     <button id="ratingCancelBtn" type="button"
-                        class="px-3.5 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs sm:text-sm font-medium">Hủy</button>
+                        class="px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-xs sm:text-sm font-medium transition-colors">Hủy</button>
                     <button id="ratingSaveBtn" type="button"
-                        class="px-4 py-2 bg-amber-600 hover:bg-amber-500 rounded-lg text-xs sm:text-sm font-semibold shadow">Lưu</button>
+                        class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs sm:text-sm font-semibold shadow transition-colors">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="translateSettingsModal" class="hidden fixed inset-0 z-[150] items-center justify-center">
-        <div id="translateSettingsBackdrop" class="absolute inset-0 bg-black/65 backdrop-blur-sm"></div>
+    <div id="translateSettingsModal" class="hidden fixed inset-0 z-[150] items-center justify-center p-3">
+        <div id="translateSettingsBackdrop" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm"></div>
         <div
-            class="relative bg-gray-800 border border-gray-700 w-[95%] max-w-lg mx-auto rounded-xl shadow-2xl p-5 text-white">
-            <div class="flex items-center justify-between border-b border-gray-700 pb-3 mb-4">
+            class="relative bg-slate-900/95 backdrop-blur-xl border border-white/10 w-full max-w-lg mx-auto rounded-2xl shadow-2xl p-5 text-slate-100 max-h-[90vh] overflow-y-auto scrollbar-thin">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
                 <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
                     <span>⚙️ Cài đặt Dịch AI (Google Gemini)</span>
                 </h3>
-                <button id="translateSettingsCloseBtn" class="p-1 rounded hover:bg-gray-700" title="Đóng">✕</button>
+                <button id="translateSettingsCloseBtn" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="Đóng">✕</button>
             </div>
             <div class="space-y-4 text-sm">
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Gemini API Key <span
+                    <label class="block text-slate-200 font-medium mb-1">Gemini API Key <span
                             class="text-red-400">*</span></label>
                     <div class="flex gap-2">
                         <input id="translateApiKeyInput" type="password"
-                            class="flex-1 p-2 rounded bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                            class="flex-1 p-2 rounded-xl bg-slate-950/80 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                             placeholder="AIzaSy...">
                         <button id="toggleShowApiKeyBtn" type="button"
-                            class="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-xs font-semibold">Hiện</button>
+                            class="px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold transition-colors">Hiện</button>
                     </div>
-                    <div class="text-xs text-gray-400 mt-1">
+                    <div class="text-xs text-slate-400 mt-1">
                         Lấy mã API Key miễn phí tại Google AI Studio (aistudio.google.com). Key được lưu an toàn trên
                         máy của bạn.
                     </div>
                 </div>
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Model Gemini</label>
+                    <label class="block text-slate-200 font-medium mb-1">Model Gemini</label>
                     <select id="translateModelSelect"
-                        class="w-full p-2 rounded bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-amber-500">
+                        class="w-full p-2 rounded-xl bg-slate-950/80 border border-white/10 text-white focus:outline-none focus:border-amber-500">
                         <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (Ưu tiên)</option>
                         <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Ưu tiên)</option>
                         <option value="gemini-3.8-flash">gemini-3.8-flash</option>
@@ -1244,22 +1380,22 @@
                         <option value="custom">Tùy chỉnh (Nhập tên model khác...)</option>
                     </select>
                     <input id="translateCustomModelInput" type="text"
-                        class="hidden mt-2 w-full p-2 rounded bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                        class="hidden mt-2 w-full p-2 rounded-xl bg-slate-950/80 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                         placeholder="Nhập mã model (VD: gemini-3.5-flash-lite)">
                 </div>
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Ngôn ngữ dịch sang</label>
+                    <label class="block text-slate-200 font-medium mb-1">Ngôn ngữ dịch sang</label>
                     <input id="translateTargetLangInput" type="text"
-                        class="w-full p-2 rounded bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                        class="w-full p-2 rounded-xl bg-slate-950/80 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                         placeholder="Tiếng Việt" value="Tiếng Việt">
                 </div>
                 <div>
-                    <label class="block text-gray-200 font-medium mb-1">Ghi chú / Phong cách dịch (Tùy chọn)</label>
+                    <label class="block text-slate-200 font-medium mb-1">Ghi chú / Phong cách dịch (Tùy chọn)</label>
                     <textarea id="translateCustomPromptInput" rows="2"
-                        class="w-full p-2 rounded bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                        class="w-full p-2 rounded-xl bg-slate-950/80 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                         placeholder="VD: Dịch tự nhiên theo phong cách manga/manhwa, xưng hô phù hợp ngữ cảnh..."></textarea>
                 </div>
-                <div class="bg-gray-900/70 border border-gray-700/80 rounded-lg p-2.5 text-xs text-gray-300 space-y-1">
+                <div class="bg-slate-950/60 border border-white/10 rounded-xl p-3 text-xs text-slate-300 space-y-1">
                     <div class="font-semibold text-amber-300">💡 Hướng dẫn sử dụng trong giao diện đọc mở rộng:</div>
                     <div>• <b>Cách 1:</b> Nhấn nút <b>Dịch</b> (màu cam) trên góc trái hoặc phím <b>T</b> để bật chế độ
                         quét, sau đó kéo chuột khoanh vùng ô thoại.</div>
@@ -1267,11 +1403,11 @@
                         nhanh.</div>
                 </div>
             </div>
-            <div class="mt-5 flex justify-end gap-2">
+            <div class="mt-5 pt-3 border-t border-white/10 flex justify-end gap-2">
                 <button id="translateSettingsCloseBtn2" type="button"
-                    class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-sm font-medium">Hủy</button>
+                    class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 rounded-xl text-sm font-medium transition-colors">Hủy</button>
                 <button id="translateSettingsSaveBtn" type="button"
-                    class="px-4 py-2 bg-amber-600 rounded-lg hover:bg-amber-500 text-sm font-semibold shadow">Lưu cài
+                    class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-sm font-semibold shadow transition-colors">Lưu cài
                     đặt</button>
             </div>
         </div>
@@ -1395,6 +1531,7 @@
         const treePlaceholder = document.getElementById('treePlaceholder');
 
         const homeBtn = document.getElementById('homeBtn');
+        const authorsBtn = document.getElementById('authorsBtn');
         const homeView = document.getElementById('homeView');
         const homeGrid = document.getElementById('homeGrid');
         const homeShuffleBtn = document.getElementById('homeShuffleBtn');
@@ -1411,6 +1548,9 @@
         let previousViewForAuthorDetail = 'HOME';
         let currentAuthorDetailTarget = null; // { id, name }
 
+        const fullscreenTopHud = document.getElementById('fullscreenTopHud');
+        const fullscreenBottomHud = document.getElementById('fullscreenBottomHud');
+        const scrollZoomControls = document.getElementById('scrollZoomControls');
         const fullscreenRandomBtn = document.getElementById('fullscreenRandomBtn');
         const fullscreenStoryName = document.getElementById('fullscreenStoryName');
         const fullscreenExitBtn = document.getElementById('fullscreenExitBtn');
@@ -1791,11 +1931,11 @@
                 const ratingHtml = buildStoryRatingCardHtml(storyId);
 
                 const card = document.createElement('button');
-                card.className = 'home-card text-left focus:outline-none focus:ring-2 focus:ring-blue-500 flex flex-col justify-between';
+                card.className = 'home-card text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 flex flex-col justify-between';
                 card.title = 'Mở truyện';
 
                 card.innerHTML = `
-                  <div class="relative w-full">
+                  <div class="relative w-full overflow-hidden">
                     ${hasThumb
                         ? (isVid
                             ? `<div class="home-video-thumb">VIDEO</div>`
@@ -1838,6 +1978,10 @@
         const authorListView = document.getElementById('authorListView');
         const authorGrid = document.getElementById('authorGrid');
         const authorListBackBtn = document.getElementById('authorListBackBtn');
+
+        if (authorsBtn) {
+            authorsBtn.addEventListener('click', () => renderAuthorListPage());
+        }
 
         if (authorListBackBtn) {
             authorListBackBtn.addEventListener('click', async () => {
@@ -2016,11 +2160,11 @@
                 const ratingHtml = buildStoryRatingCardHtml(storyId);
 
                 const card = document.createElement('button');
-                card.className = 'home-card text-left focus:outline-none focus:ring-2 focus:ring-blue-500 flex flex-col justify-between h-full';
+                card.className = 'home-card text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 flex flex-col justify-between h-full';
                 card.title = 'Mở truyện';
 
                 card.innerHTML = `
-                  <div class="relative w-full">
+                  <div class="relative w-full overflow-hidden">
                     ${hasThumb
                         ? (isVid
                             ? `<div class="home-video-thumb">VIDEO</div>`
@@ -2070,21 +2214,21 @@
         function applyBackgroundByRelPath(relPath) {
             if (!relPath || relPath === '__NONE__') {
                 currentBgIndex = -1;
-                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundImage = '';
                 if (bgSelectDropdown) bgSelectDropdown.value = '__NONE__';
                 return;
             }
             const idx = bgRelPaths.findIndex(p => p.toLowerCase() === relPath.toLowerCase());
             if (idx === -1) {
                 currentBgIndex = -1;
-                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundImage = '';
                 if (bgSelectDropdown) bgSelectDropdown.value = '__NONE__';
                 return;
             }
             currentBgIndex = idx;
             const actualRel = bgRelPaths[idx];
             const bgUrl = buildMediaUrl(actualRel);
-            document.body.style.backgroundImage = `url('${bgUrl}')`;
+            document.body.style.backgroundImage = `linear-gradient(180deg, rgba(9, 13, 22, 0.68) 0%, rgba(9, 13, 22, 0.80) 100%), url('${bgUrl}')`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
             document.body.style.backgroundAttachment = 'fixed';
@@ -2154,7 +2298,7 @@
                 bgSelectDropdown.disabled = true;
             }
             currentBgIndex = -1;
-            document.body.style.backgroundImage = 'none';
+            document.body.style.backgroundImage = '';
         }
 
         bgChangeBtn.addEventListener('click', cycleBackground);
@@ -2279,7 +2423,38 @@
             upsertReadingHistory(currentStoryName, currentStoryPath, pageIndex, currentStoryImages.length);
         }
 
-        function openAppSettingsModal() {
+        const appSettingsTabButtons = Array.from(document.querySelectorAll('.app-settings-tab-btn'));
+        const appSettingsTabPanels = {
+            library: document.getElementById('settingsTabLibrary'),
+            lan: document.getElementById('settingsTabLan'),
+            desktop: document.getElementById('settingsTabDesktop')
+        };
+
+        function switchAppSettingsTab(tabKey = 'library') {
+            const targetKey = appSettingsTabPanels[tabKey] ? tabKey : 'library';
+            Object.entries(appSettingsTabPanels).forEach(([key, panel]) => {
+                if (panel) panel.classList.toggle('hidden', key !== targetKey);
+            });
+            appSettingsTabButtons.forEach(btn => {
+                const active = btn.dataset.settingsTab === targetKey;
+                btn.classList.toggle('bg-indigo-500/20', active);
+                btn.classList.toggle('text-indigo-200', active);
+                btn.classList.toggle('border-indigo-400/40', active);
+                btn.classList.toggle('text-slate-400', !active);
+                btn.classList.toggle('hover:text-slate-200', !active);
+                btn.classList.toggle('hover:bg-white/5', !active);
+                btn.classList.toggle('border-transparent', !active);
+            });
+        }
+
+        appSettingsTabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchAppSettingsTab(btn.dataset.settingsTab || 'library');
+            });
+        });
+
+        function openAppSettingsModal(initialTab = 'library') {
+            switchAppSettingsTab(initialTab);
             updateSettingsModalInfo();
             if (typeof refreshUnifiedLanSettingsUI === 'function') refreshUnifiedLanSettingsUI();
             appSettingsModal.classList.remove('hidden');
@@ -2289,7 +2464,7 @@
             appSettingsModal.classList.add('hidden');
             appSettingsModal.classList.remove('flex');
         }
-        if (appSettingsBtn) appSettingsBtn.addEventListener('click', openAppSettingsModal);
+        if (appSettingsBtn) appSettingsBtn.addEventListener('click', () => openAppSettingsModal('library'));
         if (appSettingsBackdrop) appSettingsBackdrop.addEventListener('click', closeAppSettingsModal);
         if (appSettingsCloseBtn) appSettingsCloseBtn.addEventListener('click', closeAppSettingsModal);
         if (appSettingsCloseBtn2) appSettingsCloseBtn2.addEventListener('click', closeAppSettingsModal);
@@ -2306,11 +2481,11 @@
             if (likeStoryBtn) {
                 likeStoryBtn.disabled = !hasStory;
                 const liked = hasStory && likedStoryIds.has(storyId);
-                likeStoryBtn.classList.toggle('bg-pink-600', liked);
-                likeStoryBtn.classList.toggle('hover:bg-pink-500', liked);
+                likeStoryBtn.classList.toggle('bg-rose-600/85', liked);
+                likeStoryBtn.classList.toggle('hover:bg-rose-500', liked);
                 likeStoryBtn.classList.toggle('text-white', liked);
-                likeStoryBtn.classList.toggle('bg-gray-700', !liked);
-                likeStoryBtn.classList.toggle('hover:bg-gray-600', !liked);
+                likeStoryBtn.classList.toggle('bg-white/5', !liked);
+                likeStoryBtn.classList.toggle('hover:bg-white/10', !liked);
                 likeStoryBtn.classList.toggle('text-pink-300', !liked);
                 if (likeStoryOutlineIcon) likeStoryOutlineIcon.classList.toggle('hidden', liked);
                 if (likeStorySolidIcon) likeStorySolidIcon.classList.toggle('hidden', !liked);
@@ -2319,11 +2494,11 @@
             if (rateStoryBtn) {
                 rateStoryBtn.disabled = !hasStory;
                 const r = hasStory ? getStoryRating(storyId) : null;
-                rateStoryBtn.classList.toggle('bg-amber-600', !!r);
+                rateStoryBtn.classList.toggle('bg-amber-600/85', !!r);
                 rateStoryBtn.classList.toggle('hover:bg-amber-500', !!r);
                 rateStoryBtn.classList.toggle('text-white', !!r);
-                rateStoryBtn.classList.toggle('bg-gray-700', !r);
-                rateStoryBtn.classList.toggle('hover:bg-gray-600', !r);
+                rateStoryBtn.classList.toggle('bg-white/5', !r);
+                rateStoryBtn.classList.toggle('hover:bg-white/10', !r);
                 rateStoryBtn.classList.toggle('text-amber-300', !r);
             }
         }
@@ -2490,7 +2665,7 @@
             readingHistory.forEach(entry => {
                 const exists = allStoryHandles.some(s => getStoryIdFrom(s.name, s.path) === entry.id);
                 const wrapper = document.createElement('div');
-                wrapper.className = 'group border border-gray-700 rounded p-2 flex flex-col gap-1 bg-gray-800/80 ' + (exists ? 'hover:bg-gray-700 cursor-pointer' : 'opacity-60 cursor-not-allowed');
+                wrapper.className = 'group border border-white/10 rounded-xl p-2.5 flex flex-col gap-1 bg-slate-950/60 transition-colors ' + (exists ? 'hover:bg-white/[0.06] cursor-pointer' : 'opacity-60 cursor-not-allowed');
 
                 const top = document.createElement('div'); top.className = 'flex justify-between items-center';
                 const title = document.createElement('div'); title.className = 'font-semibold text-sm truncate max-w-[70%]'; title.textContent = entry.name;
@@ -2552,7 +2727,7 @@
             bookmarks.forEach((entry, idx) => {
                 const exists = allStoryHandles.some(s => getStoryIdFrom(s.name, s.path) === entry.id);
                 const wrapper = document.createElement('div');
-                wrapper.className = 'group border border-gray-700 rounded p-2 flex flex-col gap-1 bg-gray-800/80 ' + (exists ? 'hover:bg-gray-700' : 'opacity-60');
+                wrapper.className = 'group border border-white/10 rounded-xl p-2.5 flex flex-col gap-1 bg-slate-950/60 transition-colors ' + (exists ? 'hover:bg-white/[0.06]' : 'opacity-60');
 
                 const top = document.createElement('div'); top.className = 'flex justify-between items-center';
                 const title = document.createElement('div'); title.className = 'font-semibold text-sm truncate max-w-[70%]'; title.textContent = entry.name;
@@ -2614,7 +2789,7 @@
             }
             Array.from(blacklistedFolderIds).forEach(folderId => {
                 const wrapper = document.createElement('div');
-                wrapper.className = 'flex justify-between items-center border border-gray-700 rounded p-2 bg-gray-750';
+                wrapper.className = 'flex justify-between items-center border border-white/10 rounded-xl p-2.5 bg-slate-950/60';
 
                 const nameEl = document.createElement('span');
                 nameEl.className = 'text-sm text-gray-300 truncate max-w-[80%]';
@@ -2658,7 +2833,7 @@
 
         function applyFiltersCollapsedUI() {
             if (filtersCollapsed) {
-                filtersWrapper.classList.add('hidden'); filterToggleIcon.style.transform = 'rotate(-90deg)'; directoryTreeContainer.style.height = 'calc(100vh - 120px)';
+                filtersWrapper.classList.add('hidden'); filterToggleIcon.style.transform = 'rotate(-90deg)'; directoryTreeContainer.style.height = '';
                 closeFilterSuggest(); closeTagInputSuggest(); nameFilterInput.blur(); filterTagInput.blur(); tagInput.blur();
             } else {
                 filtersWrapper.classList.remove('hidden'); filterToggleIcon.style.transform = 'rotate(0deg)'; directoryTreeContainer.style.height = '';
@@ -2915,6 +3090,7 @@
                 renderInvalidStoryErrors();
                 updateSettingsModalInfo();
                 homeBtn.disabled = false;
+                if (authorsBtn) authorsBtn.disabled = false;
                 homeShuffleBtn.disabled = false;
             } catch (err) {
                 console.error('Lỗi khi quét thư mục con:', err);
@@ -3119,7 +3295,7 @@
                 if (tagList.length) {
                     tagList.slice(0, 6).forEach(t => {
                         const b = document.createElement('span');
-                        b.className = 'px-1.5 py-0.5 rounded-full bg-gray-700 text-gray-200 text-[10px]';
+                        b.className = 'px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-[10px]';
                         b.textContent = `#${t}`;
                         line2.appendChild(b);
                     });
@@ -3473,6 +3649,9 @@
             }
 
             if (!isReadingFullMode) {
+                if (fullscreenTopHud) fullscreenTopHud.classList.add('hidden');
+                if (fullscreenBottomHud) fullscreenBottomHud.classList.add('hidden');
+                if (scrollZoomControls) scrollZoomControls.classList.add('hidden');
                 fullscreenExitBtn.classList.add('hidden');
                 fullscreenToggleNameBtn.classList.add('hidden');
                 fullscreenScrollModeBtn.classList.add('hidden');
@@ -3490,12 +3669,13 @@
 
             const showFull = isFullscreenNameVisible;
 
+            if (fullscreenTopHud) fullscreenTopHud.classList.remove('hidden');
+            if (fullscreenBottomHud) fullscreenBottomHud.classList.remove('hidden');
+            if (scrollZoomControls) scrollZoomControls.classList.toggle('hidden', !(showFull && isScrollMode));
+
             fullscreenExitBtn.classList.remove('hidden');
             fullscreenToggleNameBtn.classList.remove('hidden');
             fullscreenTranslateBtn.classList.remove('hidden');
-
-            fullscreenTranslateBtn.classList.toggle('left-52', showFull);
-            fullscreenTranslateBtn.classList.toggle('left-36', !showFull);
 
             fullscreenScrollModeBtn.classList.toggle('hidden', !showFull);
             fullscreenTranslateSettingsBtn.classList.toggle('hidden', !showFull);
@@ -3633,7 +3813,7 @@
             } else {
                 list.forEach(tag => {
                     const chip = document.createElement('span');
-                    chip.className = 'inline-flex items-center gap-1 px-2 py-1 bg-gray-700 text-gray-100 rounded-full text-xs';
+                    chip.className = 'inline-flex items-center gap-1 px-2.5 py-1 bg-white/5 border border-white/10 text-slate-200 rounded-full text-xs';
                     const label = document.createElement('span'); label.textContent = `#${tag}`;
                     const btn = document.createElement('button'); btn.className = 'ml-1 text-gray-300 hover:text-red-300'; btn.textContent = '×'; btn.title = `Xóa tag "${tag}"`;
                     btn.addEventListener('click', () => removeTagFromCurrentStory(tag));
@@ -3644,7 +3824,7 @@
 
             list.forEach(t => {
                 const b1 = document.createElement('span');
-                b1.className = 'cursor-pointer hover:bg-gray-700 hover:text-white transition-colors px-1.5 py-0.5 rounded-full bg-gray-800 text-gray-300 text-[10px] border border-gray-700';
+                b1.className = 'cursor-pointer hover:bg-indigo-500/25 hover:text-white hover:border-indigo-400/40 transition-colors px-2 py-0.5 rounded-full bg-white/5 text-slate-300 text-[10px] border border-white/10';
                 b1.textContent = `#${t}`;
                 b1.title = `Xem tất cả truyện có tag #${t}`;
                 b1.addEventListener('click', () => window.goToTempTag(t));
@@ -3692,7 +3872,7 @@
             }
             all.forEach(t => {
                 const btn = document.createElement('button');
-                btn.className = 'px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded-full text-xs disabled:opacity-50';
+                btn.className = 'px-2.5 py-1 bg-white/5 hover:bg-indigo-500/20 border border-white/10 hover:border-indigo-400/40 text-slate-200 rounded-full text-xs transition-colors disabled:opacity-50';
                 btn.textContent = `#${t}`; btn.title = `Lọc theo "${t}"`;
                 btn.addEventListener('click', () => addFilterTag(t));
                 allTagsCloud.appendChild(btn);
@@ -3721,7 +3901,7 @@
             } else {
                 Array.from(selectedFilterTags).sort((a, b) => a.localeCompare(b)).forEach(tag => {
                     const chip = document.createElement('span');
-                    chip.className = 'inline-flex items-center gap-1 px-2 py-1 bg-blue-700/60 text-blue-100 rounded-full text-xs';
+                    chip.className = 'inline-flex items-center gap-1 px-2.5 py-1 bg-indigo-500/25 border border-indigo-400/35 text-indigo-100 rounded-full text-xs';
                     const label = document.createElement('span'); label.textContent = `#${tag}`;
                     const btn = document.createElement('button'); btn.className = 'ml-1 text-blue-200 hover:text-red-300'; btn.textContent = '×'; btn.title = `Bỏ lọc "${tag}"`;
                     btn.addEventListener('click', () => removeFilterTag(tag));
@@ -3979,7 +4159,7 @@
             state.open = true; panelEl.classList.remove('hidden');
             state.items.forEach((t, idx) => {
                 const item = document.createElement('div');
-                item.className = `px-3 py-2 cursor-pointer hover:bg-gray-700 text-sm ${idx === state.activeIndex ? 'bg-gray-700' : ''}`;
+                item.className = `px-3 py-2 cursor-pointer hover:bg-indigo-500/20 text-sm text-slate-200 transition-colors ${idx === state.activeIndex ? 'bg-indigo-500/25 text-white' : ''}`;
                 item.textContent = t.startsWith('#') ? t : `#${t}`;
                 item.addEventListener('mousedown', (e) => {e.preventDefault(); onSelect(t);});
                 item.addEventListener('mouseenter', () => {state.activeIndex = idx; renderSuggestActive();});
@@ -3988,9 +4168,15 @@
         }
         function renderSuggestActive() {
             const tagItems = Array.from(tagSuggestPanel.querySelectorAll('div'));
-            tagItems.forEach((el, i) => el.classList.toggle('bg-gray-700', i === tagSuggestState.activeIndex));
+            tagItems.forEach((el, i) => {
+                el.classList.toggle('bg-indigo-500/25', i === tagSuggestState.activeIndex);
+                el.classList.toggle('text-white', i === tagSuggestState.activeIndex);
+            });
             const filterItems = Array.from(filterSuggestPanel.querySelectorAll('div'));
-            filterItems.forEach((el, i) => el.classList.toggle('bg-gray-700', i === filterSuggestState.activeIndex));
+            filterItems.forEach((el, i) => {
+                el.classList.toggle('bg-indigo-500/25', i === filterSuggestState.activeIndex);
+                el.classList.toggle('text-white', i === filterSuggestState.activeIndex);
+            });
         }
         function updateTagInputSuggest() {
             const q = normalizeTag(tagInput.value || '');
@@ -4913,7 +5099,7 @@
             if (trayHotkeyStatusBadge) {
                 if (!hk) {
                     trayHotkeyStatusBadge.textContent = 'Đang tắt';
-                    trayHotkeyStatusBadge.className = 'text-[11px] font-semibold px-2 py-0.5 rounded-full bg-gray-700 text-gray-300';
+                    trayHotkeyStatusBadge.className = 'text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/10 text-slate-300 border border-white/10';
                 } else if (ok) {
                     trayHotkeyStatusBadge.textContent = `✓ Đang bật (${formatHotkeyDisplay(hk)})`;
                     trayHotkeyStatusBadge.className = 'text-[11px] font-semibold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40';
@@ -5055,7 +5241,7 @@
                 if (typeof closeRatingModal === 'function') closeRatingModal();
                 if (typeof closeTranslateSettingsModal === 'function') closeTranslateSettingsModal();
             } catch {}
-            openAppSettingsModal();
+            openAppSettingsModal('lan');
             await refreshUnifiedLanSettingsUI();
             if (lanSettingsSection) {
                 requestAnimationFrame(() => {
